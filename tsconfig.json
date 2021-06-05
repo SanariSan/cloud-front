@@ -2,20 +2,20 @@
 	"extends": "./tsconfig-base.json",
 	"compilerOptions": {
 		"target": "es5",
-		"module": "CommonJS",
+		"module": "esnext",
 		"moduleResolution": "node",
 		"resolveJsonModule": true,
 		"allowJs": false,
 		"forceConsistentCasingInFileNames": true,
 		"rootDir": "src",
-		"outDir": "dist",
+		// "outDir": "dist", overwritten anyways
 		"declaration": false,
 		"esModuleInterop": true,
 		"allowSyntheticDefaultImports": true,
 		"pretty": true,
-		//---
-		"jsx": "react",
+		"jsx": "react-jsx",
 		"noEmit": true,
+		"lib": ["dom", "dom.iterable", "esnext"],
 		"isolatedModules": true
 	},
 	"include": ["src/**/*"],

@@ -1,8 +1,9 @@
+//include styles from all files
 @import "scss/index";
 
+//styles related to index.tsx ONLY!
 body {
-	min-height: 100vh;
-	font-family: "Roboto", sans-serif;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
+	color: $text-color-light;
+	font-family: $default-font;
+	background-color: $main-bg-color;
 }

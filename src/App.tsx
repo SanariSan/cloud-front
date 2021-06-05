@@ -1,12 +1,17 @@
 import React from "react";
-import "semantic-ui-css/semantic.min.css";
+import { Route, Switch } from "react-router-dom";
 import "./App.scss";
-import { Intro } from "./components";
+import { Footer, Intro } from "./components/blocks";
+import { Header } from "./components/header";
 
 const App: React.FC = () => {
 	return (
 		<div className="App">
-			<Intro />
+			<Header />
+			<Switch>
+				<Route exact path="/" component={Intro} />
+				<Route exact path="/test" component={Footer} />
+			</Switch>
 		</div>
 	);
 };
