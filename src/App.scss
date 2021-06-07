@@ -1,45 +1,45 @@
 @import "scss/index";
 
 .App {
-	@include flexCenter(column);
+	// @include flexCenter(column);
 
-	h1 {
-		font-family: "Playfair Display", serif;
-		font-size: 40px;
-	}
+	// h1 {
+	// 	font-family: "Playfair Display", serif;
+	// 	font-size: 40px;
+	// }
 
-	p {
-		font-family: "Roboto", serif;
-		font-weight: 500;
-		font-size: 16px;
-		line-height: 1.6;
-	}
+	// p {
+	// 	font-family: "Roboto", serif;
+	// 	font-weight: 500;
+	// 	font-size: 16px;
+	// 	line-height: 1.6;
+	// }
 
-	h1,
-	h2,
-	h3,
-	h4,
-	h5,
-	h6,
-	p {
-		text-align: center;
-		margin: 20px;
+	// h1,
+	// h2,
+	// h3,
+	// h4,
+	// h5,
+	// h6,
+	// p {
+	// 	text-align: center;
+	// 	margin: 20px;
 
-		&.light {
-			color: $text-color-light;
-		}
-		&.dark {
-			color: $text-color-dark;
-		}
-	}
+	// 	&.light {
+	// 		color: $text-color-light;
+	// 	}
+	// 	&.dark {
+	// 		color: $text-color-dark;
+	// 	}
+	// }
 
-	div {
-		@include flexCenter(column);
-		width: 100%;
-	}
+	// div {
+	// 	@include flexCenter(column);
+	// 	width: 100%;
+	// }
 
-	hr {
-		width: 3%;
-		color: rgba(16, 167, 171, 1);
-	}
+	// hr {
+	// 	width: 3%;
+	// 	color: rgba(16, 167, 171, 1);
+	// }
 }

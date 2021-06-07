@@ -1,3 +1,4 @@
+// import "bootstrap/dist/css/bootstrap.min.css";
 import { createBrowserHistory } from "history";
 import React from "react";
 import ReactDOM from "react-dom";
