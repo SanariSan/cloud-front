@@ -1,6 +1,5 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
-import "./App.scss";
 import { Footer, Intro } from "./components/blocks";
 import { Header } from "./components/header";
 

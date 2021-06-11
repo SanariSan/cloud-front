@@ -1,20 +1,4 @@
-//These are vars, however put it here, because used locally only
-
-// Small tablets and large smartphones (landscape view)
-$screen-xs-min: 300px;
-
-// Small tablets (portrait view)
-$screen-sm-min: 576px;
-
-// Tablets and small desktops
-$screen-md-min: 768px;
-
-// Large tablets and desktops
-$screen-lg-min: 992px;
-
-//for pjones
-$screen-xl-min: 1200px;
-
+// default, 0 and more
 @mixin xs {
 	@media (max-width: $screen-xs-min) {
 		@content;

@@ -1,19 +1,47 @@
-$default-font: "Roboto", sans-serif;
-$accent: orange;
+$font-def: "Roboto", "Helvetica Neue", sans-serif;
+$font-alt: "Roboto Medium", "Helvetica Neue", sans-serif;
 
-$blue-color: #1678c2;
-$green-color: #69f0ae;
-$main-bg-color: #26262c;
-$second-bg-color: #1c1c22;
-$main-content-color: #333333;
-$form-color: #d8d8d8;
-$inputs-color: #1c1e20;
-$inputs-color-focus: #6f6c6c4f;
-$text-color: #b6b6b6;
-$text-color-light: lighten($text-color, 10%);
-$text-color-dark: darken($text-color, 90%);
+$white-color: #ffffff;
+$white-soft-color: rgba(255, 255, 255, 0.87);
+$black-color: #000000;
+$black-soft-color: rgba(0, 0, 0, 0.87);
+$purple-color: #4d4291;
+$purple-alt-color: #ada1f8;
+$purple-light-color: #f6f6ff;
+$gray-dark-color: #1d1d1d;
 
-// Customization Bootstrap vars from "app/libs/bootstrap/scss/_variables.scss"
+$header-day-color: $purple-color;
+$bg-day-color: $purple-light-color;
+$text-day-accent: $purple-color;
+$text-day-color: $black-soft-color;
+$text-day-alt-color: $white-soft-color;
+$text-day-inactive-color: lighten($text-day-color, 25%);
+$text-day-inactive-alt-color: darken($text-day-alt-color, 25%);
+
+$header-night-color: $gray-dark-color;
+$bg-night-color: $gray-dark-color; //maybe darken $light-purple-color
+$text-night-accent: $purple-alt-color; //maybe lighten later $purple-color
+$text-night-color: $white-soft-color;
+$text-night-alt-color: $black-soft-color;
+$text-night-inactive-color: darken($text-night-color, 25%);
+$text-night-inactive-alt-color: lighten($text-night-alt-color, 25%);
+
+// vars for custom media query MIXINS
+// value and higher
+
+// Small tablets and large smartphones (landscape view)
+$screen-xs-min: 0px;
+// Small tablets (portrait view)
+$screen-sm-min: 576px;
+// Tablets and small desktops
+$screen-md-min: 768px;
+// Large tablets and desktops
+$screen-lg-min: 992px;
+// Big screens
+$screen-xl-min: 1200px;
+
+// Customization Bootstrap grid vars from "app/libs/bootstrap/scss/_variables.scss"
+// value and higher
 $grid-gutter-width: 20px;
 $grid-columns: 12;
 $grid-breakpoints: (

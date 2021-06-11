@@ -1,6 +1,13 @@
+@import "../../../scss/index";
+
 .rect {
 	border-style: solid;
 	border-width: 2px;
 	border-color: rgb(0, 0, 0);
-	background-color: rgba(13, 219, 255, 0.63);
+	color: $text-day-inactive-color;
+	background-color: $bg-day-color;
+}
+
+.rect:hover {
+	color: $text-day-color;
 }
