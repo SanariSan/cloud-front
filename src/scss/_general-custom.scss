@@ -1,3 +1,9 @@
+body {
+	font-family: $font-def;
+	color: $text-day-color;
+	background-color: $bg-day-color;
+}
+
 a {
 	cursor: pointer;
 }

@@ -1,16 +1,17 @@
 import React from "react";
 import { Route, RouteComponentProps, Switch } from "react-router-dom";
 import { NotFound } from "../../components/not-found";
-import { PanelNavigation } from "../../components/panel";
+import { PanelHeaderComponent, PanelNavigation } from "../../components/panel";
 import { Test } from "../../components/test";
 import { PanelBrowseContainer } from "./panel-browse";
 import { PanelPrivelegeContainer } from "./panel-privelege";
 import { PanelSearchContainer } from "./panel-search";
 import { PanelSettingsContainer } from "./panel-settings";
 
-const PanelContainer: React.FC<RouteComponentProps> = ({ location }) => {
+const PanelContainer: React.FC<RouteComponentProps> = () => {
 	return (
 		<>
+			<PanelHeaderComponent />
 			<PanelNavigation />
 			<Switch>
 				<Route exact path="/panel" component={PanelBrowseContainer} />

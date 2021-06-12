@@ -36,26 +36,26 @@ $screen-sm-min: 576px;
 // Tablets and small desktops
 $screen-md-min: 768px;
 // Large tablets and desktops
-$screen-lg-min: 992px;
+$screen-lg-min: 1092px;
 // Big screens
-$screen-xl-min: 1200px;
+$screen-xl-min: 1400px;
 
 // Customization Bootstrap grid vars from "app/libs/bootstrap/scss/_variables.scss"
 // value and higher
 $grid-gutter-width: 20px;
-$grid-columns: 12;
+$grid-columns: 12 !default;
 $grid-breakpoints: (
 	xs: 0,
 	sm: 576px,
 	md: 768px,
-	lg: 992px,
-	xl: 1200px,
-);
+	lg: 1092px,
+	xl: 1400px,
+) !default;
 $container-max-widths: (
 	sm: 540px,
 	md: 720px,
-	lg: 960px,
-	xl: 1140px,
-);
+	lg: 1060px,
+	xl: 1340px,
+) !default;
 
 $gutter: $grid-gutter-width;

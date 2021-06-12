@@ -1,9 +1,2 @@
 //include styles from all files
 @import "scss/index";
-
-//styles related to index.tsx ONLY!
-body {
-	color: $text-night-color;
-	font-family: $font-def;
-	background-color: $purple-alt-color;
-}

@@ -6,3 +6,9 @@
 
 	flex-direction: $direction;
 }
+
+@mixin centerY() {
+	height: 100%;
+	margin-top: auto;
+	margin-bottom: auto;
+}
