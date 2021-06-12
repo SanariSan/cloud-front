@@ -11,7 +11,7 @@ class CatchHistoryObject extends React.Component<RouteComponentProps> {
 	}
 
 	render() {
-		return null;
+		return <>{JSON.stringify(globalHistory.location)}</>;
 	}
 }
 

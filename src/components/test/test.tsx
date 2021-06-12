@@ -1,8 +1,8 @@
 import React from "react";
 import { Col, Container, Row } from "react-bootstrap";
-import s from "./block-footer.module.scss";
+import s from "./test.module.scss";
 
-const Footer: React.FC = () => {
+const Test: React.FC = () => {
 	return (
 		<>
 			<Container>
@@ -22,4 +22,4 @@ const Footer: React.FC = () => {
 	);
 };
 
-export { Footer };
+export { Test };
