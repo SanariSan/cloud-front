@@ -13,4 +13,19 @@
 			width: 45px !important;
 		}
 	}
+
+	&.dropdown {
+	}
+
+	&.menu {
+		left: 0;
+		right: 0;
+		margin-top: 10px;
+
+		.item {
+			&::before {
+				content: none;
+			}
+		}
+	}
 }

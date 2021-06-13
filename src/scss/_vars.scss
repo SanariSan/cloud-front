@@ -7,7 +7,7 @@ $black-color: #000000;
 $black-soft-color: rgba(0, 0, 0, 0.87);
 $purple-color: #4d4291;
 $purple-alt-color: #ada1f8;
-$purple-light-color: #f6f6ff;
+$purple-light-color: #aea9bb; //#f6f6ff;
 $gray-dark-color: #1d1d1d;
 
 $header-day-color: $purple-color;
@@ -43,7 +43,7 @@ $screen-xl-min: 1400px;
 // Customization Bootstrap grid vars from "app/libs/bootstrap/scss/_variables.scss"
 // value and higher
 $grid-gutter-width: 20px;
-$grid-columns: 12 !default;
+$grid-columns: 16 !default;
 $grid-breakpoints: (
 	xs: 0,
 	sm: 576px,

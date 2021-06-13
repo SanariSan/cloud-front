@@ -1,25 +1,31 @@
 import classNames from "classnames";
 import React from "react";
 import { Col, Container, Row } from "react-bootstrap";
-import { Icon, Image } from "semantic-ui-react";
+import { Dropdown, Icon, Image } from "semantic-ui-react";
 import avatar from "../../../img/avatar.png";
 import logo from "../../../img/logo.png";
 import s from "./panel-header.module.scss";
 
-const PanelHeaderComponent: React.FC = () => {
+const PanelHeaderComponent: React.FC<any> = ({ toggleSidebar }) => {
 	return (
 		<Container fluid className={s.panelHeader}>
 			<Row className={s.row}>
-				<Col xl={10} lg={9} md={8} className={s.col}>
+				<Col md={2} className={s.col}>
 					<Image src={logo} />
 				</Col>
-				<Col xl={2} lg={3} md={4} className={classNames(s.col, s.right)}>
+				<Col xs={1} className={s.col}>
+					<button onClick={toggleSidebar}>click</button>
+				</Col>
+				<Col></Col>
+				<Col xs={6} lg={4} xl={3} className={classNames(s.col, s.right)}>
 					<Icon link name="bell" color="grey" inverted />
 					<Image src={avatar} size="mini" />
-					<div className={s.accountName}>
-						email@addr.com
-						<Icon link name="dropdown" color="grey" inverted />
-					</div>
+					<Dropdown text="email@addr.com">
+						<Dropdown.Menu>
+							<Dropdown.Item text="Settings" onClick={() => alert("settings")} />
+							<Dropdown.Item text="Logout" onClick={() => alert("logout")} />
+						</Dropdown.Menu>
+					</Dropdown>
 				</Col>
 			</Row>
 		</Container>

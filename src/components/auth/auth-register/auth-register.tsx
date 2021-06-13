@@ -3,16 +3,16 @@ import { Container } from "react-bootstrap";
 import { Icon, Menu } from "semantic-ui-react";
 import { changeRoute } from "../../history";
 
-const LandingHeaderComponent: React.FC = () => {
+const AuthRegisterComponent: React.FC = () => {
 	return (
 		<Container>
-			<Menu.Item as="a" onClick={() => changeRoute("/auth")}>
+			<Menu.Item as="a" onClick={() => changeRoute("/panel")}>
 				<Icon name="lock" />
-				Auth
+				Panel
 			</Menu.Item>
-			Landing head
+			Register
 		</Container>
 	);
 };
 
-export { LandingHeaderComponent };
+export { AuthRegisterComponent };
