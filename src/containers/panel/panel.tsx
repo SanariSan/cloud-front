@@ -58,9 +58,16 @@ const PanelContainer: React.FC<RouteComponentProps> = () => {
 					closeSidebar={closeSidebar}
 					mainContentRef={mainContentRef}
 				/>
+				{/*later try moving up, wrapping all in ref*/}
 				<Ref innerRef={mainContentRef}>
-					<Sidebar.Pusher dimmed={dimmed}>
-						{/* <Container fluid className={s.containerStyled}> */}
+					<Sidebar.Pusher
+						dimmed={dimmed}
+						style={{
+							width: dimmed ? "90%" : "100%",
+							float: "right",
+							transition: "width 0.5s",
+						}}
+					>
 						<Switch>
 							<Route exact path="/panel" component={PanelBrowseContainer} />
 							<Route exact path="/panel/browse" component={PanelBrowseContainer} />
@@ -78,7 +85,6 @@ const PanelContainer: React.FC<RouteComponentProps> = () => {
 							<Route exact path="/panel/test" component={Test} />
 							<Route path="/panel" component={NotFound} />
 						</Switch>
-						{/* </Container> */}
 					</Sidebar.Pusher>
 				</Ref>
 			</Sidebar.Pushable>

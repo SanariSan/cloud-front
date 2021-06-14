@@ -22,10 +22,11 @@ const PanelHeaderComponent: React.FC<any> = ({ toggleSidebar }) => {
 					<Icon link size="large" name="bars" onClick={toggleSidebar} />
 				</Col>
 				<Col></Col>
-				<Col xs={8} lg={4} xl={3} className={classNames(s.col, s.right)}>
+				<Col xs={7} sm={6} md={5} lg={4} xl={3} className={classNames(s.col, s.right)}>
 					<Icon link name="bell" color="grey" inverted />
 					<Image src={avatar} size="mini" />
-					<Dropdown text="email@addr.com">
+					<p className={s.pStyled}>email@addr.com</p>
+					<Dropdown direction="left" closeOnChange={true}>
 						<Dropdown.Menu>
 							<Dropdown.Item
 								text="Settings"

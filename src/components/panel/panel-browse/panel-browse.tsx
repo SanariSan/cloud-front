@@ -1,13 +1,10 @@
 import React, { MouseEventHandler } from "react";
 import { Col, Container, Row } from "react-bootstrap";
-import { useContextMenu } from "react-contexify";
 import "react-contexify/dist/ReactContexify.css";
-import { ContextMenu } from "../panel-context-menu";
 import { EntityComponent } from "../panel-entity";
 import s from "./panel-browse.module.scss";
 
 const PanelBrowseFiles: React.FC = () => {
-	const menuId = "menuId";
 	const menuOptions = [
 		{
 			text: "test",
@@ -19,31 +16,25 @@ const PanelBrowseFiles: React.FC = () => {
 		},
 	];
 
-	const { show } = useContextMenu({
-		id: menuId,
-	});
-
 	const onClick: MouseEventHandler<HTMLDivElement> = (event) => {
 		event.preventDefault();
-		alert("Some logic to change entities below happening");
+		alert("Some logic to update-change entities");
 	};
-	const onContextMenu: MouseEventHandler<HTMLDivElement> = async (event) => {
+	const onContextMenu: any = async (event, show) => {
 		event.preventDefault();
 		show(event);
 	};
 
-	let arr = new Array(10).fill(null).map((el) => (
-		<Col xs={9} md={7} lg={5} xl={4} className={s.colStyled}>
+	let arr = new Array(10).fill(null).map((el, idx) => {
+		return (
 			<EntityComponent
-				iconName={"folder open"}
-				entityText={"Folder name"}
+				idx={idx}
+				menuOptions={menuOptions}
 				onClick={onClick}
 				onContextMenu={onContextMenu}
-				entityTextAlt={"Some alt text"}
 			/>
-			<ContextMenu id={menuId} options={menuOptions} />
-		</Col>
-	));
+		);
+	});
 
 	return (
 		<Container fluid className={s.containerStyled}>

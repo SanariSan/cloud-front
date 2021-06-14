@@ -17,6 +17,16 @@
 			.imgStyled {
 				cursor: pointer;
 			}
+
+			.pStyled {
+				display: block;
+			}
+
+			@include sm() {
+				.pStyled {
+					display: none;
+				}
+			}
 		}
 	}
 }

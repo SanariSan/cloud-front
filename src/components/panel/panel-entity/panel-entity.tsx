@@ -1,40 +1,32 @@
-import React, { MouseEventHandler } from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import s from "./panel-entity.module.scss";
-import { Icon, SemanticICONS } from "semantic-ui-react";
+import React from "react";
+import { Col } from "react-bootstrap";
+import { useContextMenu } from "react-contexify";
+import { SemanticICONS } from "semantic-ui-react/dist/commonjs/generic";
+import { ContextMenu } from "../panel-context-menu";
+import { EntityViewComponent } from "./panel-entity-view";
 
-interface IEntityComponentProps {
-	iconName: SemanticICONS;
-	entityText: string;
-	onClick: MouseEventHandler<HTMLDivElement>;
-	onContextMenu: MouseEventHandler<HTMLDivElement>;
-	entityTextAlt?: string;
-}
+const EntityComponent: React.FC<any> = ({ idx, menuOptions, onClick, onContextMenu }) => {
+	const menuId = `menuId_${idx}`;
+	const { show } = useContextMenu({
+		id: menuId,
+	});
 
-const EntityComponent: React.FC<IEntityComponentProps> = ({
-	//big icon name
-	iconName,
-	entityText,
-	entityTextAlt,
-	onClick,
-	onContextMenu,
-}) => {
+	const [iconName, entityText]: [SemanticICONS, string] =
+		Math.round(Math.random() * 1) < 1
+			? ["folder open", "Folder name"]
+			: ["file", "File name.txt"];
+
 	return (
-		<div className={s.entity} onClick={onClick} onContextMenu={onContextMenu}>
-			<Container className={s.containerStyled}>
-				<Row className={s.rowTop}>
-					<Col>
-						<Icon size="massive" name={"folder open"} />
-					</Col>
-				</Row>
-				{/* <hr className={s.hrStyled} /> */}
-				<Row className={s.rowBot}>
-					<Icon size="small" name={iconName} />
-					<Col xs={12}>{entityText}</Col>
-					<Col xs={12}>{entityTextAlt}</Col>
-				</Row>
-			</Container>
-		</div>
+		<Col xs={10} sm={8} md={6} lg={5} xl={4}>
+			<EntityViewComponent
+				iconName={iconName}
+				entityText={entityText}
+				onClick={onClick}
+				onContextMenu={(event) => onContextMenu(event, show)}
+				entityTextAlt={"Some alt text"}
+			/>
+			<ContextMenu id={menuId} options={menuOptions} />
+		</Col>
 	);
 };
 
