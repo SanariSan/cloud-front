@@ -1,7 +1,7 @@
-import React, { useState, useRef } from "react";
+import React, { useRef, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { Route, RouteComponentProps, Switch } from "react-router-dom";
-import { Ref, Sidebar, Segment } from "semantic-ui-react";
+import { Ref, Sidebar } from "semantic-ui-react";
 import { NotFound } from "../../components/not-found";
 import { PanelHeaderComponent, PanelNavigation } from "../../components/panel";
 import { Test } from "../../components/test";
@@ -9,6 +9,7 @@ import { PanelBrowseContainer } from "./panel-browse";
 import { PanelPrivelegeContainer } from "./panel-privelege";
 import { PanelSearchContainer } from "./panel-search";
 import { PanelSettingsContainer } from "./panel-settings";
+import s from "./panel.module.scss";
 
 const PanelContainer: React.FC<RouteComponentProps> = () => {
 	const [stateSidebar, setStateSidebar] = useState({
@@ -44,7 +45,12 @@ const PanelContainer: React.FC<RouteComponentProps> = () => {
 	return (
 		<>
 			<PanelHeaderComponent toggleSidebar={toggleSidebar} />
-			<Sidebar.Pushable style={{ overflow: "hidden", height: "calc(100% - 65px)" }}>
+			<Sidebar.Pushable
+				style={{
+					overflow: "visible",
+					height: "calc(100% - 65px)",
+				}}
+			>
 				<PanelNavigation
 					visible={visible}
 					animation={animation}
@@ -54,41 +60,25 @@ const PanelContainer: React.FC<RouteComponentProps> = () => {
 				/>
 				<Ref innerRef={mainContentRef}>
 					<Sidebar.Pusher dimmed={dimmed}>
-						<Container fluid style={{ padding: "0px", height: "100%" }}>
-							<Row>
-								<Col>
-									<Switch>
-										<Route
-											exact
-											path="/panel"
-											component={PanelBrowseContainer}
-										/>
-										<Route
-											exact
-											path="/panel/browse"
-											component={PanelBrowseContainer}
-										/>
-										<Route
-											exact
-											path="/panel/search"
-											component={PanelSearchContainer}
-										/>
-										<Route
-											exact
-											path="/panel/privelege"
-											component={PanelPrivelegeContainer}
-										/>
-										<Route
-											exact
-											path="/panel/settings"
-											component={PanelSettingsContainer}
-										/>
-										<Route exact path="/panel/test" component={Test} />
-										<Route path="/panel" component={NotFound} />
-									</Switch>
-								</Col>
-							</Row>
-						</Container>
+						{/* <Container fluid className={s.containerStyled}> */}
+						<Switch>
+							<Route exact path="/panel" component={PanelBrowseContainer} />
+							<Route exact path="/panel/browse" component={PanelBrowseContainer} />
+							<Route exact path="/panel/search" component={PanelSearchContainer} />
+							<Route
+								exact
+								path="/panel/privelege"
+								component={PanelPrivelegeContainer}
+							/>
+							<Route
+								exact
+								path="/panel/settings"
+								component={PanelSettingsContainer}
+							/>
+							<Route exact path="/panel/test" component={Test} />
+							<Route path="/panel" component={NotFound} />
+						</Switch>
+						{/* </Container> */}
 					</Sidebar.Pusher>
 				</Ref>
 			</Sidebar.Pushable>

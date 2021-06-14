@@ -1,7 +1,10 @@
-// .container,
-// .container-fluid {
-// 	.row {
-// 		.col {
-// 		}
-// 	}
-// }
+.container,
+.container-fluid {
+	height: 100%;
+	.row {
+		// overflow-y: scroll;
+		.col {
+			// overflow: hidden;
+		}
+	}
+}

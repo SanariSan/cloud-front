@@ -11,7 +11,7 @@ const PanelHeaderComponent: React.FC<any> = ({ toggleSidebar }) => {
 	return (
 		<Container fluid className={s.panelHeader}>
 			<Row className={s.row}>
-				<Col md={2} className={s.col}>
+				<Col xs={6} sm={3} md={2} className={s.col}>
 					<Image
 						src={logo}
 						className={s.imgStyled}
@@ -22,7 +22,7 @@ const PanelHeaderComponent: React.FC<any> = ({ toggleSidebar }) => {
 					<Icon link size="large" name="bars" onClick={toggleSidebar} />
 				</Col>
 				<Col></Col>
-				<Col xs={6} lg={4} xl={3} className={classNames(s.col, s.right)}>
+				<Col xs={8} lg={4} xl={3} className={classNames(s.col, s.right)}>
 					<Icon link name="bell" color="grey" inverted />
 					<Image src={avatar} size="mini" />
 					<Dropdown text="email@addr.com">

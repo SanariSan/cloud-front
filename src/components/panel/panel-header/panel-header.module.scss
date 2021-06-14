@@ -1,7 +1,7 @@
-@import "../../../scss/index";
+@import "../../../scss/index.custom";
 
 .panelHeader {
-	height: 65px;
+	height: 65px !important;
 	color: $text-day-alt-color;
 	background-color: $header-day-color;
 

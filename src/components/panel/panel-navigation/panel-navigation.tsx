@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import React from "react";
+import React, { useRef } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { Dropdown, Icon, Menu, Sidebar } from "semantic-ui-react";
 import { changeRoute } from "../../history";

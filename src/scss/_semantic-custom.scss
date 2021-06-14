@@ -14,11 +14,13 @@
 		}
 	}
 
-	&.dropdown {
+	&.dropdown &.floating.dropdown {
 		.menu {
+			background-color: red !important;
 			left: 0;
 			right: 0;
 			margin-top: 10px;
+			z-index: 12 !important;
 		}
 	}
 

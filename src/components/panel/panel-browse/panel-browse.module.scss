@@ -1,0 +1,22 @@
+@import "../../../scss/index.custom";
+
+.containerStyled {
+	height: 100%;
+}
+
+.colStyled {
+	margin-right: auto;
+}
+
+.rowStyled {
+	margin: 1em !important;
+}
+
+.rowStyled2 {
+	overflow: scroll;
+	height: calc(100vh - 125px);
+}
+
+.pStyled {
+	font-size: $font-size-big;
+}
