@@ -1,6 +1,7 @@
 import React, { MouseEventHandler } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import "react-contexify/dist/ReactContexify.css";
+import { Button } from "semantic-ui-react";
 import { EntityComponent } from "../panel-entity";
 import s from "./panel-browse.module.scss";
 
@@ -38,12 +39,21 @@ const PanelBrowseFiles: React.FC = () => {
 
 	return (
 		<Container fluid className={s.containerStyled}>
-			<Row className={s.rowStyled}>
+			<Row className={s.rowTopStyled}>
 				<Col xs={16}>
-					<p className={s.pStyled}>Folder123 / Folder456</p>
+					<p className={s.pStyled}>
+						<Button basic color="grey">
+							Folder123
+						</Button>
+						{">"}
+						<Button basic color="grey">
+							Folder456
+						</Button>
+					</p>
 				</Col>
 			</Row>
-			<Row className={s.rowStyled2}>{arr}</Row>
+			<hr className={s.hrStyled} />
+			<Row className={s.rowBotStyled}>{arr}</Row>
 		</Container>
 	);
 };

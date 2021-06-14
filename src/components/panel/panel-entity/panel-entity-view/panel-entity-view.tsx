@@ -12,7 +12,6 @@ interface IEntityComponentProps {
 }
 
 const EntityViewComponent: React.FC<IEntityComponentProps> = ({
-	//big icon name
 	iconName,
 	entityText,
 	entityTextAlt,
@@ -23,15 +22,16 @@ const EntityViewComponent: React.FC<IEntityComponentProps> = ({
 		<div className={s.entity} onClick={onClick} onContextMenu={onContextMenu}>
 			<Container className={s.containerStyled}>
 				<Row className={s.rowTop}>
-					<Col>
-						<Icon size="massive" name={iconName} />
+					<Col className={s.colTopStyled}>
+						<Icon size="massive" name={iconName} className={s.iconTopStyled} />
 					</Col>
 				</Row>
-				{/* <hr className={s.hrStyled} /> */}
 				<Row className={s.rowBot}>
-					<Icon size="small" name={iconName} />
-					<Col xs={12}>{entityText}</Col>
-					<Col xs={12}>{entityTextAlt}</Col>
+					<Icon size="large" name={iconName} className={s.iconBotStyled} />
+					<Col className={s.colBotStyled}>
+						<p>{entityText}</p>
+						<p>{entityTextAlt}</p>
+					</Col>
 				</Row>
 			</Container>
 		</div>
