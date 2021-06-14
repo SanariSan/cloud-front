@@ -22,11 +22,13 @@ const PanelContainer: React.FC<RouteComponentProps> = () => {
 	const direction = "left";
 
 	const closeSidebar = async () => {
-		await setStateSidebar((oldState) => ({
-			...oldState,
-			dimmed: false,
-			visible: false,
-		}));
+		if (stateSidebar.dimmed && stateSidebar.visible) {
+			await setStateSidebar((oldState) => ({
+				...oldState,
+				dimmed: false,
+				visible: false,
+			}));
+		}
 	};
 
 	const toggleSidebar = async () => {

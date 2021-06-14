@@ -1,25 +1,43 @@
 @import "../../../scss/index";
 
 .navbar {
-	display: flex;
-	flex-direction: column;
-	align-items: flex-start;
-	border: 3px solid black;
-	background-color: green;
+	background-color: $bg-day-color;
 }
 
 .containerCustom {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
 	height: 100%;
 }
 
 .col {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-evenly;
 	height: 100px !important;
-	border: 2px solid pink;
-	background-color: royalblue;
+}
+
+.hrStyled {
+	background-color: $gray-dark-color;
+	line-height: 1px;
+	width: 100%;
 }
 
 .wrapTop {
 }
 
 .wrapBot {
+	font-size: $font-size-small;
+
+	.groupBot {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.pStyled {
+		font-size: $font-size-def;
+		font-weight: bold;
+	}
 }

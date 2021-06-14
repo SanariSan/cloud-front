@@ -1,18 +1,23 @@
 $font-def: "Roboto", "Helvetica Neue", sans-serif;
 $font-alt: "Roboto Medium", "Helvetica Neue", sans-serif;
 
+$font-size-def: 1rem;
+$font-size-small: 0.75rem;
+$font-size-big: 1.25rem;
+
 $white-color: #ffffff;
 $white-soft-color: rgba(255, 255, 255, 0.87);
 $black-color: #000000;
 $black-soft-color: rgba(0, 0, 0, 0.87);
 $purple-color: #4d4291;
-$purple-alt-color: #ada1f8;
-$purple-light-color: #aea9bb; //#f6f6ff;
+$purple-alt-color: #8272c7;
+$purple-light-color: #f6ebff; //#f6f6ff;
 $gray-dark-color: #1d1d1d;
+$accent-color: #00c89d;
 
 $header-day-color: $purple-color;
 $bg-day-color: $purple-light-color;
-$text-day-accent: $purple-color;
+$text-day-accent: $accent-color; //$purple-color;
 $text-day-color: $black-soft-color;
 $text-day-alt-color: $white-soft-color;
 $text-day-inactive-color: lighten($text-day-color, 25%);
@@ -20,7 +25,7 @@ $text-day-inactive-alt-color: darken($text-day-alt-color, 25%);
 
 $header-night-color: $gray-dark-color;
 $bg-night-color: $gray-dark-color; //maybe darken $light-purple-color
-$text-night-accent: $purple-alt-color; //maybe lighten later $purple-color
+$text-night-accent: $accent-color; //$purple-alt-color; //maybe lighten later $purple-color
 $text-night-color: $white-soft-color;
 $text-night-alt-color: $black-soft-color;
 $text-night-inactive-color: darken($text-night-color, 25%);
