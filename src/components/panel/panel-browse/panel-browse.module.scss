@@ -12,18 +12,17 @@
 
 .rowTopStyled {
 	padding: 1em !important;
-	// border-bottom: 1px solid $gray-dark-color;
+
 	.hrStyled {
 		background-color: $gray-dark-color;
 		line-height: 1px;
 		width: 100%;
 	}
-	// box-shadow: 0px 3px 50px 5px rgba(0, 0, 0, 0.15), inset 0px -3px 50px 5px rgba(0, 0, 0, 0.15);
 }
 
 .rowBotStyled {
 	overflow: scroll;
-	height: calc(100vh - 125px);
+	height: calc(100vh - 9.3em);
 }
 
 .pStyled {
