@@ -4,7 +4,7 @@
 	"main": "index.js",
 	"author": "SanariSan <SanariSan@users.noreply.github.com>",
 	"license": "MIT",
-	"proxy": "http://localhost:3002",
+	"proxy": "http://localhost:3000",
 	"scripts": {
 		"start": "react-scripts start",
 		"build": "react-scripts build",
