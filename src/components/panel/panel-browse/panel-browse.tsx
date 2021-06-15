@@ -41,6 +41,12 @@ const PanelBrowseFiles: React.FC = () => {
 		<Container fluid className={s.containerStyled}>
 			<Row className={s.rowTopStyled}>
 				<Col xs={16}>
+					<h1 style={{ paddingLeft: "5px" }}>File Manager</h1>
+				</Col>
+			</Row>
+			<hr className={s.hrStyled} />
+			<Row className={s.rowTopStyled}>
+				<Col xs={16}>
 					<p className={s.pStyled}>
 						<Button basic color="grey">
 							Folder123

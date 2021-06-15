@@ -49,7 +49,7 @@ const PanelNavigation: React.FC<any> = ({
 
 								<Menu.Item as="a" onClick={() => changeRoute("/panel/search")}>
 									<Icon name="search" />
-									Search spaces
+									Spaces search
 								</Menu.Item>
 
 								<Menu.Item as="a" onClick={() => changeRoute("/panel/privelege")}>
@@ -57,10 +57,10 @@ const PanelNavigation: React.FC<any> = ({
 									Privelege
 								</Menu.Item>
 
-								<Menu.Item as="a" onClick={() => changeRoute("/panel/test")}>
+								{/* <Menu.Item as="a" onClick={() => changeRoute("/panel/test")}>
 									<Icon name="home" />
 									Test
-								</Menu.Item>
+								</Menu.Item> */}
 							</Menu>
 						</Col>
 					</Row>
