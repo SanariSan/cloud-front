@@ -1,7 +1,3 @@
-const defaultHeaders = () => {
-	return { Accept: "application/json", "Content-Type": "application/json" };
-};
-
 const handleResponse = (response: Response): any => {
 	return new Promise(async (resolve, reject) => {
 		const data = await response.json();
@@ -15,4 +11,4 @@ const handleResponse = (response: Response): any => {
 	});
 };
 
-export { defaultHeaders, handleResponse };
+export { handleResponse };
