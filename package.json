@@ -13,8 +13,19 @@
 	},
 	"dependencies": {
 		"@dbeining/react-atom": "^4.1.19",
+		"@types/axios": "^0.14.0",
+		"@types/classnames": "^2.3.1",
+		"@types/node": "^15.12.1",
+		"@types/node-sass": "^4.11.1",
+		"@types/react": "^17.0.9",
+		"@types/react-bootstrap": "^0.32.25",
+		"@types/react-dom": "^17.0.6",
+		"@types/react-router-dom": "^5.1.7",
+		"@types/semantic-ui": "^2.2.7",
+		"axios": "^0.21.1",
 		"bootstrap": "^5.0.1",
 		"classnames": "^2.3.1",
+		"dotenv": "^10.0.0",
 		"history": "4.10.1",
 		"node-sass": "^6.0.0",
 		"react": "^17.0.2",
@@ -25,15 +36,7 @@
 		"react-scripts": "^4.0.3",
 		"semantic-ui-css": "^2.4.1",
 		"semantic-ui-react": "^2.0.3",
-		"typescript": "^4.3.2",
-		"@types/classnames": "^2.3.1",
-		"@types/node": "^15.12.1",
-		"@types/node-sass": "^4.11.1",
-		"@types/react": "^17.0.9",
-		"@types/react-bootstrap": "^0.32.25",
-		"@types/react-dom": "^17.0.6",
-		"@types/react-router-dom": "^5.1.7",
-		"@types/semantic-ui": "^2.2.7"
+		"typescript": "^4.3.2"
 	},
 	"devDependencies": {
 		"prettier": "^2.3.1"
