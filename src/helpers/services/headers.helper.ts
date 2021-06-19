@@ -1,6 +1,8 @@
+import { getLSValue } from "../browser";
+
 const getBearerHeader = () => {
-	//CALL HELPER WHICH accesses local storage, get value if exists
-	return { Access: "Bearer 12345" };
+	const key = getLSValue("accessToken");
+	return { Authorization: `Bearer ${key}` };
 };
 
 export { getBearerHeader };

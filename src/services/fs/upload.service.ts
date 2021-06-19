@@ -1,12 +1,13 @@
 import { getBearerHeader, prepareURI } from "../../helpers/services";
 import { axiosApiBase, handleRequest } from "../request-base";
 
-const filesBrowse = ({ groupId, path }) =>
+const fsUpload = ({ groupId, path, filename, data }) =>
 	handleRequest(axiosApiBase.post)({
-		path: prepareURI("/files/browse/", `${groupId}-${path}`),
+		path: prepareURI("/fs/upload-file", `${groupId}-${path}-${filename}`),
 		headers: {
 			...getBearerHeader(),
 		},
+		data, //INSPECT CLOSER
 	});
 
-export { filesBrowse };
+export { fsUpload };

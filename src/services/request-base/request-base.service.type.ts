@@ -4,19 +4,19 @@ type TPath =
 	| "/access/refresh"
 	| "/access/change-password"
 	| "/access/logout"
-	| "/profile/1"
+	| "/profile/info"
 	| "/group/create"
 	| "/group/join"
 	| "/group/leave"
 	| "/group/change-password"
 	| "/group/search-by-name"
 	| "/group/search-by-email"
-	| "/files/browse/"
-	| "/files/download/"
-	| "/files/upload/"
-	| "/files/create/"
-	| "/files/rename/"
-	| "/files/delete/";
+	| "/fs/download-file"
+	| "/fs/upload-file"
+	| "/fs/browse-folder"
+	| "/fs/create-folder"
+	| "/fs/rename-file-folder"
+	| "/fs/delete-file-folder";
 
 type TMethods = "GET" | "POST" | "PUT" | "DELETE";
 

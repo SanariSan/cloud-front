@@ -1,12 +1,12 @@
 import { DEFAULT_HEADERS } from "./request-base.service.const";
 import { IRequest } from "./request-base.service.type";
 import axios, { AxiosInstance } from "axios";
-import { handleResponse } from "../../helpers/services/response.helper";
+import { handleErrorResponse, handleSuccessResponse } from "../../helpers/services/response.helper";
 
-const url = <string>process.env.URL; //"https://storeton.herokuapp.com"
-const host = <string>process.env.HOST;
-const port = parseInt(<string>process.env.PORT);
-const apiVersion = <string>process.env.API_VERSION; //"v1"
+const url = <string>process.env.REACT_APP_URL;
+const host = <string>process.env.REACT_APP_HOST;
+const port = parseInt(<string>process.env.REACT_APP_PORT);
+const apiVersion = <string>process.env.REACT_APP_API_VERSION;
 
 const axiosApiBase: AxiosInstance = axios.create({
 	baseURL: url ? url : `${host}:${port}/${apiVersion}`,
@@ -16,9 +16,15 @@ const axiosApiBase: AxiosInstance = axios.create({
 
 const handleRequest =
 	(req) =>
-	({ path, headers, data }: IRequest) =>
-		req(path, data, { headers })
-			.then(handleResponse)
-			.catch((err) => console.log(err));
+	({ path, headers, data }: IRequest) => {
+		const options = {
+			headers: {
+				...headers,
+			},
+		};
 
+		return req(path, data ? data : options, options)
+			.then(handleSuccessResponse)
+			.catch(handleErrorResponse);
+	};
 export { handleRequest, axiosApiBase };
