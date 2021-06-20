@@ -1,20 +1,42 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
+import { BlockCreateGroupComponent } from "../../components/block-create-group";
+import { changeRoute } from "../../components/history";
 import { useLocalStorage } from "../../hooks";
+import { reqProfileInfo } from "../../services/get-info";
+import { reqGroupCreate } from "../../services/group";
 
-const BlockCreateGroupContainer: React.FC = () => {
-	const [userGroupsInfo, setUserGroupsInfo] = useLocalStorage("userGroupsInfo", []);
+const BlockCreateGroupContainer: React.FC<any> = ({ userGroupsInfo, setUserGroupsInfo }) => {
+	const isActive = useRef(true);
+	const [accessToken, setAccessToken] = useLocalStorage("accessToken", null);
+	const [refreshToken, setRefreshToken] = useLocalStorage("refreshToken", null);
 
-	const handleGroupCreate = () => {
-		//request create group
-		// group: req.groupRepository.getRecord([EGROUP_KEYS.ID, EGROUP_KEYS.NAME]),
-		// size: req.groupPathRepository.getRecord([
-		// 	EGROUP_PATH_KEYS.ID,
-		// 	EGROUP_PATH_KEYS.SIZE_USED,
-		// 	EGROUP_PATH_KEYS.SIZE_MAX,
-		// ]),
+	useEffect(
+		() => () => {
+			isActive.current = false;
+		},
+		[],
+	);
+
+	useEffect(() => {
+		if (isActive.current) reqProfileInfo().catch((err) => {});
+	}, [accessToken, refreshToken]);
+
+	const handleGroupCreate = (name, password) => {
+		// group: {id, name},
+		// size: {sizeUsed, sizeMax}
+
+		reqGroupCreate({ groupName: name, password })
+			.then(async ({ code, message, data }) => {
+				console.log(data);
+				await setUserGroupsInfo([...userGroupsInfo, data.group]);
+			})
+			.then(() => changeRoute("/panel/browse"))
+			.catch((err) => {
+				console.warn(err);
+			});
 	};
 
-	return <></>;
+	return <BlockCreateGroupComponent handleGroupCreate={handleGroupCreate} />;
 };
 
 export { BlockCreateGroupContainer };

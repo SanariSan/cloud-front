@@ -11,39 +11,53 @@ const AuthContainer: React.FC = () => {
 	const [errMessage, setErrMessage] = useState(null);
 	const isActive = useRef(true);
 
-	useEffect(() => {
-		if (isActive.current === true && (accessToken || refreshToken)) {
+	useEffect(
+		() => () => {
 			isActive.current = false;
+		},
+		[],
+	);
+
+	useEffect(() => {
+		console.log(isActive);
+
+		if (isActive.current === true && (accessToken || refreshToken)) {
 			changeRoute("/panel");
 		}
 	}, [accessToken, refreshToken]);
 
 	const setAccessRefresh = async ({ accessToken, refreshToken }) => {
-		await setAccessToken(accessToken);
-		await setRefreshToken(refreshToken);
+		if (isActive.current) {
+			await setAccessToken(accessToken);
+			await setRefreshToken(refreshToken);
+		}
 	};
 
 	const handleLogin = async (email, password) => {
-		const res = await reqAccessLogin({ email, password }).catch(async (err) => {
-			if (err.message) {
-				await setErrMessage(err.message);
-			}
-		});
+		if (isActive.current) {
+			const res = await reqAccessLogin({ email, password }).catch(async (err) => {
+				if (err.message) {
+					await setErrMessage(err.message);
+				}
+			});
 
-		if (res && res.data) {
-			await setAccessRefresh({ ...res.data.tokens });
+			if (res && res.data) {
+				await setAccessRefresh({ ...res.data.tokens });
+			}
 		}
 	};
 
 	const handleRegister = async (email, password) => {
-		const res = await reqAccessRegister({ email, password }).catch(async (err) => {
-			if (err.message) {
-				await setErrMessage(err.message);
-			}
-		});
+		if (isActive.current) {
+			const res = await reqAccessRegister({ email, password }).catch(async (err) => {
+				if (err.message) {
+					await setErrMessage(err.message);
+				}
+			});
 
-		if (res && res.data) {
-			await setAccessRefresh({ ...res.data.tokens });
+			if (res && res.data) {
+				await setAccessRefresh({ ...res.data.tokens });
+			}
 		}
 	};
 

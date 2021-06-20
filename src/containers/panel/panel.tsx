@@ -14,7 +14,9 @@ import { PanelSearchContainer } from "./panel-search";
 import { PanelSettingsContainer } from "./panel-settings";
 
 const PanelContainer: React.FC<RouteComponentProps> = () => {
-	const rerenderTrigger = useAtom(forcePanelRerenderAtom); //forcePanelRerender();
+	// const rerenderTrigger = useAtom(forcePanelRerenderAtom); //forcePanelRerender();
+	const isActive = useRef(true);
+
 	const [stateSidebar, setStateSidebar] = useState({
 		dimmed: false,
 		visible: false,
@@ -33,6 +35,13 @@ const PanelContainer: React.FC<RouteComponentProps> = () => {
 
 	const mainContentRef = useRef(null);
 
+	useEffect(
+		() => () => {
+			isActive.current = false;
+		},
+		[],
+	);
+
 	useEffect(() => {
 		//fetch all user info, always when loaded
 		//set to hook
@@ -41,34 +50,36 @@ const PanelContainer: React.FC<RouteComponentProps> = () => {
 		// groupsList: [{ id: 4; name: "test2" }] || []
 		// storageSize: { sizeUsed: 0, sizeMax: 15000 } || null
 		// ​user: Object { id: 4, name: null, email: "e@mail.ru", profilePicUrl: null }
+		if (isActive.current) {
+			reqProfileInfo()
+				.then(async ({ code, message, data }) => {
+					console.log(data);
+					await setProfileInfo(data.user);
+					await setUserGroupsInfo(data.groupsList);
 
-		reqProfileInfo()
-			.then(async ({ code, message, data }) => {
-				console.log(data);
-				await setProfileInfo(data.user);
-				await setUserGroupsInfo(data.groupsList);
-
-				if (data.groupOwnage) {
-					await setUserGroupOwnage(data.groupOwnage);
-				}
-			})
-			.catch(({ code, message, status }) => {
-				console.warn(message);
-			});
-	}, [rerenderTrigger, accessToken, refreshToken]);
+					if (data.groupOwnage) {
+						await setUserGroupOwnage(data.groupOwnage);
+					}
+				})
+				.catch(({ code, message, status }) => {
+					console.warn(message);
+				});
+		}
+	}, [accessToken, refreshToken]); //destructured parameter is undefined once!!
 
 	useEffect(() => {
 		//groupInfo
 		//storageSize
-
-		if (currentGroupInfo)
-			reqGroupInfo({ id: currentGroupInfo.id }).then(async ({ code, message, data }) => {
-				await setStorageInfo(data.storageInfo);
-			});
+		if (isActive.current) {
+			if (currentGroupInfo)
+				reqGroupInfo({ id: currentGroupInfo.id }).then(async ({ code, message, data }) => {
+					await setStorageInfo(data.storageInfo);
+				});
+		}
 	}, [currentGroupInfo]);
 
 	const closeSidebar = async () => {
-		if (stateSidebar.dimmed && stateSidebar.visible) {
+		if (isActive.current && stateSidebar.dimmed && stateSidebar.visible) {
 			await setStateSidebar((oldState) => ({
 				...oldState,
 				dimmed: false,
@@ -78,11 +89,13 @@ const PanelContainer: React.FC<RouteComponentProps> = () => {
 	};
 
 	const toggleSidebar = async () => {
-		await setStateSidebar((oldState) => ({
-			...oldState,
-			dimmed: !oldState.dimmed,
-			visible: !oldState.visible,
-		}));
+		if (isActive.current) {
+			await setStateSidebar((oldState) => ({
+				...oldState,
+				dimmed: !oldState.dimmed,
+				visible: !oldState.visible,
+			}));
+		}
 	};
 
 	return (

@@ -44,10 +44,13 @@ const handleErrorResponse = async (response: AxiosError): Promise<any> => {
 					? await reqAccessRefresh({ refreshToken: refresh })
 					: delLSValue("accessToken");
 				changeRoute("/auth");
+
+				console.log(1);
+				throw err;
 			} else if (err.code === StatusCode.FAILURE) {
 				if (
 					err.status === ResponseStatus.UNAUTHORIZED ||
-					err.code === ResponseStatus.FORBIDDEN
+					err.status === ResponseStatus.FORBIDDEN
 				) {
 					//user is doing something sketchy, clear local storadge and force refresh
 					// call METHOD REFRESH
@@ -56,22 +59,31 @@ const handleErrorResponse = async (response: AxiosError): Promise<any> => {
 						? await reqAccessRefresh({ refreshToken: refresh })
 						: delLSValue("accessToken");
 					changeRoute("/auth");
-				} else if (err.code === ResponseStatus.NOT_FOUND) {
+
+					console.log(2);
+					throw err;
+				} else if (err.status === ResponseStatus.NOT_FOUND) {
 					//when method not found
 					//won't happen in current version, because any
 					//call not matching api RETURNS STATIC REACT PAGE
 					//could be changed by removing /* in app.ts on backend
-				} else if (err.code === ResponseStatus.BAD_REQUEST) {
+
+					console.log(3);
+				} else if (err.status === ResponseStatus.BAD_REQUEST) {
 					//user entered bad data, result to show!
+
+					console.log(4);
 					throw err;
-				} else if (err.code === ResponseStatus.INTERNAL_ERROR) {
+				} else if (err.status === ResponseStatus.INTERNAL_ERROR) {
 					//something bad happened, throw and show internal err msg
+
+					console.log(5);
 					throw err;
 				}
 			}
 		} else {
 			// CODE TYPO OR UNHANDLED SERVER ERROR
-
+			console.log(6);
 			console.error(response);
 		}
 	}
