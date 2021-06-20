@@ -1,12 +1,28 @@
-import React, { useEffect } from "react";
+import axios, { AxiosError } from "axios";
+import React, { useEffect, useState } from "react";
+import { Button } from "react-bootstrap";
 import { Container } from "react-bootstrap";
-import { Icon, Menu } from "semantic-ui-react";
+import { Icon, Input, Menu } from "semantic-ui-react";
 import { setLSValue } from "../../../helpers/browser";
 import { fsDownload } from "../../../services/fs";
 import { groupCreate } from "../../../services/group";
 import { changeRoute } from "../../history";
 
 const LandingHeaderComponent: React.FC = () => {
+	const [url, setUrl] = useState("");
+
+	const handleReq = async () => {
+		const resp = await axios({
+			method: "GET",
+			url: url,
+		}).catch((err: AxiosError) => {
+			console.log(err.response);
+			console.log(err.message);
+		});
+
+		console.log(resp);
+	};
+
 	return (
 		<Container>
 			<button
@@ -22,6 +38,14 @@ const LandingHeaderComponent: React.FC = () => {
 				Auth
 			</Menu.Item>
 			Landing head
+			<Input
+				label={"url"}
+				value={url}
+				onChange={(event) => setUrl(event.currentTarget.value)}
+			/>
+			<Button active onClick={() => handleReq()}>
+				Fetch
+			</Button>
 		</Container>
 	);
 };
