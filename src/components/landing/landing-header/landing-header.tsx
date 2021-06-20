@@ -1,25 +1,25 @@
 import axios, { AxiosError } from "axios";
-import React, { useEffect, useState } from "react";
-import { Button } from "react-bootstrap";
-import { Container } from "react-bootstrap";
+import React, { useState } from "react";
+import { Button, Container } from "react-bootstrap";
 import { Icon, Input, Menu } from "semantic-ui-react";
-import { setLSValue } from "../../../helpers/browser";
-import { fsDownload } from "../../../services/fs";
-import { groupCreate } from "../../../services/group";
+import { reqFsDownload } from "../../../services/fs";
+import { reqGroupCreate } from "../../../services/group";
 import { changeRoute } from "../../history";
 
 const LandingHeaderComponent: React.FC = () => {
 	const [url, setUrl] = useState<any>("");
 	const [method, setMethod] = useState<any>("GET");
-	const [headers, setHeaders] = useState<any>({});
+	const [headers, setHeaders] = useState<any>("");
+	const [data, setData] = useState<any>("");
 
 	const handleReq = async () => {
 		const resp = await axios({
 			method: method,
 			url: url,
 			headers: {
-				...headers,
+				...JSON.parse(headers),
 			},
+			data: data ? JSON.parse(data) : void 0,
 		}).catch((err: AxiosError) => {
 			console.log(err.response);
 			console.log(err.message);
@@ -31,11 +31,13 @@ const LandingHeaderComponent: React.FC = () => {
 	return (
 		<Container>
 			<button
-				onClick={() => fsDownload({ groupId: "2", path: "/folder", filename: "test1.txt" })}
+				onClick={() =>
+					reqFsDownload({ groupId: "2", path: "/folder", filename: "test1.txt" })
+				}
 			>
 				download
 			</button>
-			<button onClick={() => groupCreate({ groupName: "test12", password: "test12" })}>
+			<button onClick={() => reqGroupCreate({ groupName: "test12", password: "test12" })}>
 				createGroup
 			</button>
 			<Menu.Item as="a" onClick={() => changeRoute("/auth")}>
@@ -55,8 +57,13 @@ const LandingHeaderComponent: React.FC = () => {
 			/>
 			<Input
 				label={"headers"}
-				value={JSON.stringify(headers)}
-				onChange={(event) => setHeaders(JSON.parse(event.currentTarget.value))}
+				value={headers}
+				onChange={(event) => setHeaders(event.currentTarget.value)}
+			/>
+			<Input
+				label={"data"}
+				value={data}
+				onChange={(event) => setData(event.currentTarget.value)}
 			/>
 			<Button active onClick={() => handleReq()}>
 				Fetch

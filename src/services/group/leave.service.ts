@@ -1,7 +1,7 @@
 import { getBearerHeader, prepareURI } from "../../helpers/services";
 import { axiosApiBase, handleRequest } from "../request-base";
 
-const groupLeave = ({ groupId }) =>
+const reqGroupLeave = ({ groupId }) =>
 	handleRequest(axiosApiBase.post)({
 		path: prepareURI("/group/leave"),
 		headers: {
@@ -12,4 +12,4 @@ const groupLeave = ({ groupId }) =>
 		},
 	});
 
-export { groupLeave };
+export { reqGroupLeave };

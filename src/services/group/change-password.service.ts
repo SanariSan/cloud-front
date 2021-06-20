@@ -1,7 +1,7 @@
 import { getBearerHeader, prepareURI } from "../../helpers/services";
 import { axiosApiBase, handleRequest } from "../request-base";
 
-const groupChangePassword = ({ oldPassword, newPassword }) =>
+const reqGroupChangePassword = ({ oldPassword, newPassword }) =>
 	handleRequest(axiosApiBase.post)({
 		path: prepareURI("/group/change-password"),
 		headers: {
@@ -13,4 +13,4 @@ const groupChangePassword = ({ oldPassword, newPassword }) =>
 		},
 	});
 
-export { groupChangePassword };
+export { reqGroupChangePassword };

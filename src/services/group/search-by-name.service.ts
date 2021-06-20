@@ -1,7 +1,7 @@
 import { getBearerHeader, prepareURI } from "../../helpers/services";
 import { axiosApiBase, handleRequest } from "../request-base";
 
-const groupSearchByName = ({ groupName }) =>
+const reqGroupSearchByName = ({ groupName }) =>
 	handleRequest(axiosApiBase.post)({
 		path: prepareURI("/group/search-by-name"),
 		headers: {
@@ -12,4 +12,4 @@ const groupSearchByName = ({ groupName }) =>
 		},
 	});
 
-export { groupSearchByName };
+export { reqGroupSearchByName };

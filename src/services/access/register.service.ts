@@ -1,7 +1,7 @@
 import { prepareURI } from "../../helpers/services";
 import { axiosApiBase, handleRequest } from "../request-base";
 
-const accessRegister = ({ email, password }) =>
+const reqAccessRegister = ({ email, password }) =>
 	handleRequest(axiosApiBase.post)({
 		path: prepareURI("/access/register"),
 		data: {
@@ -10,4 +10,4 @@ const accessRegister = ({ email, password }) =>
 		},
 	});
 
-export { accessRegister };
+export { reqAccessRegister };

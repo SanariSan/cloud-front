@@ -1,7 +1,8 @@
 import classNames from "classnames";
-import React, { useRef } from "react";
+import React, { SyntheticEvent, useRef } from "react";
 import { Col, Container, Row } from "react-bootstrap";
-import { Dropdown, Icon, Menu, Sidebar } from "semantic-ui-react";
+import { Dropdown, DropdownProps, Icon, Menu, Sidebar } from "semantic-ui-react";
+import { useLocalStorage } from "../../../hooks";
 import { changeRoute } from "../../history";
 import s from "./panel-navigation.module.scss";
 
@@ -11,12 +12,28 @@ const PanelNavigation: React.FC<any> = ({
 	animation,
 	closeSidebar,
 	mainContentRef,
+	userGroupOwnage,
+	userGroupsInfo,
+	storageInfo,
+	currentGroupInfo,
+	setCurrentGroupInfo,
 }) => {
-	const options = [
-		{ key: 1, text: "One", value: 1 },
-		{ key: 2, text: "Two", value: 2 },
-		{ key: 3, text: "Three", value: 3 },
-	];
+	//userGroupsInfo = [{id, name},...]
+	const selectGroupOptions = userGroupsInfo.map((el) => ({
+		key: el.id,
+		text: el.name,
+		value: el.id,
+	}));
+
+	const handleChange = (event: SyntheticEvent<HTMLElement, Event>, { value }: DropdownProps) => {
+		const chosenGroup = userGroupsInfo.filter((el) => el.id === value);
+		if (chosenGroup && chosenGroup.length !== 0) {
+			setCurrentGroupInfo({
+				id: chosenGroup[0].id,
+				name: chosenGroup[0].name,
+			});
+		}
+	};
 
 	return (
 		<Sidebar
@@ -70,7 +87,13 @@ const PanelNavigation: React.FC<any> = ({
 					<Row>
 						<Col className={s.col}>
 							<Icon size="big" name="server" className={s.iFix} />
-							<p>1.2 GB of 10 GB used</p>
+							<p>
+								{storageInfo
+									? `${Math.round(storageInfo.sizeUsed)} MB of ${Math.round(
+											storageInfo.sizeMax,
+									  )} MB used`
+									: "Please, create group or join one!"}
+							</p>
 						</Col>
 					</Row>
 					<hr className={s.hrStyled} />
@@ -79,12 +102,14 @@ const PanelNavigation: React.FC<any> = ({
 							<span className={s.groupInfo}>
 								<p className={s.pStyled}>Current Group</p>
 							</span>
-							<Dropdown upward floating options={options}>
-								{/* <Dropdown.Menu>
-									<Dropdown.Item text="Settings" />
-									<Dropdown.Item text="Logout" />
-								</Dropdown.Menu> */}
-							</Dropdown>
+							<Dropdown
+								placeholder={"Select group"}
+								upward
+								floating
+								options={selectGroupOptions}
+								onChange={handleChange}
+								value={currentGroupInfo ? currentGroupInfo.id : void 0}
+							></Dropdown>
 						</Col>
 					</Row>
 				</div>

@@ -1,12 +1,10 @@
 import { AxiosError, AxiosResponse } from "axios";
 import { changeRoute } from "../../components/history";
-import { accessRefresh } from "../../services/access";
+import { reqAccessRefresh } from "../../services/access";
 import { delLSValue, getLSValue, setLSValue } from "../browser";
 import { ResponseStatus, StatusCode } from "./services.type";
 
 const handleSuccessResponse = async (response: AxiosResponse): Promise<any> => {
-	console.log(response.data);
-
 	if (typeof response.data === "object") {
 		const res = {
 			code: response.data.statusCode, //3000 only, StatusCode.SUCCESS
@@ -42,8 +40,9 @@ const handleErrorResponse = async (response: AxiosError): Promise<any> => {
 				//clear local storadge and force refresh
 				// call METHOD REFRESH
 				const refresh = getLSValue("refreshToken");
-				refresh && (await accessRefresh({ refreshToken: refresh }));
-				delLSValue("accessToken");
+				refresh
+					? await reqAccessRefresh({ refreshToken: refresh })
+					: delLSValue("accessToken");
 				changeRoute("/auth");
 			} else if (err.code === StatusCode.FAILURE) {
 				if (
@@ -53,8 +52,9 @@ const handleErrorResponse = async (response: AxiosError): Promise<any> => {
 					//user is doing something sketchy, clear local storadge and force refresh
 					// call METHOD REFRESH
 					const refresh = getLSValue("refreshToken");
-					refresh && (await accessRefresh({ refreshToken: refresh }));
-					delLSValue("accessToken");
+					refresh
+						? await reqAccessRefresh({ refreshToken: refresh })
+						: delLSValue("accessToken");
 					changeRoute("/auth");
 				} else if (err.code === ResponseStatus.NOT_FOUND) {
 					//when method not found

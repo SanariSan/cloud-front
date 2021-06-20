@@ -18,7 +18,7 @@ import { axiosApiBase, handleRequest } from "../request-base";
 }
 */
 
-const accessLogin = ({ email, password }) =>
+const reqAccessLogin = ({ email, password }) =>
 	handleRequest(axiosApiBase.post)({
 		path: prepareURI("/access/login"),
 		data: {
@@ -27,4 +27,4 @@ const accessLogin = ({ email, password }) =>
 		},
 	});
 
-export { accessLogin };
+export { reqAccessLogin };

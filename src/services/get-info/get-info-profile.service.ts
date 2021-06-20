@@ -1,12 +1,12 @@
 import { getBearerHeader, prepareURI } from "../../helpers/services";
 import { axiosApiBase, handleRequest } from "../request-base";
 
-const reqFsBrowse = ({ groupId, path }) =>
+const reqProfileInfo = () =>
 	handleRequest(axiosApiBase.get)({
-		path: prepareURI("/fs/browse-folder", `${groupId}-${path}`),
+		path: prepareURI("/info/info-profile"),
 		headers: {
 			...getBearerHeader(),
 		},
 	});
 
-export { reqFsBrowse };
+export { reqProfileInfo };

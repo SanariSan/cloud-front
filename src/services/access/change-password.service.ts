@@ -1,7 +1,7 @@
 import { getBearerHeader, prepareURI } from "../../helpers/services";
 import { axiosApiBase, handleRequest } from "../request-base";
 
-const accessChangePassword = ({ oldPassword, newPassword }) =>
+const reqAccessChangePassword = ({ oldPassword, newPassword }) =>
 	handleRequest(axiosApiBase.post)({
 		path: prepareURI("/access/change-password"),
 		headers: {
@@ -13,4 +13,4 @@ const accessChangePassword = ({ oldPassword, newPassword }) =>
 		},
 	});
 
-export { accessChangePassword };
+export { reqAccessChangePassword };

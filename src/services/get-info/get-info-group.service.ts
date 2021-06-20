@@ -1,12 +1,15 @@
 import { getBearerHeader, prepareURI } from "../../helpers/services";
 import { axiosApiBase, handleRequest } from "../request-base";
 
-const profileInfo = () =>
+const reqGroupInfo = ({ id }) =>
 	handleRequest(axiosApiBase.get)({
-		path: prepareURI("/profile/info"),
+		path: prepareURI("/info/info-group"),
 		headers: {
 			...getBearerHeader(),
 		},
+		data: {
+			id,
+		},
 	});
 
-export { profileInfo };
+export { reqGroupInfo };

@@ -1,26 +1,71 @@
-import React, { useRef, useState } from "react";
-import { Col, Container, Row } from "react-bootstrap";
+import { useAtom } from "@dbeining/react-atom";
+import React, { useEffect, useRef, useState } from "react";
 import { Route, RouteComponentProps, Switch } from "react-router-dom";
 import { Ref, Sidebar } from "semantic-ui-react";
 import { NotFound } from "../../components/not-found";
 import { PanelHeaderComponent, PanelNavigation } from "../../components/panel";
 import { Test } from "../../components/test";
+import { useLocalStorage } from "../../hooks";
+import { reqGroupInfo, reqProfileInfo } from "../../services/get-info";
+import { forcePanelRerenderAtom } from "../../store/rerender";
 import { PanelBrowseContainer } from "./panel-browse";
 import { PanelPrivelegeContainer } from "./panel-privelege";
 import { PanelSearchContainer } from "./panel-search";
 import { PanelSettingsContainer } from "./panel-settings";
-import s from "./panel.module.scss";
 
 const PanelContainer: React.FC<RouteComponentProps> = () => {
+	const rerenderTrigger = useAtom(forcePanelRerenderAtom); //forcePanelRerender();
 	const [stateSidebar, setStateSidebar] = useState({
 		dimmed: false,
 		visible: false,
+		animation: "overlay",
+		direction: "left",
 	});
+	const { dimmed, visible, animation, direction } = stateSidebar;
+
+	const [accessToken, setAccessToken] = useLocalStorage("accessToken", null);
+	const [refreshToken, setRefreshToken] = useLocalStorage("refreshToken", null);
+	const [profileInfo, setProfileInfo] = useLocalStorage("profileInfo", null);
+	const [userGroupOwnage, setUserGroupOwnage] = useLocalStorage("userGroupOwnage", null);
+	const [userGroupsInfo, setUserGroupsInfo] = useLocalStorage("userGroupsInfo", []);
+	const [storageInfo, setStorageInfo] = useLocalStorage("storageInfo", null);
+	const [currentGroupInfo, setCurrentGroupInfo] = useLocalStorage("currentGroupInfo", null);
+
 	const mainContentRef = useRef(null);
 
-	const { dimmed, visible } = stateSidebar;
-	const animation = "overlay";
-	const direction = "left";
+	useEffect(() => {
+		//fetch all user info, always when loaded
+		//set to hook
+		// ----------
+		// groupOwnage: { id: 4 } || null
+		// groupsList: [{ id: 4; name: "test2" }] || []
+		// storageSize: { sizeUsed: 0, sizeMax: 15000 } || null
+		// ​user: Object { id: 4, name: null, email: "e@mail.ru", profilePicUrl: null }
+
+		reqProfileInfo()
+			.then(async ({ code, message, data }) => {
+				console.log(data);
+				await setProfileInfo(data.user);
+				await setUserGroupsInfo(data.groupsList);
+
+				if (data.groupOwnage) {
+					await setUserGroupOwnage(data.groupOwnage);
+				}
+			})
+			.catch(({ code, message, status }) => {
+				console.warn(message);
+			});
+	}, [rerenderTrigger, accessToken, refreshToken]);
+
+	useEffect(() => {
+		//groupInfo
+		//storageSize
+
+		if (currentGroupInfo)
+			reqGroupInfo({ id: currentGroupInfo.id }).then(async ({ code, message, data }) => {
+				await setStorageInfo(data.storageInfo);
+			});
+	}, [currentGroupInfo]);
 
 	const closeSidebar = async () => {
 		if (stateSidebar.dimmed && stateSidebar.visible) {
@@ -40,8 +85,6 @@ const PanelContainer: React.FC<RouteComponentProps> = () => {
 		}));
 	};
 
-	console.log(stateSidebar);
-
 	return (
 		<>
 			<PanelHeaderComponent toggleSidebar={toggleSidebar} />
@@ -57,6 +100,11 @@ const PanelContainer: React.FC<RouteComponentProps> = () => {
 					direction={direction}
 					closeSidebar={closeSidebar}
 					mainContentRef={mainContentRef}
+					userGroupOwnage={userGroupOwnage}
+					userGroupsInfo={userGroupsInfo}
+					storageInfo={storageInfo}
+					currentGroupInfo={currentGroupInfo}
+					setCurrentGroupInfo={setCurrentGroupInfo}
 				/>
 				{/*later try moving up, wrapping all in ref*/}
 				<Ref innerRef={mainContentRef}>

@@ -1,7 +1,7 @@
 import { getBearerHeader, prepareURI } from "../../helpers/services";
 import { axiosApiBase, handleRequest } from "../request-base";
 
-const groupJoin = ({ groupId, password }) =>
+const reqGroupJoin = ({ groupId, password }) =>
 	handleRequest(axiosApiBase.post)({
 		path: prepareURI("/group/join"),
 		headers: {
@@ -13,4 +13,4 @@ const groupJoin = ({ groupId, password }) =>
 		},
 	});
 
-export { groupJoin };
+export { reqGroupJoin };
