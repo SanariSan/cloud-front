@@ -9,12 +9,17 @@ import { groupCreate } from "../../../services/group";
 import { changeRoute } from "../../history";
 
 const LandingHeaderComponent: React.FC = () => {
-	const [url, setUrl] = useState("");
+	const [url, setUrl] = useState<any>("");
+	const [method, setMethod] = useState<any>("GET");
+	const [headers, setHeaders] = useState<any>({});
 
 	const handleReq = async () => {
 		const resp = await axios({
-			method: "GET",
+			method: method,
 			url: url,
+			headers: {
+				...headers,
+			},
 		}).catch((err: AxiosError) => {
 			console.log(err.response);
 			console.log(err.message);
@@ -42,6 +47,16 @@ const LandingHeaderComponent: React.FC = () => {
 				label={"url"}
 				value={url}
 				onChange={(event) => setUrl(event.currentTarget.value)}
+			/>
+			<Input
+				label={"method"}
+				value={method}
+				onChange={(event) => setMethod(event.currentTarget.value)}
+			/>
+			<Input
+				label={"headers"}
+				value={JSON.stringify(headers)}
+				onChange={(event) => setHeaders(JSON.parse(event.currentTarget.value))}
 			/>
 			<Button active onClick={() => handleReq()}>
 				Fetch

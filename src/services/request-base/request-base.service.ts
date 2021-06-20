@@ -9,7 +9,7 @@ const port = parseInt(<string>process.env.REACT_APP_PORT);
 const apiVersion = <string>process.env.REACT_APP_API_VERSION;
 
 const axiosApiBase: AxiosInstance = axios.create({
-	baseURL: url ? url : `${host}:${port}/${apiVersion}`,
+	baseURL: url ? `${url}/${apiVersion}` : `${host}:${port}/${apiVersion}`,
 	headers: DEFAULT_HEADERS,
 	timeout: 10000,
 });
