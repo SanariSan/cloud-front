@@ -1,14 +1,18 @@
+import { useAtom } from "@dbeining/react-atom";
 import React, { useEffect, useRef } from "react";
 import { BlockCreateGroupComponent } from "../../components/block-create-group";
 import { changeRoute } from "../../components/history";
-import { useLocalStorage } from "../../hooks";
 import { reqProfileInfo } from "../../services/get-info";
 import { reqGroupCreate } from "../../services/group";
+import { updateGroupOwnage } from "../../store/group-ownage";
+import { keystoreAtom } from "../../store/keystore";
+import { updateProfileInfo } from "../../store/profile-info";
+import { updateUserGroupsList, userGroupsListAtom } from "../../store/user-groups";
 
-const BlockCreateGroupContainer: React.FC<any> = ({ userGroupsInfo, setUserGroupsInfo }) => {
+const BlockCreateGroupContainer: React.FC<any> = () => {
 	const isActive = useRef(true);
-	const [accessToken, setAccessToken] = useLocalStorage("accessToken", null);
-	const [refreshToken, setRefreshToken] = useLocalStorage("refreshToken", null);
+	const keystore = useAtom(keystoreAtom);
+	const userGroupsList = useAtom(userGroupsListAtom);
 
 	useEffect(
 		() => () => {
@@ -18,8 +22,19 @@ const BlockCreateGroupContainer: React.FC<any> = ({ userGroupsInfo, setUserGroup
 	);
 
 	useEffect(() => {
-		if (isActive.current) reqProfileInfo().catch((err) => {});
-	}, [accessToken, refreshToken]);
+		if (isActive.current) {
+			reqProfileInfo()
+				.then(async ({ data }) => {
+					await updateProfileInfo(data.user);
+					await updateUserGroupsList(data.groupsList);
+
+					if (data.groupOwnage) {
+						await updateGroupOwnage(data.groupOwnage);
+					}
+				})
+				.catch((err) => {});
+		}
+	}, []);
 
 	const handleGroupCreate = (name, password) => {
 		// group: {id, name},
@@ -28,7 +43,7 @@ const BlockCreateGroupContainer: React.FC<any> = ({ userGroupsInfo, setUserGroup
 		reqGroupCreate({ groupName: name, password })
 			.then(async ({ code, message, data }) => {
 				console.log(data);
-				await setUserGroupsInfo([...userGroupsInfo, data.group]);
+				await updateUserGroupsList([...userGroupsList, data.group]);
 			})
 			.then(() => changeRoute("/panel/browse"))
 			.catch((err) => {

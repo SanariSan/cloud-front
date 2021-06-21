@@ -1,4 +1,6 @@
-const getLSValue = (key) => {
+import { ILocalStorageKey } from "./local-storage.helper.type";
+
+const getLSValue = (key: ILocalStorageKey): null | string | { [key: string]: any } | any => {
 	const item = window.localStorage.getItem(key);
 	let parsed = null;
 	try {
@@ -10,12 +12,12 @@ const getLSValue = (key) => {
 	return parsed;
 };
 
-const setLSValue = (key, value) => {
+const setLSValue = (key: ILocalStorageKey, value): void => {
 	const valueStr = JSON.stringify(value);
 	window.localStorage.setItem(key, valueStr);
 };
 
-const delLSValue = (key) => {
+const delLSValue = (key: ILocalStorageKey): void => {
 	window.localStorage.removeItem(key);
 };
 

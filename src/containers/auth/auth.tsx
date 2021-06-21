@@ -2,12 +2,12 @@ import React, { useEffect, useRef, useState } from "react";
 import { Route, Switch } from "react-router-dom";
 import { AuthLoginComponent, AuthRegisterComponent } from "../../components/auth";
 import { changeRoute } from "../../components/history";
-import { useLocalStorage } from "../../hooks";
 import { reqAccessLogin, reqAccessRegister } from "../../services/access";
+import { useAtom } from "@dbeining/react-atom";
+import { keystoreAtom, updateKeystore } from "../../store/keystore";
 
 const AuthContainer: React.FC = () => {
-	const [accessToken, setAccessToken] = useLocalStorage("accessToken", null);
-	const [refreshToken, setRefreshToken] = useLocalStorage("refreshToken", null);
+	const keystore = useAtom(keystoreAtom);
 	const [errMessage, setErrMessage] = useState(null);
 	const isActive = useRef(true);
 
@@ -21,15 +21,14 @@ const AuthContainer: React.FC = () => {
 	useEffect(() => {
 		console.log(isActive);
 
-		if (isActive.current === true && (accessToken || refreshToken)) {
+		if (isActive.current === true && keystore.accessToken && keystore.refreshToken) {
 			changeRoute("/panel");
 		}
-	}, [accessToken, refreshToken]);
+	}, [keystore]);
 
 	const setAccessRefresh = async ({ accessToken, refreshToken }) => {
 		if (isActive.current) {
-			await setAccessToken(accessToken);
-			await setRefreshToken(refreshToken);
+			await updateKeystore(accessToken, refreshToken);
 		}
 	};
 

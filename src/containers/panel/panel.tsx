@@ -5,16 +5,19 @@ import { Ref, Sidebar } from "semantic-ui-react";
 import { NotFound } from "../../components/not-found";
 import { PanelHeaderComponent, PanelNavigation } from "../../components/panel";
 import { Test } from "../../components/test";
-import { useLocalStorage } from "../../hooks";
 import { reqGroupInfo, reqProfileInfo } from "../../services/get-info";
-import { forcePanelRerenderAtom } from "../../store/rerender";
+import { currentGroupInfoAtom } from "../../store/current-group";
+import { groupOwnageAtom, updateGroupOwnage } from "../../store/group-ownage";
+import { keystoreAtom } from "../../store/keystore";
+import { profileInfoAtom, updateProfileInfo } from "../../store/profile-info";
+import { storageInfoAtom, updateStorageInfo } from "../../store/storage-info";
+import { updateUserGroupsList, userGroupsListAtom } from "../../store/user-groups";
 import { PanelBrowseContainer } from "./panel-browse";
 import { PanelPrivelegeContainer } from "./panel-privelege";
 import { PanelSearchContainer } from "./panel-search";
 import { PanelSettingsContainer } from "./panel-settings";
 
 const PanelContainer: React.FC<RouteComponentProps> = () => {
-	// const rerenderTrigger = useAtom(forcePanelRerenderAtom); //forcePanelRerender();
 	const isActive = useRef(true);
 
 	const [stateSidebar, setStateSidebar] = useState({
@@ -25,13 +28,12 @@ const PanelContainer: React.FC<RouteComponentProps> = () => {
 	});
 	const { dimmed, visible, animation, direction } = stateSidebar;
 
-	const [accessToken, setAccessToken] = useLocalStorage("accessToken", null);
-	const [refreshToken, setRefreshToken] = useLocalStorage("refreshToken", null);
-	const [profileInfo, setProfileInfo] = useLocalStorage("profileInfo", null);
-	const [userGroupOwnage, setUserGroupOwnage] = useLocalStorage("userGroupOwnage", null);
-	const [userGroupsInfo, setUserGroupsInfo] = useLocalStorage("userGroupsInfo", []);
-	const [storageInfo, setStorageInfo] = useLocalStorage("storageInfo", null);
-	const [currentGroupInfo, setCurrentGroupInfo] = useLocalStorage("currentGroupInfo", null);
+	const keystore = useAtom(keystoreAtom);
+	// const profileInfo = useAtom(profileInfoAtom);
+	// const groupOwnage = useAtom(groupOwnageAtom);
+	// const userGroupsList = useAtom(userGroupsListAtom);
+	// const storageInfo = useAtom(storageInfoAtom);
+	const currentGroupInfo = useAtom(currentGroupInfoAtom);
 
 	const mainContentRef = useRef(null);
 
@@ -48,33 +50,38 @@ const PanelContainer: React.FC<RouteComponentProps> = () => {
 		// ----------
 		// groupOwnage: { id: 4 } || null
 		// groupsList: [{ id: 4; name: "test2" }] || []
-		// storageSize: { sizeUsed: 0, sizeMax: 15000 } || null
-		// ​user: Object { id: 4, name: null, email: "e@mail.ru", profilePicUrl: null }
+		// storageInfo: { sizeUsed: 0, sizeMax: 15000 } || null
+		// ​user: { id: 4, name: null, email: "e@mail.ru", profilePicUrl: null }
 		if (isActive.current) {
 			reqProfileInfo()
 				.then(async ({ code, message, data }) => {
 					console.log(data);
-					await setProfileInfo(data.user);
-					await setUserGroupsInfo(data.groupsList);
+					await updateProfileInfo(data.user);
+					await updateUserGroupsList(data.groupsList);
 
 					if (data.groupOwnage) {
-						await setUserGroupOwnage(data.groupOwnage);
+						await updateGroupOwnage(data.groupOwnage);
 					}
 				})
 				.catch(({ code, message, status }) => {
 					console.warn(message);
 				});
 		}
-	}, [accessToken, refreshToken]); //destructured parameter is undefined once!!
+	}, [keystore]); //destructured parameter is undefined once!!
 
 	useEffect(() => {
 		//groupInfo
 		//storageSize
 		if (isActive.current) {
 			if (currentGroupInfo)
-				reqGroupInfo({ id: currentGroupInfo.id }).then(async ({ code, message, data }) => {
-					await setStorageInfo(data.storageInfo);
-				});
+				reqGroupInfo({ id: currentGroupInfo.id })
+					.then(async ({ code, message, data }) => {
+						console.log(data);
+						await updateStorageInfo(data.storageInfo);
+					})
+					.catch((err) => {
+						console.error(err);
+					});
 		}
 	}, [currentGroupInfo]);
 
@@ -113,11 +120,6 @@ const PanelContainer: React.FC<RouteComponentProps> = () => {
 					direction={direction}
 					closeSidebar={closeSidebar}
 					mainContentRef={mainContentRef}
-					userGroupOwnage={userGroupOwnage}
-					userGroupsInfo={userGroupsInfo}
-					storageInfo={storageInfo}
-					currentGroupInfo={currentGroupInfo}
-					setCurrentGroupInfo={setCurrentGroupInfo}
 				/>
 				{/*later try moving up, wrapping all in ref*/}
 				<Ref innerRef={mainContentRef}>

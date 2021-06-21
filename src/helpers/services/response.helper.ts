@@ -1,7 +1,5 @@
 import { AxiosError, AxiosResponse } from "axios";
-import { changeRoute } from "../../components/history";
-import { reqAccessRefresh } from "../../services/access";
-import { delLSValue, getLSValue, setLSValue } from "../browser";
+import { triggerRefresh } from "./refresh.helper";
 import { ResponseStatus, StatusCode } from "./services.type";
 
 const handleSuccessResponse = async (response: AxiosResponse): Promise<any> => {
@@ -37,38 +35,21 @@ const handleErrorResponse = async (response: AxiosError): Promise<any> => {
 			console.warn(err);
 
 			if (err.code === StatusCode.INVALID_ACCESS_TOKEN) {
-				//clear local storadge and force refresh
-				// call METHOD REFRESH
-				const refresh = getLSValue("refreshToken");
-				refresh
-					? await reqAccessRefresh({ refreshToken: refresh })
-					: delLSValue("accessToken");
-				changeRoute("/auth");
-
+				// refresh
+				await triggerRefresh();
 				console.log(1);
 				throw err;
 			} else if (err.code === StatusCode.FAILURE) {
-				if (
-					err.status === ResponseStatus.UNAUTHORIZED ||
-					err.status === ResponseStatus.FORBIDDEN
-				) {
-					//user is doing something sketchy, clear local storadge and force refresh
-					// call METHOD REFRESH
-					const refresh = getLSValue("refreshToken");
-					refresh
-						? await reqAccessRefresh({ refreshToken: refresh })
-						: delLSValue("accessToken");
-					changeRoute("/auth");
-
+				if (err.status === ResponseStatus.UNAUTHORIZED) {
+					//refresh
+					await triggerRefresh();
 					console.log(2);
 					throw err;
-				} else if (err.status === ResponseStatus.NOT_FOUND) {
-					//when method not found
-					//won't happen in current version, because any
-					//call not matching api RETURNS STATIC REACT PAGE
-					//could be changed by removing /* in app.ts on backend
+				} else if (err.status === ResponseStatus.FORBIDDEN) {
+					//no right to do something
 
 					console.log(3);
+					throw err;
 				} else if (err.status === ResponseStatus.BAD_REQUEST) {
 					//user entered bad data, result to show!
 
@@ -80,6 +61,14 @@ const handleErrorResponse = async (response: AxiosError): Promise<any> => {
 					console.log(5);
 					throw err;
 				}
+				// } else if (err.status === ResponseStatus.NOT_FOUND) {
+				// 	//when method not found
+				// 	//won't happen in current version, because any
+				// 	//call not matching api RETURNS STATIC REACT PAGE
+				// 	//could be changed by removing /* in app.ts on backend
+
+				// 	console.log(6);
+				// }
 			}
 		} else {
 			// CODE TYPO OR UNHANDLED SERVER ERROR

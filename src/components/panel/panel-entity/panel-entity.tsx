@@ -5,16 +5,22 @@ import { SemanticICONS } from "semantic-ui-react/dist/commonjs/generic";
 import { ContextMenu } from "../panel-context-menu";
 import { EntityViewComponent } from "./panel-entity-view";
 
-const EntityComponent: React.FC<any> = ({ idx, menuOptions, onClick, onContextMenu }) => {
+const EntityComponent: React.FC<any> = ({
+	idx,
+	menuOptions,
+	onClick,
+	onContextMenu,
+	iconName,
+	entityText,
+}) => {
 	const menuId = `menuId_${idx}`;
 	const { show } = useContextMenu({
 		id: menuId,
 	});
 
-	const [iconName, entityText]: [SemanticICONS, string] =
-		Math.round(Math.random() * 1) < 1
-			? ["folder open", "Folder name"]
-			: ["file", "File name.txt"];
+	// const [iconName, entityText]: [SemanticICONS, string] =
+	// 	Math.round(Math.random() * 1) < 1
+	// 		?
 
 	return (
 		<Col xs={10} sm={8} md={6} lg={5} xl={4}>
@@ -23,7 +29,7 @@ const EntityComponent: React.FC<any> = ({ idx, menuOptions, onClick, onContextMe
 				entityText={entityText}
 				onClick={onClick}
 				onContextMenu={(event) => onContextMenu(event, show)}
-				entityTextAlt={"Some alt text"}
+				entityTextAlt={""}
 			/>
 			<ContextMenu id={menuId} options={menuOptions} />
 		</Col>

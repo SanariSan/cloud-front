@@ -3,7 +3,7 @@ type ILocalStorageKey =
 	| "refreshToken"
 	| "profileInfo"
 	| "userGroupOwnage"
-	| "userGroupsInfo"
+	| "userGroupsList"
 	| "currentGroupInfo"
 	| "storageInfo";
 

@@ -1,8 +1,12 @@
+import { useAtom } from "@dbeining/react-atom";
 import classNames from "classnames";
 import React, { SyntheticEvent, useRef } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { Dropdown, DropdownProps, Icon, Menu, Sidebar } from "semantic-ui-react";
-import { useLocalStorage } from "../../../hooks";
+import { currentGroupInfoAtom, updateCurrentGroupInfo } from "../../../store/current-group";
+import { groupOwnageAtom } from "../../../store/group-ownage";
+import { storageInfoAtom } from "../../../store/storage-info";
+import { userGroupsListAtom } from "../../../store/user-groups";
 import { changeRoute } from "../../history";
 import s from "./panel-navigation.module.scss";
 
@@ -12,23 +16,25 @@ const PanelNavigation: React.FC<any> = ({
 	animation,
 	closeSidebar,
 	mainContentRef,
-	userGroupOwnage,
-	userGroupsInfo,
-	storageInfo,
-	currentGroupInfo,
-	setCurrentGroupInfo,
 }) => {
+	const groupOwnage = useAtom(groupOwnageAtom);
+	const userGroupsList = useAtom(userGroupsListAtom);
+	const storageInfo = useAtom(storageInfoAtom);
+	const currentGroupInfo = useAtom(currentGroupInfoAtom);
+
 	//userGroupsInfo = [{id, name},...]
-	const selectGroupOptions = userGroupsInfo.map((el) => ({
-		key: el.id,
-		text: el.name,
-		value: el.id,
-	}));
+	let selectGroupOptions: any = [];
+	if (userGroupsList)
+		selectGroupOptions = userGroupsList.map((el) => ({
+			key: el.id,
+			text: el.name,
+			value: el.id,
+		}));
 
 	const handleChange = (event: SyntheticEvent<HTMLElement, Event>, { value }: DropdownProps) => {
-		const chosenGroup = userGroupsInfo.filter((el) => el.id === value);
+		const chosenGroup = userGroupsList.filter((el) => el.id === value);
 		if (chosenGroup && chosenGroup.length !== 0) {
-			setCurrentGroupInfo({
+			updateCurrentGroupInfo({
 				id: chosenGroup[0].id,
 				name: chosenGroup[0].name,
 			});
@@ -73,11 +79,6 @@ const PanelNavigation: React.FC<any> = ({
 									<Icon name="money" />
 									Privelege
 								</Menu.Item>
-
-								{/* <Menu.Item as="a" onClick={() => changeRoute("/panel/test")}>
-									<Icon name="home" />
-									Test
-								</Menu.Item> */}
 							</Menu>
 						</Col>
 					</Row>
@@ -102,6 +103,10 @@ const PanelNavigation: React.FC<any> = ({
 							<span className={s.groupInfo}>
 								<p className={s.pStyled}>Current Group</p>
 							</span>
+							{groupOwnage &&
+								currentGroupInfo &&
+								groupOwnage.id === currentGroupInfo.id &&
+								"You own this group"}
 							<Dropdown
 								placeholder={"Select group"}
 								upward
