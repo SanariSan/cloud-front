@@ -4,6 +4,7 @@ import { BlockCreateGroupComponent } from "../../components/block-create-group";
 import { changeRoute } from "../../components/history";
 import { reqProfileInfo } from "../../services/get-info";
 import { reqGroupCreate } from "../../services/group";
+import { toggleBlockLoader } from "../../store/block-loader";
 import { updateGroupOwnage } from "../../store/group-ownage";
 import { keystoreAtom } from "../../store/keystore";
 import { updateProfileInfo } from "../../store/profile-info";
@@ -23,6 +24,8 @@ const BlockCreateGroupContainer: React.FC<any> = () => {
 
 	useEffect(() => {
 		if (isActive.current) {
+			toggleBlockLoader(true);
+
 			reqProfileInfo()
 				.then(async ({ data }) => {
 					await updateProfileInfo(data.user);
@@ -32,13 +35,17 @@ const BlockCreateGroupContainer: React.FC<any> = () => {
 						await updateGroupOwnage(data.groupOwnage);
 					}
 				})
-				.catch((err) => {});
+				.catch((err) => {})
+				.finally(() => {
+					toggleBlockLoader(false);
+				});
 		}
 	}, []);
 
 	const handleGroupCreate = (name, password) => {
 		// group: {id, name},
 		// size: {sizeUsed, sizeMax}
+		toggleBlockLoader(true);
 
 		reqGroupCreate({ groupName: name, password })
 			.then(async ({ code, message, data }) => {
@@ -48,6 +55,9 @@ const BlockCreateGroupContainer: React.FC<any> = () => {
 			.then(() => changeRoute("/panel/browse"))
 			.catch((err) => {
 				console.warn(err);
+			})
+			.finally(() => {
+				toggleBlockLoader(false);
 			});
 	};
 

@@ -4,8 +4,8 @@ import { Route, RouteComponentProps, Switch } from "react-router-dom";
 import { Ref, Sidebar } from "semantic-ui-react";
 import { NotFound } from "../../components/not-found";
 import { PanelHeaderComponent } from "../../components/panel";
-import { Test } from "../../components/test";
 import { reqGroupInfo, reqProfileInfo } from "../../services/get-info";
+import { toggleBlockLoader } from "../../store/block-loader";
 import { currentGroupInfoAtom } from "../../store/current-group";
 import { forcedRerenderAtom } from "../../store/forced-rerender";
 import { updateGroupOwnage } from "../../store/group-ownage";
@@ -57,6 +57,8 @@ const PanelContainer: React.FC<RouteComponentProps> = () => {
 		// storageInfo: { sizeUsed: 0, sizeMax: 15000 } || null
 		// ​user: { id: 4, name: null, email: "e@mail.ru", profilePicUrl: null }
 		if (isActive.current) {
+			toggleBlockLoader(true);
+
 			reqProfileInfo()
 				.then(async ({ code, message, data }) => {
 					console.log(data);
@@ -69,23 +71,30 @@ const PanelContainer: React.FC<RouteComponentProps> = () => {
 				})
 				.catch(({ code, message, status }) => {
 					console.warn(message);
+				})
+				.finally(() => {
+					toggleBlockLoader(false);
 				});
 		}
-	}, [keystore]); //destructured parameter is undefined once!!
+	}, []); //destructured parameter is undefined once!!
 
 	useEffect(() => {
 		//groupInfo
 		//storageSize
-		if (isActive.current) {
-			if (currentGroupInfo)
-				reqGroupInfo({ id: currentGroupInfo.id })
-					.then(async ({ code, message, data }) => {
-						console.log(data);
-						await updateStorageInfo(data.storageInfo);
-					})
-					.catch((err) => {
-						console.error(err);
-					});
+		if (isActive.current && currentGroupInfo) {
+			toggleBlockLoader(true);
+
+			reqGroupInfo({ id: currentGroupInfo.id })
+				.then(async ({ code, message, data }) => {
+					console.log(data);
+					await updateStorageInfo(data.storageInfo);
+				})
+				.catch((err) => {
+					console.error(err);
+				})
+				.finally(() => {
+					toggleBlockLoader(false);
+				});
 		}
 	}, [currentGroupInfo, forcedRerender]);
 
@@ -125,7 +134,7 @@ const PanelContainer: React.FC<RouteComponentProps> = () => {
 					closeSidebar={closeSidebar}
 					mainContentRef={mainContentRef}
 				/>
-				{/*later try moving up, wrapping all in ref*/}
+
 				<Ref innerRef={mainContentRef}>
 					<Sidebar.Pusher
 						dimmed={dimmed}
@@ -149,7 +158,6 @@ const PanelContainer: React.FC<RouteComponentProps> = () => {
 								path="/panel/settings"
 								component={PanelSettingsContainer}
 							/>
-							<Route exact path="/panel/test" component={Test} />
 							<Route path="/panel" component={NotFound} />
 						</Switch>
 					</Sidebar.Pusher>

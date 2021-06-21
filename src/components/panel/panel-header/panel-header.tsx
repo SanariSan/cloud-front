@@ -1,13 +1,40 @@
+import { useAtom } from "@dbeining/react-atom";
 import classNames from "classnames";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { Dropdown, Icon, Image } from "semantic-ui-react";
+import { clearWholeLocalStorage } from "../../../helpers/services";
 import avatar from "../../../img/avatar.png";
 import logo from "../../../img/logo.png";
+import { reqAccessLogout } from "../../../services/access";
+import { toggleBlockLoader } from "../../../store/block-loader";
+import { profileInfoAtom } from "../../../store/profile-info";
 import { changeRoute } from "../../history";
 import s from "./panel-header.module.scss";
 
 const PanelHeaderComponent: React.FC<any> = ({ toggleSidebar }) => {
+	const isActive = useRef(true);
+	const profileInfo = useAtom(profileInfoAtom);
+
+	useEffect(
+		() => () => {
+			isActive.current = false;
+		},
+		[],
+	);
+
+	const logout = async () => {
+		if (isActive.current) {
+			toggleBlockLoader(true);
+
+			await reqAccessLogout().catch();
+
+			clearWholeLocalStorage();
+			changeRoute("/auth");
+			toggleBlockLoader(false);
+		}
+	};
+
 	return (
 		<Container fluid className={s.panelHeader}>
 			<Row className={s.row}>
@@ -25,14 +52,14 @@ const PanelHeaderComponent: React.FC<any> = ({ toggleSidebar }) => {
 				<Col xs={7} sm={6} md={5} lg={4} xl={3} className={classNames(s.col, s.right)}>
 					<Icon link name="bell" color="grey" inverted />
 					<Image src={avatar} size="mini" />
-					<p className={s.pStyled}>email@addr.com</p>
+					<p className={s.pStyled}>{profileInfo?.email || "profile"}</p>
 					<Dropdown direction="left" closeOnChange={true}>
 						<Dropdown.Menu>
 							<Dropdown.Item
 								text="Settings"
 								onClick={() => changeRoute("/panel/settings")}
 							/>
-							<Dropdown.Item text="Logout" onClick={() => alert("logout")} />
+							<Dropdown.Item text="Logout" onClick={logout} />
 						</Dropdown.Menu>
 					</Dropdown>
 				</Col>

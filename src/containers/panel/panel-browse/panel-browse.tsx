@@ -1,11 +1,12 @@
 import { useAtom } from "@dbeining/react-atom";
 import React, { useEffect, useRef, useState } from "react";
 import { PanelBrowseFilesComponent } from "../../../components/panel";
-import { reqFsBrowse, reqFsDownload } from "../../../services/fs";
+import { reqFsBrowse, reqFsDelete, reqFsDownload, reqFsRename } from "../../../services/fs";
 import { currentGroupInfoAtom } from "../../../store/current-group";
-import { forcedRerenderAtom } from "../../../store/forced-rerender";
+import { forcedRerenderAtom, forceRerender } from "../../../store/forced-rerender";
 import { pathAtom, updatePath } from "../../../store/path";
 import mime from "mime-types";
+import { toggleBlockLoader } from "../../../store/block-loader";
 
 const PanelBrowseContainer: React.FC = () => {
 	//browse path state
@@ -31,13 +32,18 @@ const PanelBrowseContainer: React.FC = () => {
 	}, [currentGroupInfo]);
 
 	useEffect(() => {
-		if (isActive.current && currentGroupInfo) {
+		if (isActive.current && currentGroupInfo && currentGroupInfo.id) {
+			toggleBlockLoader(true);
+
 			reqFsBrowse({ groupId: currentGroupInfo.id, path })
 				.then(({ data }) => {
 					setCurrentPathContent({ ...data });
 				})
 				.catch((err) => {
 					console.log(err);
+				})
+				.finally(() => {
+					toggleBlockLoader(false);
 				});
 		}
 	}, [path, currentGroupInfo, forcedRerender]);
@@ -57,8 +63,107 @@ const PanelBrowseContainer: React.FC = () => {
 		show(event);
 	};
 
-	const handleDownload = async (idx) => {
+	const handleRenameFile = async (idx) => {
+		if (!currentGroupInfo) {
+			return;
+		}
+
+		const oldFilename = currentPathContent.files[idx];
+		const newFilename = prompt("Enter new name");
+
+		if (!newFilename) {
+			return;
+		}
+
+		toggleBlockLoader(true);
+
+		reqFsRename({
+			groupId: currentGroupInfo.id,
+			path: `${path}/${oldFilename}`,
+			filename: `${path}/${newFilename}`,
+		})
+			.then(forceRerender)
+			.catch((err) => {
+				console.log(err);
+			})
+			.finally(() => {
+				toggleBlockLoader(false);
+			});
+	};
+
+	const handleRenameFolder = async (idx) => {
+		if (!currentGroupInfo) {
+			return;
+		}
+
+		const oldFilename = currentPathContent.folders[idx];
+		const newFilename = prompt("Enter new name");
+
+		if (!newFilename) {
+			return;
+		}
+
+		toggleBlockLoader(true);
+
+		reqFsRename({
+			groupId: currentGroupInfo.id,
+			path: `${path}/${oldFilename}`,
+			filename: `${path}/${newFilename}`,
+		})
+			.then(forceRerender)
+			.catch((err) => {
+				console.log(err);
+			})
+			.finally(() => {
+				toggleBlockLoader(false);
+			});
+	};
+
+	const handleDeteleFile = async (idx) => {
+		if (!currentGroupInfo) {
+			return;
+		}
+
 		const filename = currentPathContent.files[idx];
+
+		toggleBlockLoader(true);
+
+		reqFsDelete({ groupId: currentGroupInfo.id, path: `${path}/${filename}` })
+			.then(forceRerender)
+			.catch((err) => {
+				console.log(err);
+			})
+			.finally(() => {
+				toggleBlockLoader(false);
+			});
+	};
+
+	const handleDeteleFolder = async (idx) => {
+		if (!currentGroupInfo) {
+			return;
+		}
+
+		const filename = currentPathContent.folders[idx];
+		toggleBlockLoader(true);
+
+		reqFsDelete({ groupId: currentGroupInfo.id, path: `${path}/${filename}` })
+			.then(forceRerender)
+			.catch((err) => {
+				console.log(err);
+			})
+			.finally(() => {
+				toggleBlockLoader(false);
+			});
+	};
+
+	const handleDownload = async (idx) => {
+		if (!currentGroupInfo) {
+			return;
+		}
+
+		const filename = currentPathContent.files[idx];
+
+		toggleBlockLoader(true);
 
 		reqFsDownload({
 			groupId: currentGroupInfo.id,
@@ -76,6 +181,9 @@ const PanelBrowseContainer: React.FC = () => {
 			})
 			.catch((err) => {
 				console.log(err);
+			})
+			.finally(() => {
+				toggleBlockLoader(false);
 			});
 	};
 
@@ -89,6 +197,10 @@ const PanelBrowseContainer: React.FC = () => {
 					onContextMenu={onContextMenu}
 					path={path}
 					handleDownload={handleDownload}
+					handleRenameFile={handleRenameFile}
+					handleRenameFolder={handleRenameFolder}
+					handleDeteleFile={handleDeteleFile}
+					handleDeteleFolder={handleDeteleFolder}
 				/>
 			) : (
 				<p>PLEASE CHOOSE GROUP TO START WORKING!</p>

@@ -70,7 +70,7 @@ const PanelNavigationComponent: React.FC<any> = ({
 								? `${Math.round(storageInfo.sizeUsed)} MB of ${Math.round(
 										storageInfo.sizeMax,
 								  )} MB used`
-								: "Please, create group or join one!"}
+								: "Please, select group or join one!"}
 						</p>
 					</Col>
 				</Row>

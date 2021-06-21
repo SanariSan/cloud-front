@@ -3,19 +3,23 @@ import React from "react";
 import { Route, Switch } from "react-router-dom";
 import s from "./App.module.scss";
 import { NotFound } from "./components/not-found";
+import { BlockLoaderComponent } from "./components/block-loader";
 import { AuthContainer } from "./containers/auth";
 import { BlockCreateGroupContainer } from "./containers/block-create-group";
 import { LandingContainer } from "./containers/landing";
 import { PanelContainer } from "./containers/panel";
+import { blockLoaderAtom } from "./store/block-loader";
 import { keystoreAtom } from "./store/keystore";
 import { userGroupsListAtom } from "./store/user-groups";
 
 const App: React.FC = () => {
 	const userGroupsList = useAtom(userGroupsListAtom);
 	const keystore = useAtom(keystoreAtom);
+	const blockLoader = useAtom(blockLoaderAtom);
 
 	return (
 		<div className={s.App}>
+			{blockLoader ? <BlockLoaderComponent /> : null}
 			<Switch>
 				<Route exact path="/" component={LandingContainer} />
 				<Route path="/auth" component={AuthContainer} />

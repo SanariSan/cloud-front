@@ -1,6 +1,6 @@
 import { ILocalStorageKey } from "./local-storage.helper.type";
 
-const getLSValue = (key: ILocalStorageKey): null | string | { [key: string]: any } | any => {
+const getLSValue = (key: ILocalStorageKey): any => {
 	const item = window.localStorage.getItem(key);
 	let parsed = null;
 	try {

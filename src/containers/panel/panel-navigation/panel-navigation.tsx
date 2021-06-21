@@ -9,6 +9,7 @@ import { PanelNavigationComponent } from "../../../components/panel";
 import { pathAtom } from "../../../store/path";
 import { reqFsCreate, reqFsUpload } from "../../../services/fs";
 import { forceRerender } from "../../../store/forced-rerender";
+import { toggleBlockLoader } from "../../../store/block-loader";
 
 const PanelNavigationContainer: React.FC<any> = ({
 	visible,
@@ -53,23 +54,41 @@ const PanelNavigationContainer: React.FC<any> = ({
 	};
 
 	const handleUpload = (event) => {
-		const file = event.currentTarget.files[0];
-		// const data = new FormData();
+		if (!currentGroupInfo) {
+			return;
+		}
 
-		// data.append("file", file);
+		const file = event.currentTarget.files[0];
+
+		toggleBlockLoader(true);
+
 		reqFsUpload({ groupId: currentGroupInfo.id, path, filename: file.name, data: file })
 			.then(forceRerender)
-			.catch();
+			.catch()
+			.finally(() => {
+				toggleBlockLoader(false);
+			});
 	};
 
 	const handleCreateFolder = () => {
+		if (!currentGroupInfo) {
+			return;
+		}
+
 		const filename = prompt("Enter folder name");
 
-		if (filename) {
-			reqFsCreate({ groupId: currentGroupInfo.id, path, filename })
-				.then(forceRerender)
-				.catch();
+		if (!filename) {
+			return;
 		}
+
+		toggleBlockLoader(true);
+
+		reqFsCreate({ groupId: currentGroupInfo.id, path, filename })
+			.then(forceRerender)
+			.catch()
+			.finally(() => {
+				toggleBlockLoader(false);
+			});
 	};
 
 	return (

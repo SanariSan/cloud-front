@@ -7,6 +7,7 @@ const reqFsRename = ({ groupId, path, filename }) =>
 		headers: {
 			...getBearerHeader(),
 		},
+		data: {},
 	});
 
 export { reqFsRename };

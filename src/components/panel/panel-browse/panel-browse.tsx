@@ -13,17 +13,21 @@ const PanelBrowseFilesComponent: React.FC<any> = ({
 	onContextMenu,
 	path,
 	handleDownload,
+	handleRenameFile,
+	handleRenameFolder,
+	handleDeteleFile,
+	handleDeteleFolder,
 }) => {
 	const isActive = useRef(true);
 
 	const menuOptionsFolder = (idx) => [
 		{
 			text: "rename",
-			action: (idx) => alert("test"),
+			action: () => handleRenameFolder(idx),
 		},
 		{
 			text: "delete",
-			action: () => alert("test2"),
+			action: () => handleDeteleFolder(idx),
 		},
 	];
 
@@ -34,11 +38,11 @@ const PanelBrowseFilesComponent: React.FC<any> = ({
 		},
 		{
 			text: "rename",
-			action: () => alert("test"),
+			action: () => handleRenameFile(idx),
 		},
 		{
 			text: "delete",
-			action: () => alert("test2"),
+			action: () => handleDeteleFile(idx),
 		},
 	];
 

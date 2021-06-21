@@ -4,6 +4,7 @@
 	height: 65px !important;
 	color: $text-day-alt-color;
 	background-color: $header-day-color;
+	z-index: 50;
 
 	.row {
 		@include centerY;

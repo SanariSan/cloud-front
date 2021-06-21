@@ -29,7 +29,7 @@ const AuthLoginComponent: React.FC<any> = ({ handleLogin, errMessage, setErrMess
 				onChange={(event) => setPassword(event.currentTarget.value)}
 			/>
 			<Button active onClick={() => handleLogin(login, password)}>
-				Register
+				Login
 			</Button>
 		</Container>
 	);

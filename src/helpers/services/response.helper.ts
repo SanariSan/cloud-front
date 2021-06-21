@@ -1,6 +1,10 @@
 import { AxiosError, AxiosResponse } from "axios";
+import { clearPersonalLocalStorage } from "../services";
 import { triggerRefresh } from "./refresh.helper";
 import { ResponseStatus, StatusCode } from "./services.type";
+
+let canRefresh = true;
+let refreshTried = false;
 
 const handleSuccessResponse = async (
 	response: AxiosResponse,
@@ -40,13 +44,31 @@ const handleErrorResponse = async (response: AxiosError): Promise<any> => {
 
 			if (err.code === StatusCode.INVALID_ACCESS_TOKEN) {
 				// refresh
-				await triggerRefresh();
+				if (!refreshTried) {
+					refreshTried = true;
+					setTimeout(() => {
+						refreshTried = false;
+					}, 60000);
+
+					clearPersonalLocalStorage();
+					await triggerRefresh();
+				}
+
 				console.log(1);
 				throw err;
 			} else if (err.code === StatusCode.FAILURE) {
 				if (err.status === ResponseStatus.UNAUTHORIZED) {
 					//refresh
-					await triggerRefresh();
+					if (!refreshTried) {
+						refreshTried = true;
+						setTimeout(() => {
+							refreshTried = false;
+						}, 60000);
+
+						clearPersonalLocalStorage();
+						await triggerRefresh();
+					}
+
 					console.log(2);
 					throw err;
 				} else if (err.status === ResponseStatus.FORBIDDEN) {

@@ -7,19 +7,20 @@ import { reqGroupCreate } from "../../../services/group";
 import { changeRoute } from "../../history";
 
 const LandingHeaderComponent: React.FC = () => {
-	const [url, setUrl] = useState<any>("");
-	const [method, setMethod] = useState<any>("GET");
-	const [headers, setHeaders] = useState<any>("");
-	const [data, setData] = useState<any>("");
+	const [req, setReq] = useState<any>(`{
+        "method": "POST",
+        "url": "http://localhost:3000/v1/xxx",
+        "headers": {
+            "Authorization": "Bearer 123"
+        },
+        "data": {
+            "x": "345"
+        }
+    }`);
 
 	const handleReq = async () => {
 		const resp = await axios({
-			method: method,
-			url: url,
-			headers: {
-				...JSON.parse(headers),
-			},
-			data: data ? JSON.parse(data) : void 0,
+			...JSON.parse(req),
 		}).catch((err: AxiosError) => {
 			console.log(err.response);
 			console.log(err.message);
@@ -29,45 +30,30 @@ const LandingHeaderComponent: React.FC = () => {
 	};
 
 	return (
-		<Container>
-			<button
-				onClick={() =>
-					reqFsDownload({ groupId: "2", path: "/folder", filename: "test1.txt" })
-				}
-			>
-				download
-			</button>
-			<button onClick={() => reqGroupCreate({ groupName: "test12", password: "test12" })}>
-				createGroup
-			</button>
-			<Menu.Item as="a" onClick={() => changeRoute("/auth")}>
-				<Icon name="lock" />
-				Auth
-			</Menu.Item>
+		<Container fluid>
 			Landing head
-			<Input
-				label={"url"}
-				value={url}
-				onChange={(event) => setUrl(event.currentTarget.value)}
-			/>
-			<Input
-				label={"method"}
-				value={method}
-				onChange={(event) => setMethod(event.currentTarget.value)}
-			/>
-			<Input
-				label={"headers"}
-				value={headers}
-				onChange={(event) => setHeaders(event.currentTarget.value)}
-			/>
-			<Input
-				label={"data"}
-				value={data}
-				onChange={(event) => setData(event.currentTarget.value)}
-			/>
-			<Button active onClick={() => handleReq()}>
-				Fetch
-			</Button>
+			<Menu.Item as="a" onClick={() => changeRoute("/auth/register")}>
+				<Icon name="lock" />
+				Register
+			</Menu.Item>
+			<Menu.Item as="a" onClick={() => changeRoute("/auth/login")}>
+				<Icon name="lock" />
+				Login
+			</Menu.Item>
+			<Container fluid>
+				Request object
+				<textarea
+					style={{
+						width: "60%",
+						height: "30%",
+					}}
+					value={req}
+					onChange={(event) => setReq(event.currentTarget.value)}
+				/>
+				<Button active onClick={() => handleReq()}>
+					Fetch
+				</Button>
+			</Container>
 		</Container>
 	);
 };

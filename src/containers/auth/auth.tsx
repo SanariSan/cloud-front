@@ -5,6 +5,7 @@ import { changeRoute } from "../../components/history";
 import { reqAccessLogin, reqAccessRegister } from "../../services/access";
 import { useAtom } from "@dbeining/react-atom";
 import { keystoreAtom, updateKeystore } from "../../store/keystore";
+import { toggleBlockLoader } from "../../store/block-loader";
 
 const AuthContainer: React.FC = () => {
 	const keystore = useAtom(keystoreAtom);
@@ -19,21 +20,29 @@ const AuthContainer: React.FC = () => {
 	);
 
 	useEffect(() => {
-		console.log(isActive);
+		toggleBlockLoader(true);
 
 		if (isActive.current === true && keystore.accessToken && keystore.refreshToken) {
 			changeRoute("/panel");
 		}
+
+		toggleBlockLoader(false);
 	}, [keystore]);
 
 	const setAccessRefresh = async ({ accessToken, refreshToken }) => {
+		toggleBlockLoader(true);
+
 		if (isActive.current) {
 			await updateKeystore(accessToken, refreshToken);
 		}
+
+		toggleBlockLoader(false);
 	};
 
 	const handleLogin = async (email, password) => {
 		if (isActive.current) {
+			toggleBlockLoader(true);
+
 			const res = await reqAccessLogin({ email, password }).catch(async (err) => {
 				if (err.message) {
 					await setErrMessage(err.message);
@@ -43,11 +52,15 @@ const AuthContainer: React.FC = () => {
 			if (res && res.data) {
 				await setAccessRefresh({ ...res.data.tokens });
 			}
+
+			toggleBlockLoader(false);
 		}
 	};
 
 	const handleRegister = async (email, password) => {
 		if (isActive.current) {
+			toggleBlockLoader(true);
+
 			const res = await reqAccessRegister({ email, password }).catch(async (err) => {
 				if (err.message) {
 					await setErrMessage(err.message);
@@ -57,6 +70,8 @@ const AuthContainer: React.FC = () => {
 			if (res && res.data) {
 				await setAccessRefresh({ ...res.data.tokens });
 			}
+
+			toggleBlockLoader(false);
 		}
 	};
 
