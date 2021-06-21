@@ -1,7 +1,6 @@
 import React from "react";
 import { Col } from "react-bootstrap";
 import { useContextMenu } from "react-contexify";
-import { SemanticICONS } from "semantic-ui-react/dist/commonjs/generic";
 import { ContextMenu } from "../panel-context-menu";
 import { EntityViewComponent } from "./panel-entity-view";
 
@@ -17,10 +16,6 @@ const EntityComponent: React.FC<any> = ({
 	const { show } = useContextMenu({
 		id: menuId,
 	});
-
-	// const [iconName, entityText]: [SemanticICONS, string] =
-	// 	Math.round(Math.random() * 1) < 1
-	// 		?
 
 	return (
 		<Col xs={10} sm={8} md={6} lg={5} xl={4}>

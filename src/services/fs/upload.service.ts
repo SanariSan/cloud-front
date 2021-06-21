@@ -6,6 +6,7 @@ const reqFsUpload = ({ groupId, path, filename, data }) =>
 		path: prepareURI("/fs/upload-file", `${groupId}-${path}-${filename}`),
 		headers: {
 			...getBearerHeader(),
+			"Content-Type": "binary",
 		},
 		data,
 	});

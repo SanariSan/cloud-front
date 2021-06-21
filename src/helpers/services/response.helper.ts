@@ -2,7 +2,9 @@ import { AxiosError, AxiosResponse } from "axios";
 import { triggerRefresh } from "./refresh.helper";
 import { ResponseStatus, StatusCode } from "./services.type";
 
-const handleSuccessResponse = async (response: AxiosResponse): Promise<any> => {
+const handleSuccessResponse = async (
+	response: AxiosResponse,
+): Promise<{ code; message; data } | string> => {
 	if (typeof response.data === "object") {
 		const res = {
 			code: response.data.statusCode, //3000 only, StatusCode.SUCCESS

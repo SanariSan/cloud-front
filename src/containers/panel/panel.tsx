@@ -3,19 +3,26 @@ import React, { useEffect, useRef, useState } from "react";
 import { Route, RouteComponentProps, Switch } from "react-router-dom";
 import { Ref, Sidebar } from "semantic-ui-react";
 import { NotFound } from "../../components/not-found";
-import { PanelHeaderComponent, PanelNavigation } from "../../components/panel";
+import { PanelHeaderComponent } from "../../components/panel";
 import { Test } from "../../components/test";
 import { reqGroupInfo, reqProfileInfo } from "../../services/get-info";
 import { currentGroupInfoAtom } from "../../store/current-group";
-import { groupOwnageAtom, updateGroupOwnage } from "../../store/group-ownage";
+import { forcedRerenderAtom } from "../../store/forced-rerender";
+import { updateGroupOwnage } from "../../store/group-ownage";
 import { keystoreAtom } from "../../store/keystore";
-import { profileInfoAtom, updateProfileInfo } from "../../store/profile-info";
-import { storageInfoAtom, updateStorageInfo } from "../../store/storage-info";
-import { updateUserGroupsList, userGroupsListAtom } from "../../store/user-groups";
+import { updateProfileInfo } from "../../store/profile-info";
+import { updateStorageInfo } from "../../store/storage-info";
+import { updateUserGroupsList } from "../../store/user-groups";
 import { PanelBrowseContainer } from "./panel-browse";
+import { PanelNavigationContainer } from "./panel-navigation";
 import { PanelPrivelegeContainer } from "./panel-privelege";
 import { PanelSearchContainer } from "./panel-search";
 import { PanelSettingsContainer } from "./panel-settings";
+
+// const profileInfo = useAtom(profileInfoAtom);
+// const groupOwnage = useAtom(groupOwnageAtom);
+// const userGroupsList = useAtom(userGroupsListAtom);
+// const storageInfo = useAtom(storageInfoAtom);
 
 const PanelContainer: React.FC<RouteComponentProps> = () => {
 	const isActive = useRef(true);
@@ -28,11 +35,8 @@ const PanelContainer: React.FC<RouteComponentProps> = () => {
 	});
 	const { dimmed, visible, animation, direction } = stateSidebar;
 
+	const forcedRerender = useAtom(forcedRerenderAtom);
 	const keystore = useAtom(keystoreAtom);
-	// const profileInfo = useAtom(profileInfoAtom);
-	// const groupOwnage = useAtom(groupOwnageAtom);
-	// const userGroupsList = useAtom(userGroupsListAtom);
-	// const storageInfo = useAtom(storageInfoAtom);
 	const currentGroupInfo = useAtom(currentGroupInfoAtom);
 
 	const mainContentRef = useRef(null);
@@ -83,7 +87,7 @@ const PanelContainer: React.FC<RouteComponentProps> = () => {
 						console.error(err);
 					});
 		}
-	}, [currentGroupInfo]);
+	}, [currentGroupInfo, forcedRerender]);
 
 	const closeSidebar = async () => {
 		if (isActive.current && stateSidebar.dimmed && stateSidebar.visible) {
@@ -114,7 +118,7 @@ const PanelContainer: React.FC<RouteComponentProps> = () => {
 					height: "calc(100% - 65px)",
 				}}
 			>
-				<PanelNavigation
+				<PanelNavigationContainer
 					visible={visible}
 					animation={animation}
 					direction={direction}

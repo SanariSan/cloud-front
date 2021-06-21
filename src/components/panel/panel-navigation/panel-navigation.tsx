@@ -1,126 +1,102 @@
-import { useAtom } from "@dbeining/react-atom";
 import classNames from "classnames";
-import React, { SyntheticEvent, useRef } from "react";
+import React from "react";
 import { Col, Container, Row } from "react-bootstrap";
-import { Dropdown, DropdownProps, Icon, Menu, Sidebar } from "semantic-ui-react";
-import { currentGroupInfoAtom, updateCurrentGroupInfo } from "../../../store/current-group";
-import { groupOwnageAtom } from "../../../store/group-ownage";
-import { storageInfoAtom } from "../../../store/storage-info";
-import { userGroupsListAtom } from "../../../store/user-groups";
+import { Dropdown, Icon, Menu } from "semantic-ui-react";
 import { changeRoute } from "../../history";
 import s from "./panel-navigation.module.scss";
 
-const PanelNavigation: React.FC<any> = ({
-	visible,
-	direction,
-	animation,
-	closeSidebar,
-	mainContentRef,
+const PanelNavigationComponent: React.FC<any> = ({
+	storageInfo,
+	groupOwnage,
+	currentGroupInfo,
+	selectGroupOptions,
+	handleChange,
+	handleUpload,
+	handleCreateFolder,
 }) => {
-	const groupOwnage = useAtom(groupOwnageAtom);
-	const userGroupsList = useAtom(userGroupsListAtom);
-	const storageInfo = useAtom(storageInfoAtom);
-	const currentGroupInfo = useAtom(currentGroupInfoAtom);
-
-	//userGroupsInfo = [{id, name},...]
-	let selectGroupOptions: any = [];
-	if (userGroupsList)
-		selectGroupOptions = userGroupsList.map((el) => ({
-			key: el.id,
-			text: el.name,
-			value: el.id,
-		}));
-
-	const handleChange = (event: SyntheticEvent<HTMLElement, Event>, { value }: DropdownProps) => {
-		const chosenGroup = userGroupsList.filter((el) => el.id === value);
-		if (chosenGroup && chosenGroup.length !== 0) {
-			updateCurrentGroupInfo({
-				id: chosenGroup[0].id,
-				name: chosenGroup[0].name,
-			});
-		}
-	};
-
 	return (
-		<Sidebar
-			visible={visible}
-			direction={direction}
-			animation={animation}
-			onHide={closeSidebar}
-			target={mainContentRef}
-			className={s.navbar}
-		>
-			<Container className={s.containerCustom}>
-				<div className={s.wrapTop}>
-					<Row>
-						<Col className={s.col}>
-							<Icon link size="big" name="cloud upload" />
-							<Icon.Group size="large">
-								<Icon link size="large" name="folder" />
-								<Icon size="small" corner inverted color="grey" name="add" />
-							</Icon.Group>
-						</Col>
-					</Row>
-					<hr className={s.hrStyled} />
-					<Row>
-						<Col>
-							<Menu secondary vertical>
-								<Menu.Item as="a" onClick={() => changeRoute("/panel/browse")}>
-									<Icon name="file" />
-									File Manager
-								</Menu.Item>
+		<Container className={s.containerCustom}>
+			<div className={s.wrapTop}>
+				<Row>
+					<Col className={s.col}>
+						<input
+							type="file"
+							onChange={handleUpload}
+							style={{
+								width: "10px !important",
+								position: "absolute",
+								right: "55%",
+								opacity: 0,
+							}}
+							multiple={true}
+						/>
+						<Icon link size="big" name="cloud upload" />
 
-								<Menu.Item as="a" onClick={() => changeRoute("/panel/search")}>
-									<Icon name="search" />
-									Spaces search
-								</Menu.Item>
+						<Icon.Group size="large" onClick={handleCreateFolder}>
+							<Icon link size="large" name="folder" />
+							<Icon size="small" corner inverted color="grey" name="add" />
+						</Icon.Group>
+					</Col>
+				</Row>
+				<hr className={s.hrStyled} />
+				<Row>
+					<Col>
+						<Menu secondary vertical>
+							<Menu.Item as="a" onClick={() => changeRoute("/panel/browse")}>
+								<Icon name="file" />
+								File Manager
+							</Menu.Item>
 
-								<Menu.Item as="a" onClick={() => changeRoute("/panel/privelege")}>
-									<Icon name="money" />
-									Privelege
-								</Menu.Item>
-							</Menu>
-						</Col>
-					</Row>
-				</div>
-				<div className={s.wrapBot}>
-					<hr className={s.hrStyled} />
-					<Row>
-						<Col className={s.col}>
-							<Icon size="big" name="server" className={s.iFix} />
-							<p>
-								{storageInfo
-									? `${Math.round(storageInfo.sizeUsed)} MB of ${Math.round(
-											storageInfo.sizeMax,
-									  )} MB used`
-									: "Please, create group or join one!"}
-							</p>
-						</Col>
-					</Row>
-					<hr className={s.hrStyled} />
-					<Row>
-						<Col className={classNames(s.col, s.groupBot)}>
-							<span className={s.groupInfo}>
-								<p className={s.pStyled}>Current Group</p>
-							</span>
-							{groupOwnage &&
-								currentGroupInfo &&
-								groupOwnage.id === currentGroupInfo.id &&
-								"You own this group"}
-							<Dropdown
-								placeholder={"Select group"}
-								upward
-								floating
-								options={selectGroupOptions}
-								onChange={handleChange}
-								value={currentGroupInfo ? currentGroupInfo.id : void 0}
-							></Dropdown>
-						</Col>
-					</Row>
-				</div>
-			</Container>
-		</Sidebar>
+							<Menu.Item as="a" onClick={() => changeRoute("/panel/search")}>
+								<Icon name="search" />
+								Spaces search
+							</Menu.Item>
+
+							<Menu.Item as="a" onClick={() => changeRoute("/panel/privelege")}>
+								<Icon name="money" />
+								Privelege
+							</Menu.Item>
+						</Menu>
+					</Col>
+				</Row>
+			</div>
+			<div className={s.wrapBot}>
+				<hr className={s.hrStyled} />
+				<Row>
+					<Col className={s.col}>
+						<Icon size="big" name="server" className={s.iFix} />
+						<p>
+							{storageInfo
+								? `${Math.round(storageInfo.sizeUsed)} MB of ${Math.round(
+										storageInfo.sizeMax,
+								  )} MB used`
+								: "Please, create group or join one!"}
+						</p>
+					</Col>
+				</Row>
+				<hr className={s.hrStyled} />
+				<Row>
+					<Col className={classNames(s.col, s.groupBot)}>
+						<span className={s.groupInfo}>
+							<p className={s.pStyled}>Current Group</p>
+						</span>
+						{groupOwnage &&
+							currentGroupInfo &&
+							groupOwnage.id === currentGroupInfo.id &&
+							"You own this group"}
+						<Dropdown
+							placeholder={"Select group"}
+							upward
+							floating
+							options={selectGroupOptions}
+							onChange={handleChange}
+							value={currentGroupInfo ? currentGroupInfo.id : void 0}
+						></Dropdown>
+					</Col>
+				</Row>
+			</div>
+		</Container>
 	);
 };
 
-export { PanelNavigation };
+export { PanelNavigationComponent };

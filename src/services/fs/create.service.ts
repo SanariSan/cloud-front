@@ -7,6 +7,7 @@ const reqFsCreate = ({ groupId, path, filename }) =>
 		headers: {
 			...getBearerHeader(),
 		},
+		data: {},
 	});
 
 export { reqFsCreate };

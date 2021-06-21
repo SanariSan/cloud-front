@@ -1,46 +1,46 @@
-import React, { MouseEventHandler, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import "react-contexify/dist/ReactContexify.css";
 import { Button } from "semantic-ui-react";
+import { updatePath } from "../../../store/path";
 import { EntityComponent } from "../panel-entity";
 import s from "./panel-browse.module.scss";
-import { pathAtom, updatePath } from "../../../store/path";
-import { useAtom } from "@dbeining/react-atom";
-import { reqFsBrowse } from "../../../services/fs";
-import { currentGroupInfoAtom } from "../../../store/current-group";
 
-const PanelBrowseFilesComponent: React.FC = () => {
+const PanelBrowseFilesComponent: React.FC<any> = ({
+	currentPathContent,
+	onClickFolder,
+	onClickFile,
+	onContextMenu,
+	path,
+	handleDownload,
+}) => {
 	const isActive = useRef(true);
-	const path = useAtom(pathAtom);
-	const currentGroupInfo = useAtom(currentGroupInfoAtom);
-	const [currentPathContent, setCurrentPathContent] = useState({ files: [], folders: [] });
 
-	const menuOptions = [
+	const menuOptionsFolder = (idx) => [
 		{
-			text: "test",
-			action: () => alert("test"),
+			text: "rename",
+			action: (idx) => alert("test"),
 		},
 		{
-			text: "test2",
+			text: "delete",
 			action: () => alert("test2"),
 		},
 	];
 
-	const onClickFolder: any = (event, elName) => {
-		event.preventDefault();
-
-		updatePath(path + `/${elName}`);
-	};
-	const onClickFile: any = (event, elName) => {
-		event.preventDefault();
-
-		alert("this is file, can't do anything yet");
-	};
-
-	const onContextMenu: any = async (event, show) => {
-		event.preventDefault();
-		show(event);
-	};
+	const menuOptionsFile = (idx) => [
+		{
+			text: "download",
+			action: () => handleDownload(idx),
+		},
+		{
+			text: "rename",
+			action: () => alert("test"),
+		},
+		{
+			text: "delete",
+			action: () => alert("test2"),
+		},
+	];
 
 	useEffect(
 		() => () => {
@@ -49,30 +49,11 @@ const PanelBrowseFilesComponent: React.FC = () => {
 		[],
 	);
 
-	useEffect(() => {
-		if (isActive.current && currentGroupInfo) {
-			updatePath("/");
-		}
-	}, [currentGroupInfo]);
-
-	useEffect(() => {
-		if (isActive.current && currentGroupInfo) {
-			reqFsBrowse({ groupId: currentGroupInfo.id, path })
-				.then(({ data }) => {
-					console.log(data);
-					setCurrentPathContent({ ...data });
-				})
-				.catch((err) => {
-					console.log(err);
-				});
-		}
-	}, [path, currentGroupInfo]);
-
 	let folders = currentPathContent.folders.map((el, idx) => {
 		return (
 			<EntityComponent
 				idx={idx}
-				menuOptions={menuOptions}
+				menuOptions={menuOptionsFolder(idx)}
 				onClick={(event) => onClickFolder(event, el)}
 				onContextMenu={onContextMenu}
 				iconName={"folder open"}
@@ -85,7 +66,7 @@ const PanelBrowseFilesComponent: React.FC = () => {
 		return (
 			<EntityComponent
 				idx={idx}
-				menuOptions={menuOptions}
+				menuOptions={menuOptionsFile(idx)}
 				onClick={(event) => onClickFile(event, el)}
 				onContextMenu={onContextMenu}
 				iconName={"file"}
@@ -94,20 +75,34 @@ const PanelBrowseFilesComponent: React.FC = () => {
 		);
 	});
 
-	let pathPrepared = path.split("/").filter((el) => el);
+	let parsedPathObj: { path; btnText }[] = [];
+	let lastMatch = 0;
 
-	let pathTrackerTextArr = pathPrepared.map((acc, el) => `${acc}/${el}`);
+	for (let i = 0; i < path.length; i++) {
+		if (path[i] === "/") {
+			parsedPathObj.push({
+				path: i === 0 ? "/" : path.slice(0, i),
+				btnText: i === 0 ? "/home" : path.slice(lastMatch, i),
+			});
+			lastMatch = i;
+		}
+	}
 
-	let pathTrackerButtons = pathPrepared.map((el, idx) => (
+	parsedPathObj.push({
+		path: path.slice(0),
+		btnText: path.slice(lastMatch),
+	});
+
+	let pathTrackerButtons = parsedPathObj.map((el, idx) => (
 		<>
 			<Button
 				basic
 				color="grey"
 				onClick={() => {
-					updatePath(pathTrackerTextArr[idx]);
+					updatePath(`${parsedPathObj[idx].path}`);
 				}}
 			>
-				/{el}
+				{parsedPathObj[idx].btnText}
 			</Button>
 			{">"}
 		</>
@@ -123,20 +118,7 @@ const PanelBrowseFilesComponent: React.FC = () => {
 			<hr className={s.hrStyled} />
 			<Row className={s.rowTopStyled}>
 				<Col xs={16}>
-					<p className={s.pStyled}>
-						{/* <Button
-							basic
-							color="grey"
-							onClick={() => {
-								updatePath(pathTrackerTextArr[0]);
-							}}
-						>
-							/home
-						</Button> */}
-						{">"}
-						{pathTrackerButtons}
-						{pathTrackerTextArr[0]}
-					</p>
+					<p className={s.pStyled}>{pathTrackerButtons}</p>
 				</Col>
 			</Row>
 			<hr className={s.hrStyled} />
