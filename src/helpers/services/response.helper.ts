@@ -5,18 +5,20 @@ import { ResponseStatus, StatusCode } from "./services.type";
 const handleSuccessResponse = async (
 	response: AxiosResponse,
 ): Promise<{ code; message; data } | string> => {
-	if (typeof response.data === "object") {
-		const res = {
+	// console.log(response);
+
+	let res;
+	if (response.data.data && response.data.message && response.data.statusCode) {
+		res = {
 			code: response.data.statusCode, //3000 only, StatusCode.SUCCESS
 			message: response.data.message, //show to user
 			data: response.data.data, //use in code
 		};
-
-		return res;
 	} else {
-		//return raw data, probably file download, binary
-		return response.data;
+		res = response.data;
 	}
+
+	return res;
 };
 
 const handleErrorResponse = async (response: AxiosError): Promise<any> => {

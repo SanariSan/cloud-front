@@ -16,8 +16,8 @@ const axiosApiBase: AxiosInstance = axios.create({
 
 const handleRequest =
 	(req) =>
-	({ path, headers, data }: IRequest): Promise<any> =>
-		req(path, data ? data : { headers }, { headers })
+	({ path, headers, data, extra }: IRequest): Promise<any> =>
+		req(path, data ? data : { ...extra, headers }, { ...extra, headers })
 			.then(handleSuccessResponse)
 			.catch(handleErrorResponse);
 export { handleRequest, axiosApiBase };

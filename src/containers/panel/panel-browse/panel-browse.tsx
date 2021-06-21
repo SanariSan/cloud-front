@@ -5,6 +5,7 @@ import { reqFsBrowse, reqFsDownload } from "../../../services/fs";
 import { currentGroupInfoAtom } from "../../../store/current-group";
 import { forcedRerenderAtom } from "../../../store/forced-rerender";
 import { pathAtom, updatePath } from "../../../store/path";
+import mime from "mime-types";
 
 const PanelBrowseContainer: React.FC = () => {
 	//browse path state
@@ -56,22 +57,20 @@ const PanelBrowseContainer: React.FC = () => {
 		show(event);
 	};
 
-	const handleDownload = (idx) => {
-		console.log(idx);
-		console.log(currentPathContent.files);
+	const handleDownload = async (idx) => {
+		const filename = currentPathContent.files[idx];
+
 		reqFsDownload({
 			groupId: currentGroupInfo.id,
 			path,
-			filename: currentPathContent.files[idx],
+			filename,
 		})
 			.then((data) => {
-				console.log(data);
-				const raw = data as string;
-
-				let blob = new Blob([raw], { type: "binary" });
+				let blob = new Blob([data], { type: mime.contentType(filename) });
 				let a = document.createElement("a");
-				a.href = URL.createObjectURL(blob);
-				a.download = currentPathContent.files[idx];
+				let url = window.URL.createObjectURL(blob);
+				a.href = url;
+				a.download = filename;
 				a.click();
 				URL.revokeObjectURL(a.href);
 			})

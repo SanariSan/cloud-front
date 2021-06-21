@@ -8,6 +8,9 @@ const reqFsDownload = ({ groupId, path, filename }) => {
 		headers: {
 			...getBearerHeader(),
 		},
+		extra: {
+			responseType: "arraybuffer",
+		},
 	});
 };
 export { reqFsDownload };

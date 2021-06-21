@@ -25,6 +25,7 @@ interface IRequest {
 	path?: TPath | string;
 	headers?: {};
 	data?: {};
+	extra?: {};
 }
 
 export type { TPath, TMethods, IRequest };
