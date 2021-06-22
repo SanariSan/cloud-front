@@ -1,13 +1,15 @@
 import React, { useEffect, useRef } from "react";
 import { Col, Container, Row } from "react-bootstrap";
-import "react-contexify/dist/ReactContexify.css";
-import { Button } from "semantic-ui-react";
+import { Button, Dropdown, Menu, Icon } from "semantic-ui-react";
 import { updatePath } from "../../../store/path";
 import { EntityComponent } from "../panel-entity";
 import s from "./panel-browse.module.scss";
 
 const PanelBrowseFilesComponent: React.FC<any> = ({
 	currentPathContent,
+	currentGroupInfo,
+	profileInfo,
+	groupOwnage,
 	onClickFolder,
 	onClickFile,
 	onContextMenu,
@@ -17,6 +19,7 @@ const PanelBrowseFilesComponent: React.FC<any> = ({
 	handleRenameFolder,
 	handleDeteleFile,
 	handleDeteleFolder,
+	handleGroupKick,
 }) => {
 	const isActive = useRef(true);
 
@@ -122,7 +125,25 @@ const PanelBrowseFilesComponent: React.FC<any> = ({
 			<hr className={s.hrStyled} />
 			<Row className={s.rowTopStyled}>
 				<Col xs={16}>
-					<p className={s.pStyled}>{pathTrackerButtons}</p>
+					<div className={s.divNavStyled}>
+						<Col>
+							<p>{pathTrackerButtons}</p>
+						</Col>
+						<Col xs={2} style={{ display: "flex", justifyContent: "end" }}>
+							<Menu icon vertical>
+								<Dropdown direction="left" pointing="left" item placeholder={"👥"}>
+									<Dropdown.Menu>
+										{currentGroupInfo.groupParticipants.map((el) => (
+											<Dropdown.Item onClick={() => handleGroupKick(el)}>
+												<Icon name="trash" />
+												{el.name || el.email}
+											</Dropdown.Item>
+										))}
+									</Dropdown.Menu>
+								</Dropdown>
+							</Menu>
+						</Col>
+					</div>
 				</Col>
 			</Row>
 			<hr className={s.hrStyled} />

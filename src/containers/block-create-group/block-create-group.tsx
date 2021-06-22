@@ -2,6 +2,7 @@ import { useAtom } from "@dbeining/react-atom";
 import React, { useEffect, useRef } from "react";
 import { BlockCreateGroupComponent } from "../../components/block-create-group";
 import { changeRoute } from "../../components/history";
+import { ResponseStatus } from "../../helpers/services";
 import { reqProfileInfo } from "../../services/get-info";
 import { reqGroupCreate } from "../../services/group";
 import { toggleBlockLoader } from "../../store/block-loader";
@@ -35,7 +36,11 @@ const BlockCreateGroupContainer: React.FC<any> = () => {
 						await updateGroupOwnage(data.groupOwnage);
 					}
 				})
-				.catch((err) => {})
+				.catch((err) => {
+					if (err.status === ResponseStatus.BAD_REQUEST) {
+						alert(err.message);
+					}
+				})
 				.finally(() => {
 					toggleBlockLoader(false);
 				});
@@ -54,7 +59,9 @@ const BlockCreateGroupContainer: React.FC<any> = () => {
 			})
 			.then(() => changeRoute("/panel/browse"))
 			.catch((err) => {
-				console.warn(err);
+				if (err.status === ResponseStatus.BAD_REQUEST) {
+					alert(err.message);
+				}
 			})
 			.finally(() => {
 				toggleBlockLoader(false);

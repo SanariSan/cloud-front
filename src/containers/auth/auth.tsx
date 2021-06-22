@@ -46,6 +46,7 @@ const AuthContainer: React.FC = () => {
 			const res = await reqAccessLogin({ email, password }).catch(async (err) => {
 				if (err.message) {
 					await setErrMessage(err.message);
+					alert(err.message);
 				}
 			});
 
@@ -63,7 +64,8 @@ const AuthContainer: React.FC = () => {
 
 			const res = await reqAccessRegister({ email, password }).catch(async (err) => {
 				if (err.message) {
-					await setErrMessage(err.message);
+					// await setErrMessage(err.message);
+					alert(err.message);
 				}
 			});
 

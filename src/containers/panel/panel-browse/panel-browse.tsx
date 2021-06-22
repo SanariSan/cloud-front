@@ -1,12 +1,16 @@
 import { useAtom } from "@dbeining/react-atom";
+import mime from "mime-types";
 import React, { useEffect, useRef, useState } from "react";
 import { PanelBrowseFilesComponent } from "../../../components/panel";
+import { ResponseStatus } from "../../../helpers/services";
 import { reqFsBrowse, reqFsDelete, reqFsDownload, reqFsRename } from "../../../services/fs";
+import { reqGroupKick } from "../../../services/group";
+import { toggleBlockLoader } from "../../../store/block-loader";
 import { currentGroupInfoAtom } from "../../../store/current-group";
 import { forcedRerenderAtom, forceRerender } from "../../../store/forced-rerender";
+import { groupOwnageAtom } from "../../../store/group-ownage";
 import { pathAtom, updatePath } from "../../../store/path";
-import mime from "mime-types";
-import { toggleBlockLoader } from "../../../store/block-loader";
+import { profileInfoAtom } from "../../../store/profile-info";
 
 const PanelBrowseContainer: React.FC = () => {
 	//browse path state
@@ -16,6 +20,8 @@ const PanelBrowseContainer: React.FC = () => {
 	const currentGroupInfo = useAtom(currentGroupInfoAtom);
 	const path = useAtom(pathAtom);
 	const forcedRerender = useAtom(forcedRerenderAtom);
+	const groupOwnage = useAtom(groupOwnageAtom);
+	const profileInfo = useAtom(profileInfoAtom);
 	const [currentPathContent, setCurrentPathContent] = useState({ files: [], folders: [] });
 
 	useEffect(
@@ -40,7 +46,11 @@ const PanelBrowseContainer: React.FC = () => {
 					setCurrentPathContent({ ...data });
 				})
 				.catch((err) => {
-					console.log(err);
+					if (
+						[ResponseStatus.BAD_REQUEST, ResponseStatus.FORBIDDEN].includes(err.status)
+					) {
+						alert(err.message);
+					}
 				})
 				.finally(() => {
 					toggleBlockLoader(false);
@@ -50,21 +60,24 @@ const PanelBrowseContainer: React.FC = () => {
 
 	const onClickFolder: any = (event, elName) => {
 		event.preventDefault();
+		if (!isActive.current) return;
 
 		updatePath(path + `${path === "/" ? "" : "/"}${elName}`);
 	};
 	const onClickFile: any = (event, elName) => {
 		event.preventDefault();
 
-		alert("this is file, can't do anything yet");
+		alert("This is file, can't do anything here");
 	};
 	const onContextMenu: any = async (event, show) => {
 		event.preventDefault();
+		if (!isActive.current) return;
+
 		show(event);
 	};
 
 	const handleRenameFile = async (idx) => {
-		if (!currentGroupInfo) {
+		if (!isActive.current || !currentGroupInfo) {
 			return;
 		}
 
@@ -84,7 +97,9 @@ const PanelBrowseContainer: React.FC = () => {
 		})
 			.then(forceRerender)
 			.catch((err) => {
-				console.log(err);
+				if (err.status === ResponseStatus.BAD_REQUEST) {
+					alert(err.message);
+				}
 			})
 			.finally(() => {
 				toggleBlockLoader(false);
@@ -92,7 +107,7 @@ const PanelBrowseContainer: React.FC = () => {
 	};
 
 	const handleRenameFolder = async (idx) => {
-		if (!currentGroupInfo) {
+		if (!isActive.current || !currentGroupInfo) {
 			return;
 		}
 
@@ -112,7 +127,9 @@ const PanelBrowseContainer: React.FC = () => {
 		})
 			.then(forceRerender)
 			.catch((err) => {
-				console.log(err);
+				if (err.status === ResponseStatus.BAD_REQUEST) {
+					alert(err.message);
+				}
 			})
 			.finally(() => {
 				toggleBlockLoader(false);
@@ -120,7 +137,7 @@ const PanelBrowseContainer: React.FC = () => {
 	};
 
 	const handleDeteleFile = async (idx) => {
-		if (!currentGroupInfo) {
+		if (!isActive.current || !currentGroupInfo) {
 			return;
 		}
 
@@ -131,7 +148,9 @@ const PanelBrowseContainer: React.FC = () => {
 		reqFsDelete({ groupId: currentGroupInfo.id, path: `${path}/${filename}` })
 			.then(forceRerender)
 			.catch((err) => {
-				console.log(err);
+				if (err.status === ResponseStatus.BAD_REQUEST) {
+					alert(err.message);
+				}
 			})
 			.finally(() => {
 				toggleBlockLoader(false);
@@ -139,7 +158,7 @@ const PanelBrowseContainer: React.FC = () => {
 	};
 
 	const handleDeteleFolder = async (idx) => {
-		if (!currentGroupInfo) {
+		if (!isActive.current || !currentGroupInfo) {
 			return;
 		}
 
@@ -149,7 +168,9 @@ const PanelBrowseContainer: React.FC = () => {
 		reqFsDelete({ groupId: currentGroupInfo.id, path: `${path}/${filename}` })
 			.then(forceRerender)
 			.catch((err) => {
-				console.log(err);
+				if (err.status === ResponseStatus.BAD_REQUEST) {
+					alert(err.message);
+				}
 			})
 			.finally(() => {
 				toggleBlockLoader(false);
@@ -157,7 +178,7 @@ const PanelBrowseContainer: React.FC = () => {
 	};
 
 	const handleDownload = async (idx) => {
-		if (!currentGroupInfo) {
+		if (!isActive.current || !currentGroupInfo) {
 			return;
 		}
 
@@ -180,11 +201,32 @@ const PanelBrowseContainer: React.FC = () => {
 				URL.revokeObjectURL(a.href);
 			})
 			.catch((err) => {
-				console.log(err);
+				if (err.status === ResponseStatus.BAD_REQUEST) {
+					alert(err.message);
+				}
 			})
 			.finally(() => {
 				toggleBlockLoader(false);
 			});
+	};
+
+	const handleGroupKick = async (el) => {
+		if (!isActive.current || !currentGroupInfo) return;
+
+		toggleBlockLoader(true);
+
+		const res = await reqGroupKick({ groupId: currentGroupInfo.id, userId: el.id })
+			.then((res) => {
+				alert(res.message);
+			})
+			.then(forceRerender)
+			.catch((err) => {
+				if (err.status === ResponseStatus.BAD_REQUEST) {
+					alert(err.message);
+				}
+			});
+
+		toggleBlockLoader(false);
 	};
 
 	return (
@@ -192,6 +234,9 @@ const PanelBrowseContainer: React.FC = () => {
 			{currentGroupInfo ? (
 				<PanelBrowseFilesComponent
 					currentPathContent={currentPathContent}
+					currentGroupInfo={currentGroupInfo}
+					groupOwnage={groupOwnage}
+					profileInfo={profileInfo}
 					onClickFolder={onClickFolder}
 					onClickFile={onClickFile}
 					onContextMenu={onContextMenu}
@@ -201,6 +246,7 @@ const PanelBrowseContainer: React.FC = () => {
 					handleRenameFolder={handleRenameFolder}
 					handleDeteleFile={handleDeteleFile}
 					handleDeteleFolder={handleDeteleFolder}
+					handleGroupKick={handleGroupKick}
 				/>
 			) : (
 				<p>PLEASE CHOOSE GROUP TO START WORKING!</p>

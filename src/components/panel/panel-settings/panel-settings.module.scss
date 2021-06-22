@@ -1,0 +1,41 @@
+.settingsBlock {
+	border: 1px solid gray;
+	border-radius: 10px;
+	height: 50%;
+	margin: 30px;
+	// padding: 0px 50px !important;
+}
+
+.settingsBlocksWrap {
+	margin-top: 30px;
+}
+
+.fullSize {
+	width: 100% !important;
+	height: 100% !important;
+}
+
+.rowSideTop {
+	padding: 8% 3% 2% 3% !important;
+	height: 20%;
+}
+
+.rowSideBot {
+	padding: 4% 3% 2% 3% !important;
+	height: 20%;
+
+	justify-content: flex-end;
+	.btn {
+		height: max-content;
+		width: max-content;
+	}
+}
+
+.rowMiddle {
+	border: 1px solid gray;
+	border-left: none;
+	border-right: none;
+	// border-radius: 10px;
+	height: 60%;
+	padding: 30px !important;
+}

@@ -3,7 +3,7 @@ import classNames from "classnames";
 import React, { useEffect, useRef } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { Dropdown, Icon, Image } from "semantic-ui-react";
-import { clearWholeLocalStorage } from "../../../helpers/services";
+import { clearWholeLocalStorage, ResponseStatus } from "../../../helpers/services";
 import avatar from "../../../img/avatar.png";
 import logo from "../../../img/logo.png";
 import { reqAccessLogout } from "../../../services/access";
@@ -27,7 +27,11 @@ const PanelHeaderComponent: React.FC<any> = ({ toggleSidebar }) => {
 		if (isActive.current) {
 			toggleBlockLoader(true);
 
-			await reqAccessLogout().catch();
+			await reqAccessLogout().catch((err) => {
+				if (err.status === ResponseStatus.BAD_REQUEST) {
+					alert(err.message);
+				}
+			});
 
 			clearWholeLocalStorage();
 			changeRoute("/auth");

@@ -1,15 +1,17 @@
 import { useAtom } from "@dbeining/react-atom";
 import React, { SyntheticEvent, useEffect, useRef } from "react";
 import { DropdownProps, Sidebar } from "semantic-ui-react";
+import { PanelNavigationComponent } from "../../../components/panel";
+import { ResponseStatus } from "../../../helpers/services";
+import { reqFsCreate, reqFsUpload } from "../../../services/fs";
+import { reqGroupInfo } from "../../../services/get-info";
+import { toggleBlockLoader } from "../../../store/block-loader";
 import { currentGroupInfoAtom, updateCurrentGroupInfo } from "../../../store/current-group";
+import { forceRerender } from "../../../store/forced-rerender";
 import { groupOwnageAtom } from "../../../store/group-ownage";
+import { pathAtom } from "../../../store/path";
 import { storageInfoAtom } from "../../../store/storage-info";
 import { userGroupsListAtom } from "../../../store/user-groups";
-import { PanelNavigationComponent } from "../../../components/panel";
-import { pathAtom } from "../../../store/path";
-import { reqFsCreate, reqFsUpload } from "../../../services/fs";
-import { forceRerender } from "../../../store/forced-rerender";
-import { toggleBlockLoader } from "../../../store/block-loader";
 
 const PanelNavigationContainer: React.FC<any> = ({
 	visible,
@@ -43,13 +45,32 @@ const PanelNavigationContainer: React.FC<any> = ({
 			value: el.id,
 		}));
 
-	const handleChange = (event: SyntheticEvent<HTMLElement, Event>, { value }: DropdownProps) => {
+	const handleChange = async (
+		event: SyntheticEvent<HTMLElement, Event>,
+		{ value }: DropdownProps,
+	) => {
 		const chosenGroup = userGroupsList.filter((el) => el.id === value);
-		if (chosenGroup && chosenGroup.length !== 0) {
-			updateCurrentGroupInfo({
-				id: chosenGroup[0].id,
-				name: chosenGroup[0].name,
+
+		if (isActive.current && chosenGroup && chosenGroup.length !== 0) {
+			toggleBlockLoader(true);
+
+			const res = await reqGroupInfo({ id: chosenGroup[0].id }).catch((err) => {
+				if (err.status === ResponseStatus.BAD_REQUEST) {
+					alert(err.message);
+				}
 			});
+
+			toggleBlockLoader(false);
+
+			if (!res || !res.data || !isActive.current) return;
+
+			updateCurrentGroupInfo({
+				id: res.data.groupInfo.id,
+				name: res.data.groupInfo.name,
+				groupParticipants: res.data.groupParticipants,
+			});
+
+			forceRerender();
 		}
 	};
 
@@ -64,7 +85,11 @@ const PanelNavigationContainer: React.FC<any> = ({
 
 		reqFsUpload({ groupId: currentGroupInfo.id, path, filename: file.name, data: file })
 			.then(forceRerender)
-			.catch()
+			.catch((err) => {
+				if (err.status === ResponseStatus.BAD_REQUEST) {
+					alert(err.message);
+				}
+			})
 			.finally(() => {
 				toggleBlockLoader(false);
 			});
@@ -85,7 +110,11 @@ const PanelNavigationContainer: React.FC<any> = ({
 
 		reqFsCreate({ groupId: currentGroupInfo.id, path, filename })
 			.then(forceRerender)
-			.catch()
+			.catch((err) => {
+				if (err.status === ResponseStatus.BAD_REQUEST) {
+					alert(err.message);
+				}
+			})
 			.finally(() => {
 				toggleBlockLoader(false);
 			});

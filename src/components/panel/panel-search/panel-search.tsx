@@ -2,7 +2,11 @@ import React, { useState } from "react";
 import { Button, Col, Container } from "react-bootstrap";
 import { Input } from "semantic-ui-react";
 
-const PanelSearchComponent: React.FC<any> = ({ handleSearch, groupsFound }) => {
+const PanelSearchComponent: React.FC<any> = ({
+	handleGroupSearch,
+	handleGroupJoin,
+	groupsFound,
+}) => {
 	const [groupName, setGroupName] = useState<string>("");
 	const [email, setEmail] = useState<string>("");
 
@@ -25,18 +29,24 @@ const PanelSearchComponent: React.FC<any> = ({ handleSearch, groupsFound }) => {
 						setEmail(event.currentTarget.value);
 					}}
 				/>
-				<Button active onClick={() => handleSearch(groupName, email)}>
+				<Button active onClick={() => handleGroupSearch(groupName, email)}>
 					Search
 				</Button>
 			</Col>
 			<Col xs={8}>
-				{JSON.stringify(
-					groupsFound.map((el) => ({
-						owner: el.ownerId,
-						groupId: el.groupId,
-						groupName: el.groupNames,
-					})),
-				)}
+				{groupsFound.map(({ ownerId, groupId, groupName }) => (
+					<div
+						onClick={() => {
+							handleGroupJoin({ ownerId, groupId, groupName });
+						}}
+					>
+						{JSON.stringify({
+							ownerId,
+							groupId,
+							groupName,
+						})}
+					</div>
+				))}
 			</Col>
 		</Container>
 	);

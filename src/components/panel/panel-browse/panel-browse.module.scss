@@ -25,6 +25,9 @@
 	height: calc(100vh - 13.5em);
 }
 
-.pStyled {
+.divNavStyled {
+	display: flex;
+	flex-direction: row;
+
 	font-size: $font-size-big;
 }

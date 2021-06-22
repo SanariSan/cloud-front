@@ -14,10 +14,16 @@ const axiosApiBase: AxiosInstance = axios.create({
 	timeout: 10000,
 });
 
+const axiosApiServiceBase: AxiosInstance = axios.create({
+	baseURL: url ? `${url}/` : `${host}:${port}/`,
+	headers: DEFAULT_HEADERS,
+	timeout: 10000,
+});
+
 const handleRequest =
 	(req) =>
 	({ path, headers, data, extra }: IRequest): Promise<any> =>
 		req(path, data ? data : { ...extra, headers }, { ...extra, headers })
 			.then(handleSuccessResponse)
 			.catch(handleErrorResponse);
-export { handleRequest, axiosApiBase };
+export { handleRequest, axiosApiBase, axiosApiServiceBase };

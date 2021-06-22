@@ -4,9 +4,10 @@ import { Route, RouteComponentProps, Switch } from "react-router-dom";
 import { Ref, Sidebar } from "semantic-ui-react";
 import { NotFound } from "../../components/not-found";
 import { PanelHeaderComponent } from "../../components/panel";
+import { ResponseStatus } from "../../helpers/services";
 import { reqGroupInfo, reqProfileInfo } from "../../services/get-info";
 import { toggleBlockLoader } from "../../store/block-loader";
-import { currentGroupInfoAtom } from "../../store/current-group";
+import { currentGroupInfoAtom, updateCurrentGroupInfo } from "../../store/current-group";
 import { forcedRerenderAtom } from "../../store/forced-rerender";
 import { updateGroupOwnage } from "../../store/group-ownage";
 import { keystoreAtom } from "../../store/keystore";
@@ -76,7 +77,7 @@ const PanelContainer: React.FC<RouteComponentProps> = () => {
 					toggleBlockLoader(false);
 				});
 		}
-	}, []); //destructured parameter is undefined once!!
+	}, [forcedRerender]); //destructured parameter is undefined once!!
 
 	useEffect(() => {
 		//groupInfo
@@ -86,17 +87,23 @@ const PanelContainer: React.FC<RouteComponentProps> = () => {
 
 			reqGroupInfo({ id: currentGroupInfo.id })
 				.then(async ({ code, message, data }) => {
-					console.log(data);
-					await updateStorageInfo(data.storageInfo);
+					updateStorageInfo(data.storageInfo);
+					updateCurrentGroupInfo({
+						id: data.groupInfo.id,
+						name: data.groupInfo.name,
+						groupParticipants: data.groupParticipants,
+					});
 				})
 				.catch((err) => {
-					console.error(err);
+					if (err.status === ResponseStatus.BAD_REQUEST) {
+						alert(err.message);
+					}
 				})
 				.finally(() => {
 					toggleBlockLoader(false);
 				});
 		}
-	}, [currentGroupInfo, forcedRerender]);
+	}, [forcedRerender]);
 
 	const closeSidebar = async () => {
 		if (isActive.current && stateSidebar.dimmed && stateSidebar.visible) {
@@ -140,6 +147,7 @@ const PanelContainer: React.FC<RouteComponentProps> = () => {
 						dimmed={dimmed}
 						style={{
 							width: dimmed ? "90%" : "100%",
+							height: "100%",
 							float: "right",
 							transition: "width 0.5s",
 						}}
