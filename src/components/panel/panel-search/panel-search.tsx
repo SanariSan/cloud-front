@@ -31,7 +31,7 @@ const PanelSearchComponent: React.FC<any> = ({
                 iconName={"folder open"}
                 type={"small"}
                 entityText={`Group name: ${groupName}`}
-                entityTextAlt={`Owner info: ${ownerEmail}`}
+                entityTextAlt={`Owner info: ${ownerEmail || "-"}`}
 			/>
 		);
 	});
