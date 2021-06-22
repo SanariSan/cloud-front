@@ -27,6 +27,7 @@ const PanelNavigationComponent: React.FC<any> = ({
 								position: "absolute",
 								right: "55%",
 								opacity: 0,
+								zIndex: 20,
 							}}
 							multiple={true}
 						/>

@@ -1,5 +1,5 @@
-import { Button, Col, Container, Row } from "react-bootstrap";
-import { Input } from "semantic-ui-react";
+import { Col, Container, Row } from "react-bootstrap";
+import { Input, Button } from "semantic-ui-react";
 import classNames from "classnames";
 import React, { useEffect, useRef, useState } from "react";
 import { EntityComponent } from "../panel-entity";
@@ -42,6 +42,9 @@ const PanelSearchComponent: React.FC<any> = ({
 				type={"small"}
 				entityText={`Group name: ${groupName}`}
 				entityTextAlt={`Owner info: ${ownerEmail || "-"}`}
+				selected={{
+					border: selectedGroup && selectedGroup.groupId === groupId ? true : false,
+				}}
 			/>
 		);
 	});
@@ -55,7 +58,9 @@ const PanelSearchComponent: React.FC<any> = ({
 						onSubmit={async (e) => {
 							e.preventDefault();
 
-							isActive.current && handleGroupSearch(groupName, email);
+							isActive.current &&
+								(groupName || email) &&
+								handleGroupSearch(groupName, email);
 						}}
 					>
 						<Row className={s.rowSideTop}>Search for spaces</Row>
@@ -85,7 +90,7 @@ const PanelSearchComponent: React.FC<any> = ({
 							</Row>
 						</Row>
 						<Row className={s.rowSideBot}>
-							<Button active className={s.btn}>
+							<Button color="violet" inverted className={s.btn}>
 								Search
 							</Button>
 						</Row>
@@ -94,10 +99,16 @@ const PanelSearchComponent: React.FC<any> = ({
 
 				<Col xs={13} lg={7} className={classNames(s.settingsBlockRight)}>
 					<form
-						className={s.formStyled}
-						onSubmit={(e) => {
+						style={{
+							width: "100%",
+							height: "100%",
+							overflow: "hidden",
+							paddingLeft: "10px",
+							paddingRight: "10px",
+						}}
+						onSubmit={async (e) => {
 							e.preventDefault();
-							isActive.current && handleGroupJoin(selectedGroup);
+							isActive.current && selectedGroup && handleGroupJoin(selectedGroup);
 						}}
 					>
 						<Row className={s.rowSideTop}>Results</Row>
@@ -105,7 +116,7 @@ const PanelSearchComponent: React.FC<any> = ({
 							<Row className={s.fieldWrap}>{groups}</Row>
 						</Row>
 						<Row className={s.rowSideBot}>
-							<Button active className={s.btn}>
+							<Button color="violet" inverted className={s.btn}>
 								Join
 							</Button>
 						</Row>

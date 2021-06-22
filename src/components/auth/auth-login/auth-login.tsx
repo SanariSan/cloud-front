@@ -31,9 +31,10 @@ const AuthLoginComponent: React.FC<any> = ({ handleLogin, errMessage, setErrMess
 			<Col xs={13} lg={7} className={classNames(s.authBlock)}>
 				<form
 					className={s.formStyled}
-					onSubmit={(e) => {
+					onSubmit={async (e) => {
 						e.preventDefault();
-						isActive.current && changeRoute("/auth/register");
+						await handleLogin(email, password);
+						clearFormAcc();
 					}}
 				>
 					<Row className={s.rowSideTop}>
@@ -64,22 +65,17 @@ const AuthLoginComponent: React.FC<any> = ({ handleLogin, errMessage, setErrMess
 						</Row>
 					</Row>
 					<Row className={s.rowSideBot}>
-						<Button
-							color="violet"
-							inverted
-							className={s.btnStyled}
-							onClick={async () => {
-								await handleLogin(email, password);
-								clearFormAcc();
-							}}
-						>
+						<Button color="violet" inverted className={s.btnStyled}>
 							Login
 						</Button>
 					</Row>
 				</form>
 			</Col>
 			<p>
-				Don't have an account? <a className={s.aStyled}>Sign up.</a>
+				Don't have an account?{" "}
+				<a className={s.aStyled} onClick={() => changeRoute("/auth/register")}>
+					Sign up.
+				</a>
 			</p>
 			<span className={s.footer}>
 				<p>@Storeton</p>

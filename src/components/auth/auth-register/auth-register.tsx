@@ -32,9 +32,12 @@ const AuthRegisterComponent: React.FC<any> = ({ handleRegister, errMessage, setE
 			<Col xs={13} lg={7} className={classNames(s.authBlock)}>
 				<form
 					className={s.formStyled}
-					onSubmit={(e) => {
+					onSubmit={async (e) => {
 						e.preventDefault();
-						isActive.current && changeRoute("/auth/login");
+						password === passwordRepeat
+							? await handleRegister(email, password)
+							: alert("Passwords do not match each other!");
+						clearFormAcc();
 					}}
 				>
 					<Row className={s.rowSideTop}>
@@ -76,24 +79,17 @@ const AuthRegisterComponent: React.FC<any> = ({ handleRegister, errMessage, setE
 						</Row>
 					</Row>
 					<Row className={s.rowSideBot}>
-						<Button
-							color="violet"
-							inverted
-							className={s.btnStyled}
-							onClick={async () => {
-								password === passwordRepeat
-									? await handleRegister(email, password)
-									: alert("Passwords do not match each other!");
-								clearFormAcc();
-							}}
-						>
+						<Button color="violet" inverted className={s.btnStyled}>
 							Create Account
 						</Button>
 					</Row>
 				</form>
 			</Col>
 			<p>
-				Already have an account? <a className={s.aStyled}>Sign in.</a>
+				Already have an account?{" "}
+				<a className={s.aStyled} onClick={() => changeRoute("/auth/login")}>
+					Sign in.
+				</a>
 			</p>
 			<span className={s.footer}>
 				<p>@Storeton</p>

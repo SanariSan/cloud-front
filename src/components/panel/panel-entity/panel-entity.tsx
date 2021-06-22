@@ -2,7 +2,7 @@ import React from "react";
 import { Col } from "react-bootstrap";
 import { useContextMenu } from "react-contexify";
 import { ContextMenu } from "../panel-context-menu";
-import 'react-contexify/dist/ReactContexify.css';
+import "react-contexify/dist/ReactContexify.css";
 import { EntityViewComponent } from "./panel-entity-view";
 
 const EntityComponent: React.FC<any> = ({
@@ -12,8 +12,9 @@ const EntityComponent: React.FC<any> = ({
 	onContextMenu,
 	iconName,
 	type, //small / big
-    entityText,
-    entityTextAlt
+	entityText,
+	entityTextAlt,
+	selected,
 }) => {
 	const menuId = `menuId_${idx}`;
 	const { show } = useContextMenu({
@@ -23,7 +24,7 @@ const EntityComponent: React.FC<any> = ({
 	return (
 		<>
 			{type === "big" ? (
-                <Col xs={10} sm={8} md={6} lg={5} xl={4} >
+				<Col xs={10} sm={8} md={6} lg={5} xl={4}>
 					<EntityViewComponent
 						iconName={iconName}
 						entityText={entityText}
@@ -35,7 +36,11 @@ const EntityComponent: React.FC<any> = ({
 					<ContextMenu id={menuId} options={menuOptions} />
 				</Col>
 			) : type === "small" ? (
-				<Col xs={16} md={6} style={{ margin: "10px"}}>
+				<Col
+					xs={16}
+					md={6}
+					style={{ margin: "10px", border: selected ? "2px solid black" : "none" }}
+				>
 					<EntityViewComponent
 						iconName={iconName}
 						entityText={entityText}

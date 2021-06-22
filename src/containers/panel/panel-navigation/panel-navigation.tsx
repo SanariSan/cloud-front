@@ -75,7 +75,7 @@ const PanelNavigationContainer: React.FC<any> = ({
 	};
 
 	const handleUpload = (event) => {
-		if (!currentGroupInfo) {
+		if (!currentGroupInfo || !event.currentTarget.files.length) {
 			return;
 		}
 

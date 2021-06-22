@@ -1,7 +1,6 @@
 import classNames from "classnames";
 import React, { useEffect, useRef, useState } from "react";
-import { Button } from "react-bootstrap";
-import { Input } from "semantic-ui-react";
+import { Input, Button } from "semantic-ui-react";
 import { Col, Container, Row } from "react-bootstrap";
 import s from "./panel-settings.module.scss";
 
@@ -95,7 +94,7 @@ const PanelSettingsComponent: React.FC<any> = ({
 							</Row>
 						</Row>
 						<Row className={s.rowSideBot}>
-							<Button active className={s.btn}>
+							<Button color="violet" inverted className={s.btn}>
 								Change
 							</Button>
 						</Row>
@@ -151,7 +150,7 @@ const PanelSettingsComponent: React.FC<any> = ({
 							</Row>
 						</Row>
 						<Row className={s.rowSideBot}>
-							<Button active className={s.btn}>
+							<Button color="violet" inverted className={s.btn}>
 								Change
 							</Button>
 						</Row>
