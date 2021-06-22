@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { PanelPrivelegeComponent } from "../../../components/panel";
 import { ResponseStatus } from "../../../helpers/services";
 import { reqPrivelege100, reqPrivelege500 } from "../../../services/privelege";
@@ -7,6 +7,13 @@ import { forceRerender } from "../../../store/forced-rerender";
 
 const PanelPrivelegeContainer: React.FC = () => {
 	const isActive = useRef(true);
+
+	useEffect(
+		() => () => {
+			isActive.current = false;
+		},
+		[],
+	);
 
 	const handleBuy100 = async () => {
 		if (!isActive.current) return;

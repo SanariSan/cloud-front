@@ -59,6 +59,7 @@ const PanelHeaderComponent: React.FC<any> = ({ toggleSidebar }) => {
 					<p className={s.pStyled}>{profileInfo?.email || "profile"}</p>
 					<Dropdown direction="left" closeOnChange={true}>
 						<Dropdown.Menu>
+                        <Dropdown.Header icon='tags' content={profileInfo?.email || "profile"} />
 							<Dropdown.Item
 								text="Settings"
 								onClick={() => changeRoute("/panel/settings")}

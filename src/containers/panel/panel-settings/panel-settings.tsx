@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { PanelSettingsComponent } from "../../../components/panel";
 import { ResponseStatus } from "../../../helpers/services";
 import { reqAccessChangePassword } from "../../../services/access";
@@ -8,6 +8,13 @@ import { forceRerender } from "../../../store/forced-rerender";
 
 const PanelSettingsContainer: React.FC = () => {
 	const isActive = useRef(true);
+
+	useEffect(
+		() => () => {
+			isActive.current = false;
+		},
+		[],
+	);
 
 	const handleChnagePasswordAcc = async (oldPassword, newPassword) => {
 		if (!isActive.current) return;

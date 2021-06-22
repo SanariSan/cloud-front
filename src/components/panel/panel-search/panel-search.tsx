@@ -1,7 +1,7 @@
 import { Button, Col, Container, Row } from "react-bootstrap";
 import { Input } from "semantic-ui-react";
 import classNames from "classnames";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { EntityComponent } from "../panel-entity";
 import s from "./panel-search.module.scss";
 
@@ -14,24 +14,34 @@ const PanelSearchComponent: React.FC<any> = ({
 	const [groupName, setGroupName] = useState<string>("");
 	const [email, setEmail] = useState<string>("");
 
-    const [selectedGroup, setSelectedGroup] = useState<{
-        ownerId; ownerName;
-        ownerEmail; groupId; groupName } | null>(
-		null,
+	const [selectedGroup, setSelectedGroup] = useState<{
+		ownerId;
+		ownerName;
+		ownerEmail;
+		groupId;
+		groupName;
+	} | null>(null);
+
+	useEffect(
+		() => () => {
+			isActive.current = false;
+		},
+		[],
 	);
 
-	let groups = groupsFound.map(({ ownerId,ownerName,
-        ownerEmail, groupId, groupName }, idx) => {
+	let groups = groupsFound.map(({ ownerId, ownerName, ownerEmail, groupId, groupName }, idx) => {
 		return (
 			<EntityComponent
-                idx={idx}
-                menuOptions={[]}
-                onClick={() => setSelectedGroup({ ownerId, ownerName, ownerEmail, groupId, groupName })}
-                onContextMenu={() => { }}
-                iconName={"folder open"}
-                type={"small"}
-                entityText={`Group name: ${groupName}`}
-                entityTextAlt={`Owner info: ${ownerEmail || "-"}`}
+				idx={idx}
+				menuOptions={[]}
+				onClick={() =>
+					setSelectedGroup({ ownerId, ownerName, ownerEmail, groupId, groupName })
+				}
+				onContextMenu={() => {}}
+				iconName={"folder open"}
+				type={"small"}
+				entityText={`Group name: ${groupName}`}
+				entityTextAlt={`Owner info: ${ownerEmail || "-"}`}
 			/>
 		);
 	});
@@ -40,7 +50,14 @@ const PanelSearchComponent: React.FC<any> = ({
 		<Container fluid className={classNames(s.fullSize, s.scroll)}>
 			<Row className={classNames(s.fullSize, s.settingsBlocksWrap)}>
 				<Col xs={13} lg={7} className={classNames(s.settingsBlockLeft)}>
-					<form className={s.formStyled}>
+					<form
+						className={s.formStyled}
+						onSubmit={async (e) => {
+							e.preventDefault();
+
+							isActive.current && handleGroupSearch(groupName, email);
+						}}
+					>
 						<Row className={s.rowSideTop}>Search for spaces</Row>
 						<Row className={s.rowMiddle}>
 							<Row className={s.fieldWrap}>
@@ -68,13 +85,7 @@ const PanelSearchComponent: React.FC<any> = ({
 							</Row>
 						</Row>
 						<Row className={s.rowSideBot}>
-							<Button
-								active
-								className={s.btn}
-								onClick={() =>
-									isActive.current && handleGroupSearch(groupName, email)
-								}
-							>
+							<Button active className={s.btn}>
 								Search
 							</Button>
 						</Row>
@@ -83,28 +94,18 @@ const PanelSearchComponent: React.FC<any> = ({
 
 				<Col xs={13} lg={7} className={classNames(s.settingsBlockRight)}>
 					<form
-						style={{
-							width: "100%",
-							height: "100%",
-							overflow: "hidden",
-							paddingLeft: "10px",
-							paddingRight: "10px",
+						className={s.formStyled}
+						onSubmit={(e) => {
+							e.preventDefault();
+							isActive.current && handleGroupJoin(selectedGroup);
 						}}
 					>
 						<Row className={s.rowSideTop}>Results</Row>
 						<Row className={s.rowMiddle}>
-							<Row className={s.fieldWrap}>
-								{groups}
-							</Row>
+							<Row className={s.fieldWrap}>{groups}</Row>
 						</Row>
 						<Row className={s.rowSideBot}>
-							<Button
-								active
-								className={s.btn}
-								onClick={async () => {
-									handleGroupJoin(selectedGroup);
-								}}
-							>
+							<Button active className={s.btn}>
 								Join
 							</Button>
 						</Row>
