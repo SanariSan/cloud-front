@@ -79,20 +79,36 @@ const PanelContainer: React.FC<RouteComponentProps> = () => {
 		}
 	}, [forcedRerender]); //destructured parameter is undefined once!!
 
+    useEffect(() => {
+		if (isActive.current && currentGroupInfo) {
+			toggleBlockLoader(true);
+
+			reqGroupInfo({ id: currentGroupInfo.id })
+				.then(async ({ code, message, data }) => {
+					updateCurrentGroupInfo({
+						id: data.groupInfo.id,
+						name: data.groupInfo.name,
+						groupParticipants: data.groupParticipants,
+					});
+				})
+				.catch((err) => {
+					if (err.status === ResponseStatus.BAD_REQUEST) {
+						alert(err.message);
+					}
+				})
+				.finally(() => {
+					toggleBlockLoader(false);
+				});
+		}
+	}, []);
+
 	useEffect(() => {
-		//groupInfo
-		//storageSize
 		if (isActive.current && currentGroupInfo) {
 			toggleBlockLoader(true);
 
 			reqGroupInfo({ id: currentGroupInfo.id })
 				.then(async ({ code, message, data }) => {
 					updateStorageInfo(data.storageInfo);
-					updateCurrentGroupInfo({
-						id: data.groupInfo.id,
-						name: data.groupInfo.name,
-						groupParticipants: data.groupParticipants,
-					});
 				})
 				.catch((err) => {
 					if (err.status === ResponseStatus.BAD_REQUEST) {

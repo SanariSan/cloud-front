@@ -1,9 +1,19 @@
 @import "../../../scss/index.custom";
 
-.settingsBlock {
+.settingsBlockLeft {
 	border: 1px solid gray;
 	border-radius: 10px;
-	height: calc(65vh + 45px);
+	height: calc(40vh + 55px);
+	margin: 10%;
+	margin-right: 0px;
+	margin-left: 50px;
+	padding: 0px !important;
+}
+
+.settingsBlockRight {
+	border: 1px solid gray;
+	border-radius: 10px;
+	height: calc(40vh + 55px);
 	margin: 10%;
 	margin-right: 0px;
 	margin-left: 50px;
@@ -60,7 +70,7 @@ input {
 
 .rowSideBot {
 	padding: 3% 3% 3% 3% !important;
-	height: 15% !important;
+	height: 20% !important;
 
 	justify-content: flex-end;
 	.btn {
@@ -74,7 +84,8 @@ input {
 	border-left: none;
 	border-right: none;
 	// border-radius: 10px;
-	height: 70%;
-	padding: 5% !important;
+	height: 65%;
+	padding: 1% !important;
+    overflow-y: scroll;
 	// overflow-x: scroll;
 }

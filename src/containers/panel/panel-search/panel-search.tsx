@@ -7,7 +7,9 @@ import { forceRerender } from "../../../store/forced-rerender";
 
 const PanelSearchContainer: React.FC = () => {
 	const isActive = useRef(true);
-	const [groupsFound, setGroupsFound] = useState<{ ownerId; groupId; groupName }[]>([]);
+    const [groupsFound, setGroupsFound] = useState < {
+        ownerId; ownerName;
+        ownerEmail; groupId; groupName }[]>([]);
 
 	useEffect(
 		() => () => {

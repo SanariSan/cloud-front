@@ -9,6 +9,7 @@ interface IEntityComponentProps {
 	onClick: MouseEventHandler<HTMLDivElement>;
 	onContextMenu: MouseEventHandler<HTMLDivElement>;
 	entityTextAlt?: string;
+	type: string;
 }
 
 const EntityViewComponent: React.FC<IEntityComponentProps> = ({
@@ -17,20 +18,34 @@ const EntityViewComponent: React.FC<IEntityComponentProps> = ({
 	entityTextAlt,
 	onClick,
 	onContextMenu,
+	type,
 }) => {
 	return (
-		<div className={s.entity} onClick={onClick} onContextMenu={onContextMenu}>
+		<div
+			className={type === "big" ? s.entityBig : s.entitySmall}
+			onClick={onClick}
+			onContextMenu={onContextMenu}
+		>
 			<Container className={s.containerStyled}>
 				<Row className={s.rowTop}>
 					<Col className={s.colTopStyled}>
-						<Icon size="massive" name={iconName} className={s.iconTopStyled} />
+						<Icon
+							size={type === "big" ? "massive" : "huge"}
+							name={iconName}
+							className={s.iconTopStyled}
+						/>
 					</Col>
 				</Row>
 				<Row className={s.rowBot}>
-					<Icon size="large" name={iconName} className={s.iconBotStyled} />
+					<Icon
+						size={type === "big" ? "large" : "small"}
+						name={iconName}
+						className={s.iconBotStyled}
+						style={{ display: type === "big" ? "block" : "none" }}
+					/>
 					<Col className={s.colBotStyled}>
-						<p>{entityText}</p>
-						<p>{entityTextAlt}</p>
+                        <p className={s.pStyled}>{entityText}</p>
+						<p>{entityTextAlt || ""}</p>
 					</Col>
 				</Row>
 			</Container>

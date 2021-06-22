@@ -49,7 +49,7 @@ const PanelBrowseContainer: React.FC = () => {
 					if (
 						[ResponseStatus.BAD_REQUEST, ResponseStatus.FORBIDDEN].includes(err.status)
 					) {
-						alert(err.message);
+						// alert(err.message);
 					}
 				})
 				.finally(() => {

@@ -64,6 +64,7 @@ const PanelBrowseFilesComponent: React.FC<any> = ({
 				onClick={(event) => onClickFolder(event, el)}
 				onContextMenu={onContextMenu}
 				iconName={"folder open"}
+				type={"big"}
 				entityText={el}
 			/>
 		);
@@ -77,6 +78,7 @@ const PanelBrowseFilesComponent: React.FC<any> = ({
 				onClick={(event) => onClickFile(event, el)}
 				onContextMenu={onContextMenu}
 				iconName={"file"}
+                type={"big"}
 				entityText={el}
 			/>
 		);
@@ -129,7 +131,10 @@ const PanelBrowseFilesComponent: React.FC<any> = ({
 						<Col>
 							<p>{pathTrackerButtons}</p>
 						</Col>
-						<Col xs={2} style={{ display: "flex", justifyContent: "end" }}>
+						<Col
+							xs={2}
+							style={{ display: "flex", justifyContent: "end", marginRight: "10px" }}
+						>
 							<Menu icon vertical>
 								<Dropdown direction="left" pointing="left" item placeholder={"👥"}>
 									<Dropdown.Menu>
