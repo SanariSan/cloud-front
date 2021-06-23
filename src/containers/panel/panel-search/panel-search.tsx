@@ -7,9 +7,15 @@ import { forceRerender } from "../../../store/forced-rerender";
 
 const PanelSearchContainer: React.FC = () => {
 	const isActive = useRef(true);
-    const [groupsFound, setGroupsFound] = useState < {
-        ownerId; ownerName;
-        ownerEmail; groupId; groupName }[]>([]);
+	const [groupsFound, setGroupsFound] = useState<
+		{
+			ownerId;
+			ownerName;
+			ownerEmail;
+			groupId;
+			groupName;
+		}[]
+	>([]);
 
 	useEffect(
 		() => () => {
@@ -19,32 +25,32 @@ const PanelSearchContainer: React.FC = () => {
 	);
 
 	const handleGroupSearch = async (groupName, email) => {
-		if (isActive.current) {
-			toggleBlockLoader(true);
+		if (!isActive.current) return;
+		toggleBlockLoader(true);
 
-			let res;
+		let res;
 
-			if (groupName) {
-				res = await reqGroupSearchByName({ groupName }).catch((err) => {
-					if (err.status === ResponseStatus.BAD_REQUEST) {
-						alert(err.message);
-					}
-				});
-			} else {
-				res = await reqGroupSearchByEmail({ ownerEmail: email }).catch((err) => {
-					if (err.status === ResponseStatus.BAD_REQUEST) {
-						alert(err.message);
-					}
-				});
-			}
-
-			toggleBlockLoader(false);
-			if (!res) {
-				return;
-			}
-
-			await setGroupsFound(res.data);
+		if (groupName) {
+			res = await reqGroupSearchByName({ groupName }).catch((err) => {
+				if (err.status === ResponseStatus.BAD_REQUEST) {
+					alert(err.message);
+				}
+			});
+		} else {
+			res = await reqGroupSearchByEmail({ ownerEmail: email }).catch((err) => {
+				if (err.status === ResponseStatus.BAD_REQUEST) {
+					alert(err.message);
+				}
+			});
 		}
+
+		toggleBlockLoader(false);
+
+		if (!res) {
+			return;
+		}
+
+		await setGroupsFound(res.data);
 	};
 
 	const handleGroupJoin = async ({ ownerId, groupId, groupName }) => {
@@ -55,6 +61,9 @@ const PanelSearchContainer: React.FC = () => {
 		toggleBlockLoader(true);
 
 		await reqGroupJoin({ groupId, password })
+			.then((data) => {
+				alert(data.message);
+			})
 			.then(forceRerender)
 			.catch((err) => {
 				if (err.status === ResponseStatus.BAD_REQUEST) {

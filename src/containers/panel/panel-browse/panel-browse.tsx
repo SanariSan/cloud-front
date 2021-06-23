@@ -1,6 +1,7 @@
 import { useAtom } from "@dbeining/react-atom";
 import mime from "mime-types";
 import React, { useEffect, useRef, useState } from "react";
+import { Icon } from "semantic-ui-react";
 import { PanelBrowseFilesComponent } from "../../../components/panel";
 import { ResponseStatus } from "../../../helpers/services";
 import { reqFsBrowse, reqFsDelete, reqFsDownload, reqFsRename } from "../../../services/fs";
@@ -8,20 +9,16 @@ import { reqGroupKick } from "../../../services/group";
 import { toggleBlockLoader } from "../../../store/block-loader";
 import { currentGroupInfoAtom } from "../../../store/current-group";
 import { forcedRerenderAtom, forceRerender } from "../../../store/forced-rerender";
-import { groupOwnageAtom } from "../../../store/group-ownage";
 import { pathAtom, updatePath } from "../../../store/path";
-import { profileInfoAtom } from "../../../store/profile-info";
+import { translateAtom } from "../../../store/translate";
+import s from "./panel-browse.module.scss";
 
 const PanelBrowseContainer: React.FC = () => {
-	//browse path state
-	//effects for update list
-	//calls to api for actions, pass them as props
 	const isActive = useRef(true);
+	const translated = useAtom(translateAtom);
 	const currentGroupInfo = useAtom(currentGroupInfoAtom);
 	const path = useAtom(pathAtom);
 	const forcedRerender = useAtom(forcedRerenderAtom);
-	const groupOwnage = useAtom(groupOwnageAtom);
-	const profileInfo = useAtom(profileInfoAtom);
 	const [currentPathContent, setCurrentPathContent] = useState({ files: [], folders: [] });
 
 	useEffect(
@@ -38,24 +35,21 @@ const PanelBrowseContainer: React.FC = () => {
 	}, [currentGroupInfo]);
 
 	useEffect(() => {
-		if (isActive.current && currentGroupInfo && currentGroupInfo.id) {
-			toggleBlockLoader(true);
+		if (!isActive.current || !currentGroupInfo) return;
+		toggleBlockLoader(true);
 
-			reqFsBrowse({ groupId: currentGroupInfo.id, path })
-				.then(({ data }) => {
-					setCurrentPathContent({ ...data });
-				})
-				.catch((err) => {
-					if (
-						[ResponseStatus.BAD_REQUEST, ResponseStatus.FORBIDDEN].includes(err.status)
-					) {
-						// alert(err.message);
-					}
-				})
-				.finally(() => {
-					toggleBlockLoader(false);
-				});
-		}
+		reqFsBrowse({ groupId: currentGroupInfo.id, path })
+			.then(({ data }) => {
+				setCurrentPathContent({ ...data });
+			})
+			.catch((err) => {
+				if ([ResponseStatus.BAD_REQUEST, ResponseStatus.FORBIDDEN].includes(err.status)) {
+					// alert(err.message);
+				}
+			})
+			.finally(() => {
+				toggleBlockLoader(false);
+			});
 	}, [path, currentGroupInfo, forcedRerender]);
 
 	const onClickFolder: any = (event, elName) => {
@@ -67,7 +61,7 @@ const PanelBrowseContainer: React.FC = () => {
 	const onClickFile: any = (event, elName) => {
 		event.preventDefault();
 
-		alert("This is file, can't do anything here");
+		// alert("This is file, can't do anything here");
 	};
 	const onContextMenu: any = async (event, show) => {
 		event.preventDefault();
@@ -235,8 +229,6 @@ const PanelBrowseContainer: React.FC = () => {
 				<PanelBrowseFilesComponent
 					currentPathContent={currentPathContent}
 					currentGroupInfo={currentGroupInfo}
-					groupOwnage={groupOwnage}
-					profileInfo={profileInfo}
 					onClickFolder={onClickFolder}
 					onClickFile={onClickFile}
 					onContextMenu={onContextMenu}
@@ -249,7 +241,23 @@ const PanelBrowseContainer: React.FC = () => {
 					handleGroupKick={handleGroupKick}
 				/>
 			) : (
-				<p>PLEASE CHOOSE GROUP TO START WORKING!</p>
+				<div className={s.placeHolder}>
+					<span className={s.arrowWrap}>
+						<Icon name="long arrow alternate up" size="huge" className={s.iconStyled} />
+					</span>
+					<h1>
+						{translated
+							? "ПОЖАЛУЙСТА ВЫБЕРИТЕ ГРУППУ ДЛЯ НАЧАЛА РАБОТЫ!"
+							: "PLEASE CHOOSE GROUP TO START WORKING!"}
+					</h1>
+					<span className={s.arrowWrap}>
+						<Icon
+							name="long arrow alternate left"
+							size="huge"
+							className={s.iconStyled}
+						/>
+					</span>
+				</div>
 			)}
 		</>
 	);

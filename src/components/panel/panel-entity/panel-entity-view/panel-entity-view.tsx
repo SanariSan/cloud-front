@@ -44,7 +44,7 @@ const EntityViewComponent: React.FC<IEntityComponentProps> = ({
 						style={{ display: type === "big" ? "block" : "none" }}
 					/>
 					<Col className={s.colBotStyled}>
-                        <p className={s.pStyled}>{entityText}</p>
+						<p className={s.pStyled}>{entityText}</p>
 						<p>{entityTextAlt || ""}</p>
 					</Col>
 				</Row>

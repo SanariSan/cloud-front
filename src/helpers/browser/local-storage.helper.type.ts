@@ -5,6 +5,7 @@ type ILocalStorageKey =
 	| "userGroupOwnage"
 	| "userGroupsList"
 	| "currentGroupInfo"
-	| "storageInfo";
+	| "storageInfo"
+	| "translate";
 
 export type { ILocalStorageKey };

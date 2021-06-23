@@ -24,19 +24,19 @@ const PanelHeaderComponent: React.FC<any> = ({ toggleSidebar }) => {
 	);
 
 	const logout = async () => {
-		if (isActive.current) {
-			toggleBlockLoader(true);
+		if (!isActive.current) return;
 
-			await reqAccessLogout().catch((err) => {
-				if (err.status === ResponseStatus.BAD_REQUEST) {
-					alert(err.message);
-				}
-			});
+		toggleBlockLoader(true);
 
-			clearWholeLocalStorage();
-			changeRoute("/auth");
-			toggleBlockLoader(false);
-		}
+		await reqAccessLogout().catch((err) => {
+			if (err.status === ResponseStatus.BAD_REQUEST) {
+				alert(err.message);
+			}
+		});
+
+		clearWholeLocalStorage();
+		isActive.current && changeRoute("/auth");
+		toggleBlockLoader(false);
 	};
 
 	return (
@@ -59,7 +59,10 @@ const PanelHeaderComponent: React.FC<any> = ({ toggleSidebar }) => {
 					<p className={s.pStyled}>{profileInfo?.email || "profile"}</p>
 					<Dropdown direction="left" closeOnChange={true}>
 						<Dropdown.Menu>
-                        <Dropdown.Header icon='tags' content={profileInfo?.email || "profile"} />
+							<Dropdown.Header
+								icon="tags"
+								content={profileInfo?.email || "profile"}
+							/>
 							<Dropdown.Item
 								text="Settings"
 								onClick={() => changeRoute("/panel/settings")}

@@ -4,6 +4,7 @@ import { useContextMenu } from "react-contexify";
 import { ContextMenu } from "../panel-context-menu";
 import "react-contexify/dist/ReactContexify.css";
 import { EntityViewComponent } from "./panel-entity-view";
+import s from "./panel-entity.module.scss";
 
 const EntityComponent: React.FC<any> = ({
 	idx,
@@ -39,7 +40,10 @@ const EntityComponent: React.FC<any> = ({
 				<Col
 					xs={16}
 					md={6}
-					style={{ margin: "10px", border: selected ? "2px solid black" : "none" }}
+					style={{
+						boxShadow: selected ? "0px 0px 10px 1px #8cbbf0" : "none",
+					}}
+					className={s.wrap}
 				>
 					<EntityViewComponent
 						iconName={iconName}

@@ -7,13 +7,11 @@ import { reqProfileInfo } from "../../services/get-info";
 import { reqGroupCreate } from "../../services/group";
 import { toggleBlockLoader } from "../../store/block-loader";
 import { updateGroupOwnage } from "../../store/group-ownage";
-import { keystoreAtom } from "../../store/keystore";
 import { updateProfileInfo } from "../../store/profile-info";
 import { updateUserGroupsList, userGroupsListAtom } from "../../store/user-groups";
 
 const BlockCreateGroupContainer: React.FC<any> = () => {
 	const isActive = useRef(true);
-	const keystore = useAtom(keystoreAtom);
 	const userGroupsList = useAtom(userGroupsListAtom);
 
 	useEffect(

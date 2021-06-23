@@ -4,6 +4,8 @@ import classNames from "classnames";
 import React, { useEffect, useRef, useState } from "react";
 import { EntityComponent } from "../panel-entity";
 import s from "./panel-search.module.scss";
+import { translateAtom } from "../../../store/translate";
+import { useAtom } from "@dbeining/react-atom";
 
 const PanelSearchComponent: React.FC<any> = ({
 	handleGroupSearch,
@@ -11,6 +13,7 @@ const PanelSearchComponent: React.FC<any> = ({
 	groupsFound,
 }) => {
 	const isActive = useRef(true);
+	const translated = useAtom(translateAtom);
 	const [groupName, setGroupName] = useState<string>("");
 	const [email, setEmail] = useState<string>("");
 
@@ -42,9 +45,7 @@ const PanelSearchComponent: React.FC<any> = ({
 				type={"small"}
 				entityText={`Group name: ${groupName}`}
 				entityTextAlt={`Owner info: ${ownerEmail || "-"}`}
-				selected={{
-					border: selectedGroup && selectedGroup.groupId === groupId ? true : false,
-				}}
+				selected={selectedGroup && selectedGroup.groupId === groupId ? true : false}
 			/>
 		);
 	});
@@ -63,7 +64,9 @@ const PanelSearchComponent: React.FC<any> = ({
 								handleGroupSearch(groupName, email);
 						}}
 					>
-						<Row className={s.rowSideTop}>Search for spaces</Row>
+						<Row className={s.rowSideTop}>
+							{translated ? "Поиск групп" : "Search for spaces"}
+						</Row>
 						<Row className={s.rowMiddle}>
 							<Row className={s.fieldWrap}>
 								<Input
@@ -76,7 +79,9 @@ const PanelSearchComponent: React.FC<any> = ({
 									className={s.Input}
 								/>
 							</Row>
-							<p style={{ paddingLeft: "15px", fontSize: "0.8rem" }}>OR</p>
+							<p style={{ paddingLeft: "15px", fontSize: "0.8rem" }}>
+								{translated ? "ИЛИ" : "OR"}
+							</p>
 							<Row className={s.fieldWrap}>
 								<Input
 									label={"User email"}
@@ -111,8 +116,8 @@ const PanelSearchComponent: React.FC<any> = ({
 							isActive.current && selectedGroup && handleGroupJoin(selectedGroup);
 						}}
 					>
-						<Row className={s.rowSideTop}>Results</Row>
-						<Row className={s.rowMiddle}>
+						<Row className={s.rowSideTop}>{translated ? "Результаты" : "Results"}</Row>
+						<Row className={classNames(s.rowMiddle, s.scroll)}>
 							<Row className={s.fieldWrap}>{groups}</Row>
 						</Row>
 						<Row className={s.rowSideBot}>

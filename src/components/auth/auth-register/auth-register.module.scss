@@ -14,6 +14,7 @@
 
 .imgStyled {
 	width: 250px !important;
+	cursor: pointer;
 }
 
 .aStyled {
@@ -34,8 +35,10 @@
 }
 
 .rowSideTop {
+	width: 100%;
 	height: 15%;
 	align-items: center;
+	text-align: center;
 }
 
 .h1Styled {
@@ -52,14 +55,14 @@
 }
 
 .rowMiddle {
+	width: 100%;
 	height: 70%;
-	padding: 5% !important;
 	display: flex;
 	justify-content: center;
 }
 
 .rowSideBot {
-	padding: 3% 3% 3% 3% !important;
+	padding: 5% 3% 5% 3% !important;
 	height: 15% !important;
 	width: 100%;
 	margin-bottom: 10px;
@@ -112,7 +115,8 @@ input {
 }
 
 .btnStyled {
-	width: 92%;
+	// padding: 5px auto 5px auto !important;
+	// width: 80%;
 }
 
 .fullSize {

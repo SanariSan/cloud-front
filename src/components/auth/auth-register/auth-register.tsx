@@ -1,13 +1,16 @@
+import { useAtom } from "@dbeining/react-atom";
 import classNames from "classnames";
 import React, { useEffect, useRef, useState } from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import { Icon, Input, Menu, Image, Button } from "semantic-ui-react";
-import s from "./auth-register.module.scss";
+import { Col, Container, Row } from "react-bootstrap";
+import { Button, Image, Input } from "semantic-ui-react";
 import logo from "../../../img/logo_alt.png";
+import { translateAtom } from "../../../store/translate";
 import { changeRoute } from "../../history";
+import s from "./auth-register.module.scss";
 
 const AuthRegisterComponent: React.FC<any> = ({ handleRegister, errMessage, setErrMessage }) => {
 	const isActive = useRef(true);
+	const translated = useAtom(translateAtom);
 	const [email, setEmail] = useState<string>("");
 	const [password, setPassword] = useState<string>("");
 	const [passwordRepeat, setPasswordRepeat] = useState<string>("");
@@ -28,20 +31,26 @@ const AuthRegisterComponent: React.FC<any> = ({ handleRegister, errMessage, setE
 	);
 	return (
 		<Container fluid className={classNames(s.fullSize, s.scroll, s.globalWrap)}>
-			<Image className={s.imgStyled} src={logo} />
+			<Image
+				className={s.imgStyled}
+				src={logo}
+				onClick={() => isActive.current && changeRoute("/")}
+			/>
 			<Col xs={13} lg={7} className={classNames(s.authBlock)}>
 				<form
 					className={s.formStyled}
 					onSubmit={async (e) => {
 						e.preventDefault();
 						password === passwordRepeat
-							? await handleRegister(email, password)
+							? isActive.current && (await handleRegister(email, password))
 							: alert("Passwords do not match each other!");
-						clearFormAcc();
+						isActive.current && clearFormAcc();
 					}}
 				>
 					<Row className={s.rowSideTop}>
-						<h1 className={s.h1Styled}>Create a new account</h1>
+						<h1 className={s.h1Styled}>
+							{translated ? "Создайте новый аккаунт" : "Create a new account"}
+						</h1>
 					</Row>
 					<Row className={s.rowMiddle}>
 						<Row className={s.fieldWrap}>
@@ -80,44 +89,21 @@ const AuthRegisterComponent: React.FC<any> = ({ handleRegister, errMessage, setE
 					</Row>
 					<Row className={s.rowSideBot}>
 						<Button color="violet" inverted className={s.btnStyled}>
-							Create Account
+							{translated ? "Создать аккаунт" : "Create Account"}
 						</Button>
 					</Row>
 				</form>
 			</Col>
 			<p>
-				Already have an account?{" "}
+				{translated ? "Уже есть аккаунт? " : "Already have an account? "}
 				<a className={s.aStyled} onClick={() => changeRoute("/auth/login")}>
-					Sign in.
+					{translated ? "Войти." : "Sign in."}
 				</a>
 			</p>
 			<span className={s.footer}>
 				<p>@Storeton</p>
 			</span>
 		</Container>
-		// <Container>
-		// 	<Menu.Item as="a" onClick={() => changeRoute("/panel")}>
-		// 		<Icon name="lock" />
-		// 		Panel
-		// 	</Menu.Item>
-		// 	<Menu.Item as="a" onClick={() => changeRoute("/auth/login")}>
-		// 		<Icon name="lock" />
-		// 		Login
-		// 	</Menu.Item>
-		// 	<Input
-		// 		label={"login"}
-		// 		value={login}
-		// 		onChange={(event) => setLogin(event.currentTarget.value)}
-		// 	/>
-		// 	<Input
-		// 		label={"password"}
-		// 		value={password}
-		// 		onChange={(event) => setPassword(event.currentTarget.value)}
-		// 	/>
-		// 	<Button active onClick={() => handleRegister(login, password)}>
-		// 		Register
-		// 	</Button>
-		// </Container>
 	);
 };
 

@@ -1,15 +1,15 @@
 import React, { useEffect, useRef } from "react";
 import { Col, Container, Row } from "react-bootstrap";
-import { Button, Dropdown, Menu, Icon } from "semantic-ui-react";
+import { Button, Dropdown, Icon, Menu } from "semantic-ui-react";
 import { updatePath } from "../../../store/path";
 import { EntityComponent } from "../panel-entity";
 import s from "./panel-browse.module.scss";
+import { translateAtom } from "../../../store/translate";
+import { useAtom } from "@dbeining/react-atom";
 
 const PanelBrowseFilesComponent: React.FC<any> = ({
 	currentPathContent,
 	currentGroupInfo,
-	profileInfo,
-	groupOwnage,
 	onClickFolder,
 	onClickFile,
 	onContextMenu,
@@ -22,6 +22,7 @@ const PanelBrowseFilesComponent: React.FC<any> = ({
 	handleGroupKick,
 }) => {
 	const isActive = useRef(true);
+	const translated = useAtom(translateAtom);
 
 	const menuOptionsFolder = (idx) => [
 		{
@@ -78,7 +79,7 @@ const PanelBrowseFilesComponent: React.FC<any> = ({
 				onClick={(event) => onClickFile(event, el)}
 				onContextMenu={onContextMenu}
 				iconName={"file"}
-                type={"big"}
+				type={"big"}
 				entityText={el}
 			/>
 		);
@@ -121,7 +122,9 @@ const PanelBrowseFilesComponent: React.FC<any> = ({
 		<Container fluid className={s.containerStyled}>
 			<Row className={s.rowTopStyled}>
 				<Col xs={16}>
-					<h1 style={{ paddingLeft: "5px" }}>File Manager</h1>
+					<h1 style={{ paddingLeft: "5px" }}>
+						{translated ? "Файловый менеджер" : "File Manager"}
+					</h1>
 				</Col>
 			</Row>
 			<hr className={s.hrStyled} />

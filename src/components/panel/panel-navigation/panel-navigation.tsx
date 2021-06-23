@@ -4,6 +4,8 @@ import { Col, Container, Row } from "react-bootstrap";
 import { Dropdown, Icon, Menu } from "semantic-ui-react";
 import { changeRoute } from "../../history";
 import s from "./panel-navigation.module.scss";
+import { translateAtom } from "../../../store/translate";
+import { useAtom } from "@dbeining/react-atom";
 
 const PanelNavigationComponent: React.FC<any> = ({
 	storageInfo,
@@ -14,6 +16,8 @@ const PanelNavigationComponent: React.FC<any> = ({
 	handleUpload,
 	handleCreateFolder,
 }) => {
+	const translated = useAtom(translateAtom);
+
 	return (
 		<Container className={s.containerCustom}>
 			<div className={s.wrapTop}>
@@ -45,17 +49,17 @@ const PanelNavigationComponent: React.FC<any> = ({
 						<Menu secondary vertical>
 							<Menu.Item as="a" onClick={() => changeRoute("/panel/browse")}>
 								<Icon name="file" />
-								File Manager
+								{translated ? "Файловый менеджер" : "File Manager"}
 							</Menu.Item>
 
 							<Menu.Item as="a" onClick={() => changeRoute("/panel/search")}>
 								<Icon name="search" />
-								Spaces search
+								{translated ? "Поиск групп" : "Spaces search"}
 							</Menu.Item>
 
 							<Menu.Item as="a" onClick={() => changeRoute("/panel/privelege")}>
 								<Icon name="money" />
-								Privelege
+								{translated ? "Привилегия" : "Privelege"}
 							</Menu.Item>
 						</Menu>
 					</Col>
@@ -71,6 +75,8 @@ const PanelNavigationComponent: React.FC<any> = ({
 								? `${Math.round(storageInfo.sizeUsed)} MB of ${Math.round(
 										storageInfo.sizeMax,
 								  )} MB used`
+								: translated
+								? "Пожалуйста, выберите группу или присоединитесь к новой!"
 								: "Please, select group or join one!"}
 						</p>
 					</Col>
@@ -84,9 +90,9 @@ const PanelNavigationComponent: React.FC<any> = ({
 						{groupOwnage &&
 							currentGroupInfo &&
 							groupOwnage.id === currentGroupInfo.id &&
-							"You own this group"}
+							(translated ? "Вы владелец" : "You own this group")}
 						<Dropdown
-							placeholder={"Select group"}
+							placeholder={translated ? "Выберите группу" : "Select group"}
 							upward
 							floating
 							options={selectGroupOptions}

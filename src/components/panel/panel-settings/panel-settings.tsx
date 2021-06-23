@@ -1,7 +1,9 @@
+import { useAtom } from "@dbeining/react-atom";
 import classNames from "classnames";
 import React, { useEffect, useRef, useState } from "react";
-import { Input, Button } from "semantic-ui-react";
 import { Col, Container, Row } from "react-bootstrap";
+import { Button, Input } from "semantic-ui-react";
+import { translateAtom } from "../../../store/translate";
 import s from "./panel-settings.module.scss";
 
 const PanelSettingsComponent: React.FC<any> = ({
@@ -9,6 +11,7 @@ const PanelSettingsComponent: React.FC<any> = ({
 	handleChnagePasswordGroup,
 }) => {
 	const isActive = useRef(true);
+	const translated = useAtom(translateAtom);
 
 	const [oldPassAcc, setOldPassAcc] = useState<string>("");
 	const [newPassAcc, setNewPassAcc] = useState<string>("");
@@ -51,12 +54,15 @@ const PanelSettingsComponent: React.FC<any> = ({
 							e.preventDefault();
 
 							newPassAcc === newPassAccRepeat
-								? await handleChnagePasswordAcc(oldPassAcc, newPassAcc)
+								? isActive.current &&
+								  (await handleChnagePasswordAcc(oldPassAcc, newPassAcc))
 								: alert("Passwords do not match each other!");
-							clearFormAcc();
+							isActive.current && clearFormAcc();
 						}}
 					>
-						<Row className={s.rowSideTop}>Change Account Password</Row>
+						<Row className={s.rowSideTop}>
+							{translated ? "Изменить пароль аккаунта" : "Change Account Password"}
+						</Row>
 						<Row className={s.rowMiddle}>
 							<Row className={s.fieldWrap}>
 								<Input
@@ -107,12 +113,15 @@ const PanelSettingsComponent: React.FC<any> = ({
 							e.preventDefault();
 
 							newPassGroup === newPassGroupRepeat
-								? await handleChnagePasswordGroup(oldPassGroup, newPassGroup)
+								? isActive.current &&
+								  (await handleChnagePasswordGroup(oldPassGroup, newPassGroup))
 								: alert("Passwords do not match each other!");
-							clearFormGroup();
+							isActive.current && clearFormGroup();
 						}}
 					>
-						<Row className={s.rowSideTop}>Change Group Password</Row>
+						<Row className={s.rowSideTop}>
+							{translated ? "Изменить пароль группы" : "Change Group Password"}
+						</Row>
 						<Row className={s.rowMiddle}>
 							<Row className={s.fieldWrap}>
 								<Input

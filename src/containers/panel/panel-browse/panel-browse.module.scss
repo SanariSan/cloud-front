@@ -1,0 +1,17 @@
+.placeHolder {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-between;
+	height: 100%;
+}
+
+.arrowWrap {
+	width: 100%;
+	padding-left: calc(5vw + 100px);
+	display: flex;
+	align-items: flex-start;
+}
+
+.iconStyled {
+}

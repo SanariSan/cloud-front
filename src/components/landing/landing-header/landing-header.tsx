@@ -1,59 +1,56 @@
-import axios, { AxiosError } from "axios";
-import React, { useState } from "react";
-import { Button, Container } from "react-bootstrap";
-import { Icon, Input, Menu } from "semantic-ui-react";
-import { reqFsDownload } from "../../../services/fs";
-import { reqGroupCreate } from "../../../services/group";
+import { useAtom } from "@dbeining/react-atom";
+import React from "react";
+import { Col, Container } from "react-bootstrap";
+import { Button, Image } from "semantic-ui-react";
+import logo from "../../../img/logo.png";
+import { toggleTranslate, translateAtom } from "../../../store/translate";
 import { changeRoute } from "../../history";
+import s from "./landing-header.module.scss";
 
 const LandingHeaderComponent: React.FC = () => {
-	const [req, setReq] = useState<any>(`{
-        "method": "POST",
-        "url": "http://localhost:3000/v1/xxx",
-        "headers": {
-            "Authorization": "Bearer 123"
-        },
-        "data": {
-            "x": "345"
-        }
-    }`);
-
-	const handleReq = async () => {
-		const resp = await axios({
-			...JSON.parse(req),
-		}).catch((err: AxiosError) => {
-			console.log(err.response);
-			console.log(err.message);
-		});
-
-		console.log(resp);
-	};
+	const translated = useAtom(translateAtom);
 
 	return (
-		<Container fluid>
-			Landing head
-			<Menu.Item as="a" onClick={() => changeRoute("/auth/register")}>
-				<Icon name="lock" />
-				Register
-			</Menu.Item>
-			<Menu.Item as="a" onClick={() => changeRoute("/auth/login")}>
-				<Icon name="lock" />
-				Login
-			</Menu.Item>
-			<Container fluid>
-				Request object
-				<textarea
+		<Container fluid className={s.wrapGlobal}>
+			<div className={s.top}>
+				<Col xs={8}>
+					<Image src={logo} style={{ paddingTop: "10px", cursor: "pointer" }} />
+				</Col>
+				<Col></Col>
+				<Col
+					xs={8}
 					style={{
-						width: "60%",
-						height: "30%",
+						display: "flex",
+						flexDirection: "row",
+						justifyContent: "flex-end",
+						flexWrap: "nowrap",
+						textAlign: "right",
 					}}
-					value={req}
-					onChange={(event) => setReq(event.currentTarget.value)}
-				/>
-				<Button active onClick={() => handleReq()}>
-					Fetch
+				>
+					<span>
+						<Button color={"violet"} onClick={() => changeRoute("/auth/register")}>
+							Register
+						</Button>
+						<Button color={"violet"} onClick={() => changeRoute("/auth/login")}>
+							Login
+						</Button>
+						<Button color={"instagram"} onClick={() => toggleTranslate()}>
+							Translate
+						</Button>
+					</span>
+				</Col>
+			</div>
+			<div className={s.middle}>
+				<h1 className={s.h1Styled}>StoreTon</h1>
+				<p style={{ margin: "30px 20px 30px 20px", textAlign: "center" }}>
+					{translated
+						? "Регистрируйся или войди в аккаунт и начни загружать, получать доступ и управлять своими файлами из любого места, с любого устройства, бесплатно."
+						: "Register or Login now to upload, backup, manage and access your files from any device, from anywhere, free."}
+				</p>
+				<Button color={"violet"} onClick={() => changeRoute("/auth/register")}>
+					Register now
 				</Button>
-			</Container>
+			</div>
 		</Container>
 	);
 };

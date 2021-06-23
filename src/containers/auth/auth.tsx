@@ -32,49 +32,45 @@ const AuthContainer: React.FC = () => {
 	const setAccessRefresh = async ({ accessToken, refreshToken }) => {
 		toggleBlockLoader(true);
 
-		if (isActive.current) {
-			await updateKeystore(accessToken, refreshToken);
-		}
+		isActive.current && (await updateKeystore(accessToken, refreshToken));
 
 		toggleBlockLoader(false);
 	};
 
 	const handleLogin = async (email, password) => {
-		if (isActive.current) {
-			toggleBlockLoader(true);
+		if (!isActive.current) return;
+		toggleBlockLoader(true);
 
-			const res = await reqAccessLogin({ email, password }).catch(async (err) => {
-				if (err.message) {
-					await setErrMessage(err.message);
-					alert(err.message);
-				}
-			});
-
-			if (res && res.data) {
-				await setAccessRefresh({ ...res.data.tokens });
+		const res = await reqAccessLogin({ email, password }).catch(async (err) => {
+			if (err.message) {
+				await setErrMessage(err.message);
+				alert(err.message);
 			}
+		});
 
-			toggleBlockLoader(false);
+		if (res && res.data) {
+			await setAccessRefresh({ ...res.data.tokens });
 		}
+
+		toggleBlockLoader(false);
 	};
 
 	const handleRegister = async (email, password) => {
-		if (isActive.current) {
-			toggleBlockLoader(true);
+		if (!isActive.current) return;
+		toggleBlockLoader(true);
 
-			const res = await reqAccessRegister({ email, password }).catch(async (err) => {
-				if (err.message) {
-					// await setErrMessage(err.message);
-					alert(err.message);
-				}
-			});
-
-			if (res && res.data) {
-				await setAccessRefresh({ ...res.data.tokens });
+		const res = await reqAccessRegister({ email, password }).catch(async (err) => {
+			if (err.message) {
+				// await setErrMessage(err.message);
+				alert(err.message);
 			}
+		});
 
-			toggleBlockLoader(false);
+		if (res && res.data) {
+			await setAccessRefresh({ ...res.data.tokens });
 		}
+
+		toggleBlockLoader(false);
 	};
 
 	return (

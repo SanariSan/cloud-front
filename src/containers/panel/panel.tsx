@@ -53,72 +53,64 @@ const PanelContainer: React.FC<RouteComponentProps> = () => {
 		//fetch all user info, always when loaded
 		//set to hook
 		// ----------
-		// groupOwnage: { id: 4 } || null
-		// groupsList: [{ id: 4; name: "test2" }] || []
-		// storageInfo: { sizeUsed: 0, sizeMax: 15000 } || null
-		// ​user: { id: 4, name: null, email: "e@mail.ru", profilePicUrl: null }
-		if (isActive.current) {
-			toggleBlockLoader(true);
+		if (!isActive.current) return;
+		toggleBlockLoader(true);
 
-			reqProfileInfo()
-				.then(async ({ code, message, data }) => {
-					console.log(data);
-					await updateProfileInfo(data.user);
-					await updateUserGroupsList(data.groupsList);
+		reqProfileInfo()
+			.then(async ({ code, message, data }) => {
+				await updateProfileInfo(data.user);
+				await updateUserGroupsList(data.groupsList);
 
-					if (data.groupOwnage) {
-						await updateGroupOwnage(data.groupOwnage);
-					}
-				})
-				.catch(({ code, message, status }) => {
-					console.warn(message);
-				})
-				.finally(() => {
-					toggleBlockLoader(false);
-				});
-		}
+				if (data.groupOwnage) {
+					await updateGroupOwnage(data.groupOwnage);
+				}
+			})
+			.catch(({ code, message, status }) => {
+				console.warn(message);
+			})
+			.finally(() => {
+				toggleBlockLoader(false);
+			});
 	}, [forcedRerender]); //destructured parameter is undefined once!!
 
-    useEffect(() => {
-		if (isActive.current && currentGroupInfo) {
-			toggleBlockLoader(true);
+	useEffect(() => {
+		if (!isActive.current || !currentGroupInfo) return;
+		toggleBlockLoader(true);
 
-			reqGroupInfo({ id: currentGroupInfo.id })
-				.then(async ({ code, message, data }) => {
-					updateCurrentGroupInfo({
-						id: data.groupInfo.id,
-						name: data.groupInfo.name,
-						groupParticipants: data.groupParticipants,
-					});
-				})
-				.catch((err) => {
-					if (err.status === ResponseStatus.BAD_REQUEST) {
-						alert(err.message);
-					}
-				})
-				.finally(() => {
-					toggleBlockLoader(false);
+		reqGroupInfo({ id: currentGroupInfo.id })
+			.then(async ({ code, message, data }) => {
+				updateCurrentGroupInfo({
+					id: data.groupInfo.id,
+					name: data.groupInfo.name,
+					groupParticipants: data.groupParticipants,
 				});
-		}
+			})
+			.catch((err) => {
+				if (err.status === ResponseStatus.BAD_REQUEST) {
+					alert(err.message);
+				}
+			})
+			.finally(() => {
+				toggleBlockLoader(false);
+			});
 	}, []);
 
 	useEffect(() => {
-		if (isActive.current && currentGroupInfo) {
-			toggleBlockLoader(true);
+		if (!isActive.current || !currentGroupInfo) return;
+		toggleBlockLoader(true);
 
-			reqGroupInfo({ id: currentGroupInfo.id })
-				.then(async ({ code, message, data }) => {
-					updateStorageInfo(data.storageInfo);
-				})
-				.catch((err) => {
-					if (err.status === ResponseStatus.BAD_REQUEST) {
-						alert(err.message);
-					}
-				})
-				.finally(() => {
-					toggleBlockLoader(false);
-				});
-		}
+		reqGroupInfo({ id: currentGroupInfo.id })
+			.then(async ({ code, message, data }) => {
+				updateStorageInfo(data.storageInfo);
+			})
+			.catch((err) => {
+				if (err.status === ResponseStatus.BAD_REQUEST) {
+					alert(err.message);
+				}
+			})
+			.finally(() => {
+				toggleBlockLoader(false);
+			});
 	}, [forcedRerender]);
 
 	const closeSidebar = async () => {
@@ -132,13 +124,12 @@ const PanelContainer: React.FC<RouteComponentProps> = () => {
 	};
 
 	const toggleSidebar = async () => {
-		if (isActive.current) {
-			await setStateSidebar((oldState) => ({
-				...oldState,
-				dimmed: !oldState.dimmed,
-				visible: !oldState.visible,
-			}));
-		}
+		if (!isActive.current) return;
+		await setStateSidebar((oldState) => ({
+			...oldState,
+			dimmed: !oldState.dimmed,
+			visible: !oldState.visible,
+		}));
 	};
 
 	return (
