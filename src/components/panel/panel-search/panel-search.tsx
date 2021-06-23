@@ -43,8 +43,8 @@ const PanelSearchComponent: React.FC<any> = ({
 				onContextMenu={() => {}}
 				iconName={"folder open"}
 				type={"small"}
-				entityText={`Group name: ${groupName}`}
-				entityTextAlt={`Owner info: ${ownerEmail || "-"}`}
+				entityText={`${translated ? "Имя группы" : "Group name"}: ${groupName}`}
+				entityTextAlt={`${translated ? "Владелец" : "Owner info"}: ${ownerEmail || "-"}`}
 				selected={selectedGroup && selectedGroup.groupId === groupId ? true : false}
 			/>
 		);
