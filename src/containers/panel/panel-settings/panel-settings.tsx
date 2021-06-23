@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { PanelSettingsComponent } from "../../../components/panel";
 import { ResponseStatus } from "../../../helpers/services";
 import { reqAccessChangePassword } from "../../../services/access";

@@ -209,7 +209,7 @@ const PanelBrowseContainer: React.FC = () => {
 
 		toggleBlockLoader(true);
 
-		const res = await reqGroupKick({ groupId: currentGroupInfo.id, userId: el.id })
+		await reqGroupKick({ groupId: currentGroupInfo.id, userId: el.id })
 			.then((res) => {
 				alert(res.message);
 			})

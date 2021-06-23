@@ -3,7 +3,6 @@ import { clearPersonalLocalStorage } from "../services";
 import { triggerRefresh } from "./refresh.helper";
 import { ResponseStatus, StatusCode } from "./services.type";
 
-let canRefresh = true;
 let refreshTried = false;
 
 const handleSuccessResponse = async (

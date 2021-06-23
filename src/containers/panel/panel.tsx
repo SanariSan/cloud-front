@@ -20,11 +20,6 @@ import { PanelPrivelegeContainer } from "./panel-privelege";
 import { PanelSearchContainer } from "./panel-search";
 import { PanelSettingsContainer } from "./panel-settings";
 
-// const profileInfo = useAtom(profileInfoAtom);
-// const groupOwnage = useAtom(groupOwnageAtom);
-// const userGroupsList = useAtom(userGroupsListAtom);
-// const storageInfo = useAtom(storageInfoAtom);
-
 const PanelContainer: React.FC<RouteComponentProps> = () => {
 	const isActive = useRef(true);
 
