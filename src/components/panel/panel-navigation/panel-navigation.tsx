@@ -24,19 +24,15 @@ const PanelNavigationComponent: React.FC<any> = ({
 				<Row>
 					<Col className={s.col}>
 						<input
+							id="upload-file"
 							type="file"
 							onChange={handleUpload}
-							style={{
-								width: "10px !important",
-								position: "absolute",
-								right: "55%",
-								opacity: 0,
-								zIndex: 20,
-							}}
+							className={s.upload}
 							multiple={true}
 						/>
-						<Icon link size="big" name="cloud upload" />
-
+						<label htmlFor={"upload-file"}>
+							<Icon link size="big" name="cloud upload" />
+						</label>
 						<Icon.Group size="large" onClick={handleCreateFolder}>
 							<Icon link size="large" name="folder" />
 							<Icon size="small" corner inverted color="grey" name="add" />
