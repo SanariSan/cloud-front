@@ -3,6 +3,7 @@ import mime from "mime-types";
 import React, { useEffect, useRef, useState } from "react";
 import { Icon } from "semantic-ui-react";
 import { PanelBrowseFilesComponent } from "../../../components/panel";
+import { b64Decode } from "../../../helpers/core";
 import { ResponseStatus } from "../../../helpers/services";
 import { reqFsBrowse, reqFsDelete, reqFsDownload, reqFsRename } from "../../../services/fs";
 import { reqGroupKick } from "../../../services/group";
@@ -40,7 +41,10 @@ const PanelBrowseContainer: React.FC = () => {
 
 		reqFsBrowse({ groupId: currentGroupInfo.id, path })
 			.then(({ data }) => {
-				setCurrentPathContent({ ...data });
+				setCurrentPathContent({
+					files: data.files.map(b64Decode),
+					folders: data.folders.map(b64Decode),
+				});
 			})
 			.catch((err) => {
 				if ([ResponseStatus.BAD_REQUEST, ResponseStatus.FORBIDDEN].includes(err.status)) {

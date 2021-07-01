@@ -1,7 +1,7 @@
 import { AxiosError, AxiosResponse } from "axios";
-import { clearPersonalLocalStorage } from "../services";
+import { clearPersonalLocalStorage } from "../core";
 import { triggerRefresh } from "./refresh.helper";
-import { ResponseStatus, StatusCode } from "./services.type";
+import { ResponseStatus, StatusCode } from "./response.helper.type";
 
 let refreshTried = false;
 

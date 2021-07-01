@@ -12,19 +12,19 @@ import { blockLoaderAtom, toggleBlockLoader } from "./store/block-loader";
 import { keystoreAtom } from "./store/keystore";
 import { userGroupsListAtom } from "./store/user-groups";
 
-let blockLoaderDisabler: any = false;
+// let blockLoaderDisabler: any = false;
 
-const disabler = () => {
-	toggleBlockLoader(false);
-	blockLoaderDisabler = setTimeout(disabler, 20000);
-};
+// const disabler = () => {
+// 	toggleBlockLoader(false);
+// 	blockLoaderDisabler = setTimeout(disabler, 20000);
+// };
 
 const App: React.FC = () => {
 	const userGroupsList = useAtom(userGroupsListAtom);
 	const keystore = useAtom(keystoreAtom);
 	const blockLoader = useAtom(blockLoaderAtom);
 
-	if (!blockLoaderDisabler) setTimeout(disabler, 20000);
+	// if (!blockLoaderDisabler) setTimeout(disabler, 20000);
 
 	return (
 		<div className={s.App}>
