@@ -4,10 +4,7 @@ import { axiosApiBase, handleRequest } from "../request-base";
 
 const reqFsDelete = ({ groupId, path }) =>
 	handleRequest(axiosApiBase.delete)({
-		path: prepareURI(
-			"/fs/delete-file-folder",
-			`${groupId}-${path === "/" ? "/" : b64Encode(path)}`,
-		),
+		path: prepareURI("/fs/delete-file-folder", `${groupId}-${b64Encode(path)}`),
 		headers: {
 			...getBearerHeader(),
 		},

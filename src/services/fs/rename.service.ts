@@ -6,7 +6,7 @@ const reqFsRename = ({ groupId, path, filename }) =>
 	handleRequest(axiosApiBase.patch)({
 		path: prepareURI(
 			"/fs/rename-file-folder",
-			`${groupId}-${path === "/" ? "/" : b64Encode(path)}-${b64Encode(filename)}`,
+			`${groupId}-${b64Encode(path)}-${b64Encode(filename)}`,
 		),
 		headers: {
 			...getBearerHeader(),

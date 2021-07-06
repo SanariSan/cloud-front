@@ -6,7 +6,7 @@ const reqFsCreate = ({ groupId, path, filename }) =>
 	handleRequest(axiosApiBase.put)({
 		path: prepareURI(
 			"/fs/create-folder",
-			`${groupId}-${path === "/" ? "/" : b64Encode(path)}-${b64Encode(filename)}`,
+			`${groupId}-${b64Encode(path)}-${b64Encode(filename)}`,
 		),
 		headers: {
 			...getBearerHeader(),

@@ -5,7 +5,7 @@ import { axiosApiBase, handleRequest } from "../request-base";
 const reqFsDownload = ({ groupId, path, filename }) => {
 	const url = prepareURI(
 		"/fs/download-file",
-		`${groupId}-${path === "/" ? "/" : b64Encode(path)}-${b64Encode(filename)}`,
+		`${groupId}-${b64Encode(path)}-${b64Encode(filename)}`,
 	);
 	return handleRequest(axiosApiBase.get)({
 		path: url,

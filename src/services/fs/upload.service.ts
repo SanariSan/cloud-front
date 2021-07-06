@@ -5,10 +5,7 @@ import { axiosApiBase, DEFAULT_HEADERS, handleRequest } from "../request-base";
 
 const reqFsUpload = ({ groupId, path, filename, data }) =>
 	handleRequest(axiosApiBase.post)({
-		path: prepareURI(
-			"/fs/upload-file",
-			`${groupId}-${path === "/" ? "/" : b64Encode(path)}-${b64Encode(filename)}`,
-		),
+		path: prepareURI("/fs/upload-file", `${groupId}-${b64Encode(path)}-${b64Encode(filename)}`),
 		headers: {
 			...getBearerHeader(),
 			"Content-Type": mime.contentType(filename) || DEFAULT_HEADERS["Content-Type"],

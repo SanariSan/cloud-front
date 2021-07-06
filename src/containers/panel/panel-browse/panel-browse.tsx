@@ -40,10 +40,10 @@ const PanelBrowseContainer: React.FC = () => {
 		toggleBlockLoader(true);
 
 		reqFsBrowse({ groupId: currentGroupInfo.id, path })
-			.then(({ data }) => {
+			.then(({ files, folders }) => {
 				setCurrentPathContent({
-					files: data.files.map(b64Decode),
-					folders: data.folders.map(b64Decode),
+					files,
+					folders,
 				});
 			})
 			.catch((err) => {
