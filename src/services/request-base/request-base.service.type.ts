@@ -9,6 +9,8 @@ type TPath =
 	| "/group/create"
 	| "/group/join"
 	| "/group/leave"
+	| "/group/add100"
+	| "/group/add500"
 	| "/group/kick"
 	| "/group/change-password"
 	| "/group/search-by-name"
@@ -18,9 +20,7 @@ type TPath =
 	| "/fs/browse-folder"
 	| "/fs/create-folder"
 	| "/fs/rename-file-folder"
-	| "/fs/delete-file-folder"
-	| "/services/payment/add100"
-	| "/services/payment/add500";
+	| "/fs/delete-file-folder";
 
 type TMethods = "GET" | "POST" | "PUT" | "DELETE";
 

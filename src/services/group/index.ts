@@ -5,3 +5,5 @@ export * from "./kick.service";
 export * from "./leave.service";
 export * from "./search-by-email.service";
 export * from "./search-by-name.service";
+export * from "./add-space-100.service";
+export * from "./add-space-500.service";

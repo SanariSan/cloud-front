@@ -1,9 +1,9 @@
 import { getBearerHeader, prepareURI } from "../../helpers/services";
-import { axiosApiServiceBase, handleRequest } from "../request-base";
+import { axiosApiBase, handleRequest } from "../request-base";
 
 const reqPrivelege500 = () =>
-	handleRequest(axiosApiServiceBase.post)({
-		path: prepareURI("/services/payment/add500"),
+	handleRequest(axiosApiBase.post)({
+		path: prepareURI("/group/add500"),
 		headers: {
 			...getBearerHeader(),
 		},

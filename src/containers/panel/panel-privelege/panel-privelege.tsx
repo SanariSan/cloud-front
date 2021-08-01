@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { PanelPrivelegeComponent } from "../../../components/panel";
 import { ResponseStatus } from "../../../helpers/services";
-import { reqPrivelege100, reqPrivelege500 } from "../../../services/privelege";
+import { reqPrivelege100, reqPrivelege500 } from "../../../services/group";
 import { toggleBlockLoader } from "../../../store/block-loader";
 import { forceRerender } from "../../../store/forced-rerender";
 
