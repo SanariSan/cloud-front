@@ -1,6 +1,6 @@
 import { AxiosError, AxiosResponse } from "axios";
 import { clearPersonalLocalStorage } from "../core";
-import { triggerRefresh } from "./refresh.helper";
+import { triggerRefresh } from "./refresh-token.helper";
 import { ResponseStatus, StatusCode } from "./response.helper.type";
 
 let refreshTried = false;
