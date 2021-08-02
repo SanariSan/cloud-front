@@ -132,7 +132,7 @@ const PanelContainer: React.FC<RouteComponentProps> = () => {
 			<PanelHeaderComponent toggleSidebar={toggleSidebar} />
 			<Sidebar.Pushable
 				style={{
-					overflow: "visible",
+					overflowY: "scroll",
 					height: "calc(100% - 65px)",
 				}}
 			>
@@ -148,8 +148,9 @@ const PanelContainer: React.FC<RouteComponentProps> = () => {
 					<Sidebar.Pusher
 						dimmed={dimmed}
 						style={{
-							width: dimmed ? "90%" : "100%",
+							width: dimmed ? "95%" : "100%",
 							height: "100%",
+							overflowY: "scroll",
 							float: "right",
 							transition: "width 0.5s",
 						}}
