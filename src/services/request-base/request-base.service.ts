@@ -4,12 +4,17 @@ import axios, { AxiosInstance } from "axios";
 import { handleErrorResponse, handleSuccessResponse } from "../../helpers/services/response.helper";
 
 const url = <string>process.env.REACT_APP_URL;
-const host = <string>process.env.REACT_APP_HOST;
-const port = parseInt(<string>process.env.REACT_APP_PORT);
+const host = <string>process.env.REACT_APP_LOCAL_HOST;
+const port = parseInt(<string>process.env.REACT_APP_LOCAL_PORT);
 const apiVersion = <string>process.env.REACT_APP_API_VERSION;
 
+console.log(process.env.NODE_ENV);
+
 const axiosApiBase: AxiosInstance = axios.create({
-	baseURL: url ? `${url}/${apiVersion}` : `${host}:${port}/${apiVersion}`,
+	baseURL:
+		<string>process.env.NODE_ENV === "production"
+			? `https://${url}/${apiVersion}`
+			: `http://${host}:${port}/${apiVersion}`,
 	headers: DEFAULT_HEADERS,
 	timeout: 10000,
 });

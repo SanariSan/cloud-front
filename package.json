@@ -6,8 +6,8 @@
 	"license": "MIT",
 	"proxy": "http://localhost:3000",
 	"scripts": {
-		"start": "react-scripts start",
-		"build": "yarn install && react-scripts build",
+		"start": "cross-env REACT_APP_NODE_ENV=development react-scripts start",
+		"build": "cross-env REACT_APP_NODE_ENV=production yarn install && react-scripts build",
 		"test": "react-scripts test",
 		"eject": "react-scripts eject"
 	},
@@ -26,6 +26,7 @@
 		"axios": "^0.21.1",
 		"bootstrap": "^5.0.1",
 		"classnames": "^2.3.1",
+		"cross-env": "^7.0.3",
 		"history": "4.10.1",
 		"js-base64": "^3.6.1",
 		"mime-types": "^2.1.31",
