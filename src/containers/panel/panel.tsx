@@ -1,7 +1,7 @@
 import { useAtom } from "@dbeining/react-atom";
 import React, { useEffect, useRef, useState } from "react";
 import { Route, RouteComponentProps, Switch } from "react-router-dom";
-import { Ref, Sidebar } from "semantic-ui-react";
+import { Dimmer, Ref, Segment, Sidebar } from "semantic-ui-react";
 import { NotFound } from "../../components/not-found";
 import { PanelHeaderComponent } from "../../components/panel";
 import { ResponseStatus } from "../../helpers/services";
@@ -132,7 +132,6 @@ const PanelContainer: React.FC<RouteComponentProps> = () => {
 			<PanelHeaderComponent toggleSidebar={toggleSidebar} />
 			<Sidebar.Pushable
 				style={{
-					overflowY: "scroll",
 					height: "calc(100% - 65px)",
 				}}
 			>
@@ -146,31 +145,47 @@ const PanelContainer: React.FC<RouteComponentProps> = () => {
 
 				<Ref innerRef={mainContentRef}>
 					<Sidebar.Pusher
-						dimmed={dimmed}
 						style={{
-							width: dimmed ? "95%" : "100%",
 							height: "100%",
-							overflowY: "scroll",
-							float: "right",
-							transition: "width 0.5s",
 						}}
 					>
-						<Switch>
-							<Route exact path="/panel" component={PanelBrowseContainer} />
-							<Route exact path="/panel/browse" component={PanelBrowseContainer} />
-							<Route exact path="/panel/search" component={PanelSearchContainer} />
-							<Route
-								exact
-								path="/panel/privelege"
-								component={PanelPrivelegeContainer}
-							/>
-							<Route
-								exact
-								path="/panel/settings"
-								component={PanelSettingsContainer}
-							/>
-							<Route path="/panel" component={NotFound} />
-						</Switch>
+						<Dimmer.Dimmable
+							blurring
+							dimmed={dimmed}
+							style={{
+								width: dimmed ? "95%" : "100%",
+								height: "100%",
+								float: "right",
+								transition: "width 0.5s",
+							}}
+						>
+							<Dimmer active={dimmed} onClickOutside={closeSidebar} />
+
+							<Switch>
+								<Route exact path="/panel" component={PanelBrowseContainer} />
+								<Route
+									exact
+									path="/panel/browse"
+									component={PanelBrowseContainer}
+								/>
+								<Route
+									exact
+									path="/panel/search"
+									component={PanelSearchContainer}
+								/>
+								<Route
+									exact
+									path="/panel/privelege"
+									component={PanelPrivelegeContainer}
+								/>
+								<Route
+									exact
+									path="/panel/settings"
+									component={PanelSettingsContainer}
+								/>
+								<Route path="/panel" component={NotFound} />
+							</Switch>
+						</Dimmer.Dimmable>
 					</Sidebar.Pusher>
 				</Ref>
 			</Sidebar.Pushable>

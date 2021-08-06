@@ -5,15 +5,36 @@ body {
 	background-color: $bg-day-color;
 }
 
-#root {
-	height: 100%;
-	width: 100%;
-}
-
 a {
 	cursor: pointer;
 }
 
 h1 {
-	font-size: 1.7rem;
+	font-size: $font-size-h1;
+	margin: $margin-h1;
+}
+h2 {
+	font-size: $font-size-h2;
+	margin: $margin-h2;
+}
+h3 {
+	font-size: $font-size-h3;
+	margin: $margin-h3;
+}
+h4 {
+	font-size: $font-size-h4;
+	margin: $margin-h4;
+}
+h5 {
+	font-size: $font-size-h5;
+	margin: $margin-h5;
+}
+h6 {
+	font-size: $font-size-h6;
+	margin: $margin-h6;
+}
+
+#root {
+	height: 100%;
+	width: 100%;
 }

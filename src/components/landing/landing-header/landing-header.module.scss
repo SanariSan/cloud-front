@@ -1,3 +1,5 @@
+@import "../../../scss/index.custom";
+
 .wrapGlobal {
 	width: 100%;
 	height: 100vh;
@@ -34,6 +36,8 @@
 	align-items: center;
 }
 
-.h1Styled {
-	font-size: 4rem;
+.headerText {
+	font-family: $font-alt;
+	font-size: 72px;
+	font-weight: bold;
 }

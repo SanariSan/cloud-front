@@ -41,7 +41,7 @@ const LandingHeaderComponent: React.FC = () => {
 				</Col>
 			</div>
 			<div className={s.middle}>
-				<h1 className={s.h1Styled}>StoreTon</h1>
+				<h1 className={s.headerText}>StoreTon</h1>
 				<p style={{ margin: "30px 20px 30px 20px", textAlign: "center" }}>
 					{translated
 						? "Регистрируйся или войди в аккаунт и начни загружать, получать доступ и управлять своими файлами из любого места, с любого устройства, бесплатно."

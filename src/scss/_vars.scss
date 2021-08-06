@@ -1,9 +1,22 @@
 $font-def: "Roboto", "Helvetica Neue", sans-serif;
 $font-alt: "Roboto Medium", "Helvetica Neue", sans-serif;
 
-$font-size-def: 1rem;
+$font-size-def: 1em;
 $font-size-small: 0.75rem;
 $font-size-big: 1.25rem;
+
+$font-size-h1: 2em;
+$font-size-h2: 1.5em;
+$font-size-h3: 1.17em;
+$font-size-h4: $font-size-def;
+$font-size-h5: 0.83em;
+$font-size-h6: 0.75em;
+$margin-h1: 0.67em 0;
+$margin-h2: 0.75em 0;
+$margin-h3: 0.83em 0;
+$margin-h4: 1.12em 0;
+$margin-h5: 1.5em 0;
+$margin-h6: 1.67em 0;
 
 $white-color: #ffffff;
 $white-soft-color: rgb(255, 255, 246);
