@@ -8,11 +8,12 @@ const host = <string>process.env.REACT_APP_LOCAL_HOST;
 const port = parseInt(<string>process.env.REACT_APP_LOCAL_PORT);
 const apiVersion = <string>process.env.REACT_APP_API_VERSION;
 
-console.log(process.env.NODE_ENV);
+console.log(`NODE_ENV: ${process.env.NODE_ENV}`);
+console.log(`REACT_APP_NODE_ENV: ${process.env.REACT_APP_NODE_ENV}`);
 
 const axiosApiBase: AxiosInstance = axios.create({
 	baseURL:
-		<string>process.env.NODE_ENV === "production"
+		<string>process.env.REACT_APP_NODE_ENV === "production"
 			? `https://${url}/${apiVersion}`
 			: `http://${host}:${port}/${apiVersion}`,
 	headers: DEFAULT_HEADERS,
