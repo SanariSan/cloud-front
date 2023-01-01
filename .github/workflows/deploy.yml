@@ -1,0 +1,36 @@
+name: Deploy
+
+on: [push, workflow_dispatch]
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v1
+
+            - name: Copy repository contents via scp
+              uses: appleboy/scp-action@master
+              env:
+                  HOST: ${{ secrets.HOST }}
+                  USERNAME: ${{ secrets.USERNAME }}
+                  PORT: ${{ secrets.PORT }}
+                  KEY: ${{ secrets.SSHKEY }}
+              with:
+                  source: "."
+                  target: "/root/code/cloud/cloud-front"
+
+            - name: Executing remote command
+              uses: appleboy/ssh-action@master
+              with:
+                  HOST: ${{ secrets.HOST }}
+                  USERNAME: ${{ secrets.USERNAME }}
+                  PORT: ${{ secrets.PORT }}
+                  KEY: ${{ secrets.SSHKEY }}
+                  script: >
+                      cd /root/code/cloud/cloud-front &&
+                      cp prod.env .env &&
+
+                      docker build --build-arg REACT_APP_URL=${{ secrets.CORS_URL }} --no-cache -t cloud-front-build -f build.Dockerfile . &&
+
+                      docker run --detach --rm --name cloud-front-build -v "cloud-front-build:/home/node/proj/build" cloud-front-build
