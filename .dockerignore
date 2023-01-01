@@ -171,5 +171,6 @@ dist*
 .vscode
 build
 
-*.env*
-!.env.copy
+# *.env*
+# !.env
+# !.env.copy
