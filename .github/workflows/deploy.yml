@@ -31,6 +31,10 @@ jobs:
                       cd /root/code/cloud/cloud-front &&
                       cp prod.env .env &&
 
+                      docker container rm -f $(docker ps -a -q --filter volume=cloud-front-build) > /dev/null 2>&1 ||
+
+                      docker volume rm -f cloud-front-build &&
+
                       docker build --build-arg REACT_APP_URL=${{ secrets.CORS_URL }} --no-cache -t cloud-front-build -f build.Dockerfile . &&
 
                       docker run --detach --rm --name cloud-front-build -v "cloud-front-build:/home/node/proj/build" cloud-front-build
