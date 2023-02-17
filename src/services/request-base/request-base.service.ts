@@ -3,17 +3,18 @@ import { IRequest } from "./request-base.service.type";
 import axios, { AxiosInstance } from "axios";
 import { handleErrorResponse, handleSuccessResponse } from "../../helpers/services/response.helper";
 
-const url = <string>process.env.REACT_APP_URL;
-const host = <string>process.env.REACT_APP_LOCAL_HOST;
-const port = parseInt(<string>process.env.REACT_APP_LOCAL_PORT);
-const apiVersion = <string>process.env.REACT_APP_API_VERSION;
+const url = process.env.REACT_APP_URL as string;
+const host = process.env.REACT_APP_LOCAL_HOST as string;
+const port = parseInt(process.env.REACT_APP_LOCAL_PORT as string);
+const apiVersion = process.env.REACT_APP_API_VERSION as string;
 
 console.log(`NODE_ENV: ${process.env.NODE_ENV}`);
 console.log(`REACT_APP_NODE_ENV: ${process.env.REACT_APP_NODE_ENV}`);
+console.log(`REACT_APP_URL: ${process.env.REACT_APP_URL}`);
 
 const axiosApiBase: AxiosInstance = axios.create({
 	baseURL:
-		<string>process.env.REACT_APP_NODE_ENV === "production"
+		(process.env.REACT_APP_NODE_ENV as string) === "production"
 			? `https://${url}/${apiVersion}`
 			: `http://${host}:${port}/${apiVersion}`,
 	headers: DEFAULT_HEADERS,
