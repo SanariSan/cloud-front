@@ -1,6 +1,9 @@
 name: Deploy
 
-on: [push, workflow_dispatch]
+on:
+    push:
+        branches:
+            - master
 
 jobs:
     build:
@@ -35,6 +38,6 @@ jobs:
 
                       docker volume rm -f cloud-front-build &&
 
-                      docker build --build-arg REACT_APP_URL=${{ secrets.CORS_URL }} --no-cache -t cloud-front-build -f build.Dockerfile . &&
+                      docker build --build-arg REACT_APP_URL=${{ secrets.CORS_URL }} -t cloud-front-build -f build.Dockerfile . &&
 
                       docker run --detach --rm --name cloud-front-build -v "cloud-front-build:/home/node/proj/build" cloud-front-build
