@@ -13,7 +13,7 @@
 }
 
 .imgStyled {
-	width: 250px !important;
+	cursor: pointer;
 }
 
 .aStyled {
@@ -28,6 +28,7 @@
 
 .authBlock {
 	box-shadow: 0px 0px 30px -5px rgba(0, 0, 0, 0.15);
+	border-radius: 2%;
 	height: max-content;
 	padding: 0px !important;
 	background-color: white;
@@ -45,6 +46,7 @@
 }
 
 .labelStyled {
+	padding-bottom: 10px;
 	@include md() {
 		font-size: 0.8rem;
 	}
@@ -58,10 +60,9 @@
 }
 
 .rowSideBot {
-	padding: 3% 3% 3% 3% !important;
-	height: 15% !important;
+	padding: 3% !important;
+	height: 50% !important;
 	width: 100%;
-	margin-bottom: 10px;
 
 	justify-content: center;
 }
@@ -119,4 +120,19 @@ input {
 	height: 100% !important;
 	padding-left: 0px !important;
 	padding-right: 0px !important;
+}
+
+.togglePassword::after {
+	content: "";
+	position: absolute;
+	display: inline-block;
+	right: 20px;
+	top: 25%;
+	cursor: pointer;
+}
+.passwordHidden::after {
+	content: "👓";
+}
+.passwordShown::after {
+	content: "👁";
 }

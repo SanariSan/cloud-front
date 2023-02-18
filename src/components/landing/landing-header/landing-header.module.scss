@@ -4,14 +4,51 @@
 	width: 100%;
 	height: 100vh;
 	padding: 0px !important;
-	background: no-repeat url("../../../img/land_1.jpg") !important;
-	background-size: cover !important;
+	// position: absolute;
+	// background: url("../../../img/land_1.jpg") !important;
+	// background-size: cover !important;
+	// background-repeat: no-repeat;
+	// background-attachment: fixed;
+	// background-position: center;
+	// clip-path: circle(65% at 50% -15%);
 	overflow-y: hidden;
 	overflow-x: hidden;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: space-between;
+}
+
+.bg {
+	width: 100%;
+	height: 100vh;
+	position: absolute !important;
+	padding: 0px !important;
+	background: url("../../../img/land_1.jpg") !important;
+	background-size: cover !important;
+	background-repeat: no-repeat !important;
+	background-attachment: fixed !important;
+	background-position: center !important;
+	border-top: none;
+	overflow-y: hidden;
+	overflow-x: hidden;
+
+	clip-path: circle(65% at 50% -5%);
+	@include xl {
+		clip-path: circle(65% at 50% 10%);
+	}
+	@include lg {
+		clip-path: circle(65% at 50% 20%);
+	}
+	@include md {
+		clip-path: none;
+	}
+	@include sm {
+		clip-path: none;
+	}
+	@include xs {
+		clip-path: none;
+	}
 }
 
 .top {
@@ -23,6 +60,7 @@
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
+	z-index: 1;
 }
 
 .middle {
@@ -34,10 +72,12 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	z-index: 1;
 }
 
 .headerText {
 	font-family: $font-alt;
 	font-size: 72px;
 	font-weight: bold;
+	z-index: 1;
 }

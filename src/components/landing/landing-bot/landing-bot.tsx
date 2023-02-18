@@ -31,7 +31,7 @@ const LandingBotComponent: React.FC<any> = () => {
 					</p>
 				</Col>
 				<Col xs={15} lg={9} className={s.colStyled}>
-					<Image src={img} size={"big"} style={{ paddingTop: "10px" }} />
+					<div className={s.preview} />
 				</Col>
 			</Row>
 		</Container>

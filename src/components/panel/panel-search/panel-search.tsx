@@ -70,7 +70,7 @@ const PanelSearchComponent: React.FC<any> = ({
 						<Row className={s.rowMiddle}>
 							<Row className={s.fieldWrap}>
 								<Input
-									label={"Group name"}
+									label={translated ? "Название группы" : "Group name"}
 									value={groupName}
 									onChange={(event) => {
 										setEmail("");
@@ -84,7 +84,7 @@ const PanelSearchComponent: React.FC<any> = ({
 							</p>
 							<Row className={s.fieldWrap}>
 								<Input
-									label={"User email"}
+									label={translated ? "Почта владельца" : "User email"}
 									value={email}
 									onChange={(event) => {
 										setGroupName("");
@@ -96,7 +96,7 @@ const PanelSearchComponent: React.FC<any> = ({
 						</Row>
 						<Row className={s.rowSideBot}>
 							<Button color="violet" inverted className={s.btn}>
-								Search
+								{translated ? "Поиск" : "Search"}
 							</Button>
 						</Row>
 					</form>
@@ -122,7 +122,7 @@ const PanelSearchComponent: React.FC<any> = ({
 						</Row>
 						<Row className={s.rowSideBot}>
 							<Button color="violet" inverted className={s.btn}>
-								Join
+								{translated ? "Вступить" : "Join"}
 							</Button>
 						</Row>
 					</form>

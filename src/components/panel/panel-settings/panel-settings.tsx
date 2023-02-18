@@ -66,7 +66,7 @@ const PanelSettingsComponent: React.FC<any> = ({
 						<Row className={s.rowMiddle}>
 							<Row className={s.fieldWrap}>
 								<Input
-									label={"Old password"}
+									label={translated ? "Старый пароль" : "Old password"}
 									value={oldPassAcc}
 									onChange={(e) =>
 										isActive.current && setOldPassAcc(e.currentTarget.value)
@@ -77,7 +77,7 @@ const PanelSettingsComponent: React.FC<any> = ({
 							</Row>
 							<Row className={s.fieldWrap}>
 								<Input
-									label={"New password"}
+									label={translated ? "Новый пароль" : "New password"}
 									value={newPassAcc}
 									onChange={(e) =>
 										isActive.current && setNewPassAcc(e.currentTarget.value)
@@ -88,7 +88,7 @@ const PanelSettingsComponent: React.FC<any> = ({
 							</Row>
 							<Row className={s.fieldWrap}>
 								<Input
-									label={"Repeat password"}
+									label={translated ? "Повторите пароль" : "Repeat password"}
 									value={newPassAccRepeat}
 									onChange={(e) =>
 										isActive.current &&
@@ -101,7 +101,7 @@ const PanelSettingsComponent: React.FC<any> = ({
 						</Row>
 						<Row className={s.rowSideBot}>
 							<Button color="violet" inverted className={s.btn}>
-								Change
+								{translated ? "Сменить" : "Change"}
 							</Button>
 						</Row>
 					</form>
@@ -125,7 +125,7 @@ const PanelSettingsComponent: React.FC<any> = ({
 						<Row className={s.rowMiddle}>
 							<Row className={s.fieldWrap}>
 								<Input
-									label={"Old password"}
+									label={translated ? "Старый пароль" : "Old password"}
 									value={oldPassGroup}
 									onChange={(e) =>
 										isActive.current && setOldPassGroup(e.currentTarget.value)
@@ -136,7 +136,7 @@ const PanelSettingsComponent: React.FC<any> = ({
 							</Row>
 							<Row className={s.fieldWrap}>
 								<Input
-									label={"New password"}
+									label={translated ? "Новый пароль" : "New password"}
 									value={newPassGroup}
 									onChange={(e) =>
 										isActive.current && setNewPassGroup(e.currentTarget.value)
@@ -147,7 +147,7 @@ const PanelSettingsComponent: React.FC<any> = ({
 							</Row>
 							<Row className={s.fieldWrap}>
 								<Input
-									label={"Repeat password"}
+									label={translated ? "Повторите пароль" : "Repeat password"}
 									value={newPassGroupRepeat}
 									onChange={(e) =>
 										isActive.current &&
@@ -160,7 +160,7 @@ const PanelSettingsComponent: React.FC<any> = ({
 						</Row>
 						<Row className={s.rowSideBot}>
 							<Button color="violet" inverted className={s.btn}>
-								Change
+								{translated ? "Сменить" : "Change"}
 							</Button>
 						</Row>
 					</form>

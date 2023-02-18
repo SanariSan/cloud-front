@@ -10,11 +10,13 @@ import logo from "../../../img/logo.png";
 import { reqAccessLogout } from "../../../services/access";
 import { toggleBlockLoader } from "../../../store/block-loader";
 import { profileInfoAtom } from "../../../store/profile-info";
+import { translateAtom } from "../../../store/translate";
 import { changeRoute } from "../../history";
 import s from "./panel-header.module.scss";
 
 const PanelHeaderComponent: React.FC<any> = ({ toggleSidebar }) => {
 	const isActive = useRef(true);
+	const translated = useAtom(translateAtom);
 	const profileInfo = useAtom(profileInfoAtom);
 
 	useEffect(
@@ -36,7 +38,7 @@ const PanelHeaderComponent: React.FC<any> = ({ toggleSidebar }) => {
 		});
 
 		clearWholeLocalStorage();
-		isActive.current && changeRoute("/auth");
+		changeRoute("/auth");
 		toggleBlockLoader(false);
 	};
 
@@ -57,7 +59,13 @@ const PanelHeaderComponent: React.FC<any> = ({ toggleSidebar }) => {
 				<Col xs={7} sm={6} md={5} lg={4} xl={3} className={classNames(s.col, s.right)}>
 					<Icon link name="bell" color="grey" inverted />
 					<Image src={avatar} size="mini" />
-					<p className={s.pStyled}>{profileInfo?.email || "profile"}</p>
+					<p className={s.pStyled}>
+						{profileInfo?.email
+							? profileInfo?.email.length > 20
+								? `${profileInfo?.email.slice(0, 20)}...`
+								: profileInfo?.email
+							: "profile"}
+					</p>
 					<Dropdown direction="left" closeOnChange={true}>
 						<Dropdown.Menu>
 							<Dropdown.Header
@@ -65,10 +73,13 @@ const PanelHeaderComponent: React.FC<any> = ({ toggleSidebar }) => {
 								content={profileInfo?.email || "profile"}
 							/>
 							<Dropdown.Item
-								text="Settings"
+								text={translated ? "Настройки" : "Settings"}
 								onClick={() => changeRoute("/panel/settings")}
 							/>
-							<Dropdown.Item text="Logout" onClick={logout} />
+							<Dropdown.Item
+								text={translated ? "Выход" : "Logout"}
+								onClick={logout}
+							/>
 						</Dropdown.Menu>
 					</Dropdown>
 				</Col>

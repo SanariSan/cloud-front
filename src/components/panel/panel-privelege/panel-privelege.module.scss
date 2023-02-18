@@ -45,6 +45,17 @@
 					border: 2px solid gray;
 					border-radius: 10px;
 					background-color: white;
+
+					transition-property: border, background-color, color, box-shadow;
+					transition-timing-function: ease-in-out;
+					transition-duration: 0.5s;
+
+					&:hover {
+						box-shadow: 0px 0px 25px 5px #8cbbf0;
+					}
+					&:focus {
+						box-shadow: 0px 0px 25px 5px #8cbbf0;
+					}
 				}
 			}
 		}
@@ -52,6 +63,7 @@
 
 	.h1Styled {
 		color: $purple-color;
+		text-align: center;
 		@include xs() {
 			font-size: 24px;
 		}

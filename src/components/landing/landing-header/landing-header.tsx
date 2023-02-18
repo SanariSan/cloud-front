@@ -29,28 +29,29 @@ const LandingHeaderComponent: React.FC = () => {
 				>
 					<span>
 						<Button color={"violet"} onClick={() => changeRoute("/auth/register")}>
-							Register
+							{translated ? "Регистрация" : "Register"}
 						</Button>
 						<Button color={"violet"} onClick={() => changeRoute("/auth/login")}>
-							Login
+							{translated ? "Вход" : "Login"}
 						</Button>
 						<Button color={"instagram"} onClick={() => toggleTranslate()}>
-							Translate
+							{translated ? "Перевести" : "Translate"}
 						</Button>
 					</span>
 				</Col>
 			</div>
 			<div className={s.middle}>
 				<h1 className={s.headerText}>StoreTon</h1>
-				<p style={{ margin: "30px 20px 30px 20px", textAlign: "center" }}>
+				<p style={{ width: "60%", margin: "-10px 0px 20px 0px", textAlign: "center" }}>
 					{translated
 						? "Регистрируйся или войди в аккаунт и начни загружать, получать доступ и управлять своими файлами из любого места, с любого устройства, бесплатно."
 						: "Register or Login now to upload, backup, manage and access your files from any device, from anywhere, free."}
 				</p>
 				<Button color={"violet"} onClick={() => changeRoute("/auth/register")}>
-					Register now
+					{translated ? "Зарегистрироваться" : "Register now"}
 				</Button>
 			</div>
+			<div className={s.bg} />
 		</Container>
 	);
 };

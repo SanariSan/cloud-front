@@ -7,7 +7,14 @@ import {
 
 const LandingContainer: React.FC = () => {
 	return (
-		<div style={{ backgroundColor: "white", width: "100%", height: "100%" }}>
+		<div
+			style={{
+				backgroundColor: "white",
+				width: "100%",
+				height: "100%",
+				overflow: "visible",
+			}}
+		>
 			<LandingHeaderComponent />
 			<LandingBodyComponent />
 			<hr style={{ width: "80%", margin: "auto" }} />

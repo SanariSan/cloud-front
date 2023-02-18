@@ -49,3 +49,32 @@
 		font-weight: bold;
 	}
 }
+
+.notice {
+	display: inline-block;
+	margin-right: 5px;
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+	background-color: rgba(255, 0, 0, 0.5);
+	animation: flicker 1s linear infinite alternate;
+}
+
+.noticeOk {
+	display: inline-block;
+	margin-right: 5px;
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+	background-color: rgba(0, 255, 0, 0.5);
+	animation: none;
+}
+
+@keyframes flicker {
+	0% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0;
+	}
+}

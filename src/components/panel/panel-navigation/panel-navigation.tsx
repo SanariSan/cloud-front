@@ -81,20 +81,25 @@ const PanelNavigationComponent: React.FC<any> = ({
 				<Row>
 					<Col className={classNames(s.col, s.groupBot)}>
 						<span className={s.groupInfo}>
-							<p className={s.pStyled}>Current Group</p>
+							<p className={s.pStyled}>
+								{translated ? "Текущая группа" : "Current Group"}
+							</p>
 						</span>
 						{groupOwnage &&
 							currentGroupInfo &&
 							groupOwnage.id === currentGroupInfo.id &&
 							(translated ? "Вы владелец" : "You own this group")}
-						<Dropdown
-							placeholder={translated ? "Выберите группу" : "Select group"}
-							upward
-							floating
-							options={selectGroupOptions}
-							onChange={handleChange}
-							value={currentGroupInfo ? currentGroupInfo.id : void 0}
-						></Dropdown>
+						<div>
+							<span className={!currentGroupInfo ? s.notice : s.noticeOk} />
+							<Dropdown
+								placeholder={translated ? "Выберите группу" : "Select group"}
+								upward
+								floating
+								options={selectGroupOptions}
+								onChange={handleChange}
+								value={currentGroupInfo ? currentGroupInfo.id : void 0}
+							></Dropdown>
+						</div>
 					</Col>
 				</Row>
 			</div>
