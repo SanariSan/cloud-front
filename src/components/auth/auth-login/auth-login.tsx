@@ -51,7 +51,9 @@ const AuthLoginComponent: React.FC<any> = ({ handleLogin, errMessage, setErrMess
 					</Row>
 					<Row className={s.rowMiddle}>
 						<Row className={s.fieldWrap}>
-							<label className={s.labelStyled}>Email</label>
+							<label className={s.labelStyled}>
+								{translated ? "Почта" : "Email"}
+							</label>
 							<Input
 								value={email}
 								onChange={(e) =>
@@ -62,7 +64,9 @@ const AuthLoginComponent: React.FC<any> = ({ handleLogin, errMessage, setErrMess
 							/>
 						</Row>
 						<Row className={s.fieldWrap}>
-							<label className={s.labelStyled}>Password</label>
+							<label className={s.labelStyled}>
+								{translated ? "Пароль" : "Password"}
+							</label>
 							<Input
 								value={password}
 								onChange={(e) =>

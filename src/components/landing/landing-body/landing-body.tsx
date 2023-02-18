@@ -14,8 +14,8 @@ const LandingBodyComponent: React.FC<any> = () => {
 	return (
 		<Container fluid className={s.wrapGlobal}>
 			<Row className={s.top}>
-				<Col xs={14} md={7} xl={5} className={s.colStyled}>
-					<Image src={img1} size={"medium"} style={{ paddingTop: "10px" }} />
+				<Col xs={14} md={7} xl={4} className={s.colStyled}>
+					<Image src={img1} size={"small"} style={{ paddingTop: "10px" }} />
 					<h2 className={s.h2Styled}>
 						{translated ? "Храни любые файлы" : "Store any files"}
 					</h2>
@@ -25,8 +25,8 @@ const LandingBodyComponent: React.FC<any> = () => {
 							: "Keep any kind of files in a safe remote place. Your first GB are completely free!"}
 					</p>
 				</Col>
-				<Col xs={14} md={7} xl={5} className={s.colStyled}>
-					<Image src={img2} size={"medium"} style={{ paddingTop: "10px" }} />
+				<Col xs={14} md={7} xl={6} className={s.colStyled}>
+					<Image src={img2} size={"small"} style={{ paddingTop: "10px" }} />
 					<h2 className={s.h2Styled}>
 						{translated ? "Получай доступ откуда угодно" : "See your stuff anywhere"}
 					</h2>
@@ -36,9 +36,8 @@ const LandingBodyComponent: React.FC<any> = () => {
 							: "You can access your files in StoreTon from any device, such as pc, table, smartphone!"}
 					</p>
 				</Col>
-
-				<Col xs={14} md={7} xl={5} className={s.colStyled}>
-					<Image src={img3} size={"medium"} style={{ paddingTop: "10px" }} />
+				<Col xs={14} md={7} xl={4} className={s.colStyled}>
+					<Image src={img3} size={"small"} style={{ paddingTop: "10px" }} />
 					<h2 className={s.h2Styled}>
 						{translated ? "Делись файлами с другими" : "Share files and folders"}
 					</h2>

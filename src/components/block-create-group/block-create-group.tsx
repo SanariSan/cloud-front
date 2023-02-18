@@ -5,19 +5,43 @@ import { Col, Container, Row } from "react-bootstrap";
 import { Button, Image, Input } from "semantic-ui-react";
 import logo from "../../img/logo_alt.png";
 import { translateAtom } from "../../store/translate";
+import { changeRoute } from "../history";
 import s from "./block-create-group.module.scss";
 
 const BlockCreateGroupComponent: React.FC<any> = ({ handleGroupCreate }) => {
 	const translated = useAtom(translateAtom);
 	const [groupName, setGroupName] = useState<string>("");
-	const [groupPassword, setGroupPasswords] = useState<string>("");
+	const [groupPassword, setGroupPassword] = useState<string>("");
+	const [passwordHidden, setPasswordHidden] = useState<boolean>(true);
 	const isActive = useRef(true);
 
 	const clearFormAcc = () => {
 		if (!isActive.current) return;
 
 		setGroupName("");
-		setGroupPasswords("");
+		setGroupPassword("");
+	};
+
+	const fillWithRandomData = () => {
+		if (!isActive.current) return;
+
+		const rndNameStr = "group_".concat(
+			Array.from({ length: Math.floor(Math.random() * (10 - 5) + 5) }, () =>
+				String.fromCharCode(Math.floor(Math.random() * (122 - 97) + 97)),
+			).join(""),
+		);
+
+		const rndPasswordStr = Array.from(
+			{ length: Math.floor(Math.random() * (18 - 12) + 12) },
+			() => String.fromCharCode(Math.floor(Math.random() * (122 - 48) + 48)),
+		).join("");
+
+		setGroupName(rndNameStr);
+		setGroupPassword(rndPasswordStr);
+	};
+
+	const togglePasswordHideState = () => {
+		setPasswordHidden((_) => !_);
 	};
 
 	useEffect(
@@ -29,7 +53,11 @@ const BlockCreateGroupComponent: React.FC<any> = ({ handleGroupCreate }) => {
 
 	return (
 		<Container fluid className={classNames(s.fullSize, s.scroll, s.globalWrap)}>
-			<Image className={s.imgStyled} src={logo} />
+			<Image
+				className={s.imgStyled}
+				src={logo}
+				onClick={() => isActive.current && changeRoute("/")}
+			/>
 			<Col xs={13} lg={7} className={classNames(s.authBlock)}>
 				<form
 					className={s.formStyled}
@@ -46,7 +74,9 @@ const BlockCreateGroupComponent: React.FC<any> = ({ handleGroupCreate }) => {
 					</Row>
 					<Row className={s.rowMiddle}>
 						<Row className={s.fieldWrap}>
-							<label className={s.labelStyled}>Group name</label>
+							<label className={s.labelStyled}>
+								{translated ? "Название группы" : "Group name"}
+							</label>
 							<Input
 								value={groupName}
 								onChange={(e) =>
@@ -57,18 +87,40 @@ const BlockCreateGroupComponent: React.FC<any> = ({ handleGroupCreate }) => {
 							/>
 						</Row>
 						<Row className={s.fieldWrap}>
-							<label className={s.labelStyled}>Group password</label>
+							<label className={s.labelStyled}>
+								{translated ? "Пароль группы" : "Group password"}
+							</label>
 							<Input
 								value={groupPassword}
 								onChange={(e) =>
-									isActive.current && setGroupPasswords(e.currentTarget.value)
+									isActive.current && setGroupPassword(e.currentTarget.value)
 								}
-								type="password"
+								type={passwordHidden ? "password" : "text"}
 								className={s.Input}
-							/>
+							>
+								<input />
+								<span
+									className={classNames(
+										s.togglePassword,
+										passwordHidden ? s.passwordHidden : s.passwordShown,
+									)}
+									onClick={() => togglePasswordHideState()}
+								/>
+							</Input>
 						</Row>
 					</Row>
 					<Row className={s.rowSideBot}>
+						<Button
+							color="violet"
+							inverted
+							className={s.btnStyled}
+							onClick={() => fillWithRandomData()}
+							type={"button"}
+						>
+							{translated
+								? "Заполнить случайными данными (демонстрация)"
+								: "Fill with random data (showcase)"}
+						</Button>
 						<Button color="violet" inverted className={s.btnStyled}>
 							{translated ? "Войти в панель" : "Let me in"}
 						</Button>

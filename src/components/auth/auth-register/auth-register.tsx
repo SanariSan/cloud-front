@@ -11,6 +11,7 @@ import s from "./auth-register.module.scss";
 const AuthRegisterComponent: React.FC<any> = ({ handleRegister, errMessage, setErrMessage }) => {
 	const isActive = useRef(true);
 	const translated = useAtom(translateAtom);
+	const [passwordHidden, setPasswordHidden] = useState<boolean>(true);
 	const [email, setEmail] = useState<string>("");
 	const [password, setPassword] = useState<string>("");
 	const [passwordRepeat, setPasswordRepeat] = useState<string>("");
@@ -21,6 +22,29 @@ const AuthRegisterComponent: React.FC<any> = ({ handleRegister, errMessage, setE
 		setEmail("");
 		setPassword("");
 		setPasswordRepeat("");
+	};
+
+	const fillWithRandomData = () => {
+		if (!isActive.current) return;
+
+		const rndEmailStr = Array.from({ length: Math.floor(Math.random() * (12 - 8) + 8) }, () =>
+			String.fromCharCode(Math.floor(Math.random() * (122 - 97) + 97)),
+		)
+			.join("")
+			.concat("@gmail.com");
+
+		const rndPasswordStr = Array.from(
+			{ length: Math.floor(Math.random() * (18 - 12) + 12) },
+			() => String.fromCharCode(Math.floor(Math.random() * (122 - 48) + 48)),
+		).join("");
+
+		setEmail(rndEmailStr);
+		setPassword(rndPasswordStr);
+		setPasswordRepeat(rndPasswordStr);
+	};
+
+	const togglePasswordHideState = () => {
+		setPasswordHidden((_) => !_);
 	};
 
 	useEffect(
@@ -54,7 +78,9 @@ const AuthRegisterComponent: React.FC<any> = ({ handleRegister, errMessage, setE
 					</Row>
 					<Row className={s.rowMiddle}>
 						<Row className={s.fieldWrap}>
-							<label className={s.labelStyled}>Email</label>
+							<label className={s.labelStyled}>
+								{translated ? "Почта" : "Email"}
+							</label>
 							<Input
 								value={email}
 								onChange={(e) =>
@@ -65,29 +91,62 @@ const AuthRegisterComponent: React.FC<any> = ({ handleRegister, errMessage, setE
 							/>
 						</Row>
 						<Row className={s.fieldWrap}>
-							<label className={s.labelStyled}>Password</label>
+							<label className={s.labelStyled}>
+								{translated ? "Пароль" : "Password"}
+							</label>
 							<Input
 								value={password}
 								onChange={(e) =>
 									isActive.current && setPassword(e.currentTarget.value)
 								}
-								type="password"
+								type={passwordHidden ? "password" : "text"}
 								className={s.Input}
-							/>
+							>
+								<input />
+								<span
+									className={classNames(
+										s.togglePassword,
+										passwordHidden ? s.passwordHidden : s.passwordShown,
+									)}
+									onClick={() => togglePasswordHideState()}
+								/>
+							</Input>
 						</Row>
 						<Row className={s.fieldWrap}>
-							<label className={s.labelStyled}>Repeat password</label>
+							<label className={s.labelStyled}>
+								{translated ? "Повторите пароль" : "Repeat password"}
+							</label>
 							<Input
 								value={passwordRepeat}
 								onChange={(e) =>
 									isActive.current && setPasswordRepeat(e.currentTarget.value)
 								}
-								type="password"
+								type={passwordHidden ? "password" : "text"}
 								className={s.Input}
-							/>
+							>
+								<input />
+								<span
+									className={classNames(
+										s.togglePassword,
+										passwordHidden ? s.passwordHidden : s.passwordShown,
+									)}
+									onClick={() => togglePasswordHideState()}
+								/>
+							</Input>
 						</Row>
 					</Row>
 					<Row className={s.rowSideBot}>
+						<Button
+							color="violet"
+							inverted
+							className={s.btnStyled}
+							onClick={() => fillWithRandomData()}
+							type={"button"}
+						>
+							{translated
+								? "Заполнить случайными данными (демонстрация)"
+								: "Fill with random data (showcase)"}
+						</Button>
 						<Button color="violet" inverted className={s.btnStyled}>
 							{translated ? "Создать аккаунт" : "Create Account"}
 						</Button>

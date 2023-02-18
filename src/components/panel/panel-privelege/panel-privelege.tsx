@@ -18,7 +18,9 @@ const PanelPrivelegeComponent: React.FC<any> = ({ handleBuy100, handleBuy500, tr
 						<div className={s.boxContent}>
 							<div>
 								<h1 className={s.h1Styled}>100 GB</h1>
-								<h2 className={s.h2Styled}>$1.19 / month</h2>
+								<h2 className={s.h2Styled}>
+									$1.19 / {translated ? "месяц" : "month"}
+								</h2>
 							</div>
 							<p>
 								{translated
@@ -26,7 +28,7 @@ const PanelPrivelegeComponent: React.FC<any> = ({ handleBuy100, handleBuy500, tr
 									: "100 gb of space for secure storage"}
 							</p>
 							<Button color="violet" inverted onClick={() => handleBuy100()}>
-								Choose plan
+								{translated ? "Выбрать план" : "Choose plan"}
 							</Button>
 						</div>
 					</Col>
@@ -35,7 +37,9 @@ const PanelPrivelegeComponent: React.FC<any> = ({ handleBuy100, handleBuy500, tr
 						<div className={s.boxContent}>
 							<div>
 								<h1 className={s.h1Styled}>500 GB</h1>
-								<h2 className={s.h2Styled}>$5.59 / month</h2>
+								<h2 className={s.h2Styled}>
+									$5.59 / {translated ? "месяц" : "month"}
+								</h2>
 							</div>
 							<p>
 								{translated
@@ -43,7 +47,7 @@ const PanelPrivelegeComponent: React.FC<any> = ({ handleBuy100, handleBuy500, tr
 									: "500 gb of space for secure storage"}
 							</p>
 							<Button color="violet" inverted onClick={() => handleBuy500()}>
-								Choose plan
+								{translated ? "Выбрать план" : "Choose plan"}
 							</Button>
 						</div>
 					</Col>

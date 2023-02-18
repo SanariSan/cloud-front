@@ -15,8 +15,11 @@
 }
 
 .top {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
 	width: 100%;
-	height: 40%;
+	height: 100%;
 	padding-top: 10px;
 	padding-left: 10px;
 	padding-right: 10px;
@@ -51,4 +54,45 @@
 	font-weight: 600;
 	padding-top: 20px;
 	padding-bottom: 20px;
+}
+
+.preview {
+	position: relative;
+	padding-top: 10px;
+	height: 25em;
+	width: 100%;
+	max-width: 41em;
+	background: url("../../../img/img_bot.png");
+	background-size: contain !important;
+	background-repeat: no-repeat !important;
+	background-position: center !important;
+	box-shadow: inset 0px 0px 5px 5px #fff;
+
+	// height: 50vmin;
+	// border: solid 2em rgba(#000, 0.2) !important;
+	// scale: 75%;
+
+	// background-origin: border-box !important;
+	// background-clip: padding-box !important;
+
+	// &:before {
+	// 	position: absolute !important;
+	// 	z-index: -1 !important;
+	// 	/* go outside padding-box by
+	// 	 * a border-width ($b) in every direction */
+	// 	top: -2em !important;
+	// 	right: -2em !important;
+	// 	bottom: -2em !important;
+	// 	left: -2em !important;
+	// 	border: inherit !important;
+	// 	border-color: transparent !important;
+	// 	background: inherit !important;
+	// 	background-clip: border-box !important;
+	// 	content: "" !important;
+
+	// 	-webkit-filter: blur(9px);
+	// 	filter: blur(9px);
+	// 	-webkit-clip-path: inset(0);
+	// 	clip-path: inset(0);
+	// }
 }
