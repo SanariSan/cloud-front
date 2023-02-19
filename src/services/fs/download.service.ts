@@ -14,6 +14,7 @@ const reqFsDownload = ({ groupId, path, filename }) => {
 		},
 		extra: {
 			responseType: "arraybuffer",
+			timeout: 0,
 		},
 	});
 };
