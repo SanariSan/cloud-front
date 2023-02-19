@@ -11,6 +11,9 @@ const reqFsUpload = ({ groupId, path, filename, data }) =>
 			"Content-Type": mime.contentType(filename) || "application/binary",
 		},
 		data,
+		extra: {
+			timeout: 0,
+		},
 	});
 
 export { reqFsUpload };
