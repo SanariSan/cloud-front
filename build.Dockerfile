@@ -1,6 +1,7 @@
 FROM node:16 as modules
 WORKDIR /home/node/proj
 COPY --chown=root:root package.json yarn.lock ./
+RUN export NODE_OPTIONS=--max-old-space-size=3000
 RUN ["yarn", "install", "--prod", "--pure-lockfile", "--frozen-lockfile"]
 
 FROM node:16 as build
